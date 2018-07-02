@@ -1,0 +1,37 @@
+Vivo\AdminBundle\Model\Group:
+    type: mappedSuperclass
+    table: vivo_admin_group
+    indexes:
+        alias: { columns: [alias] }
+        rank: { columns: [rank] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+        alias:
+            type: string
+            length: 50
+            nullable: true
+        roles:
+            type: array
+            nullable: true
+        selfManaged:
+            type: boolean
+            column: is_self_managed
+        rank:
+            type: integer
+    oneToMany:
+        users:
+            targetEntity: Vivo\AdminBundle\Model\UserInterface
+            cascade: {  }
+            mappedBy: group
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    lifecycleCallbacks: {  }

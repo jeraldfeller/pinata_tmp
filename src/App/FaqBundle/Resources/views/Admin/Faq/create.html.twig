@@ -1,0 +1,18 @@
+{% extends '@AppFaq/Admin/layout.html.twig' %}
+
+{% block title 'Create FAQ' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">Create FAQ</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@AppFaq/Admin/Faq/_form.html.twig' with {'form': form, 'faq': faq} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create FAQ</button>
+            <a href="{{ path('app_faq.admin.faq.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

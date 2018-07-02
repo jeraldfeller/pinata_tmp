@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+form {
+
+    /*******************
+        Control Groups
+    ********************/
+
+    .control-group {
+        width: 100%;
+        margin: 0 0 15px;
+        position: relative;
+
+        &.error {
+            input.text,
+            input[type=text],
+            input[type=email],
+            input[type=password],
+            input[type=number],
+            input[type=date],
+            textarea,
+            .customSelect {
+                border-color: @form_input_border_error !important;
+            }
+        }
+
+        &.inline-control {
+            .controls {
+                .inline();
+                vertical-align: top;
+            }
+            button {
+                vertical-align: top;
+                .inline();
+                margin: 0 0 0 6px !important;
+                float: none;
+            }
+        }
+
+        &.half {
+            width: 48%;
+            width: ~"calc((100% - 15px) / 2)";
+            margin-right: 4%;
+            float: left;
+            &:nth-child(even) {
+                margin-right: 0;
+            }
+        }
+
+        label {
+            text-transform: none;
+            color: @form_label_colour;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 0 10px;
+            display: block;
+        }
+
+        input.text,
+        input[type=text],
+        input[type=email],
+        input[type=password],
+        input[type=number],
+        input[type=date],
+        textarea,
+        .customSelect {
+            font-size: 16px;
+            color: @form_input_text_colour;
+            background: @form_input_bg_colour;
+            line-height: 120%;
+            width: 100%;
+            border: 1px solid @form_input_border;
+            padding: 12px 15px;
+            .rounded(3px);
+
+            .customSelectInner {
+                padding: 8px;
+            }
+        }
+
+        input.text,
+        input[type=text],
+        input[type=email],
+        input[type=password],
+        input[type=number],
+        input[type=date],
+        textarea {
+            .transition(all, 0.3s);
+            .placeholder({ color: @form_input_placeholder_colour; });
+
+            &:focus {
+                outline: none;
+                border-color: @form_input_border_focus !important;
+                .placeholder({ color: @form_input_placeholder_colour; });
+            }
+        }
+
+        textarea {
+            height: 120px;
+            clear: both;
+        }
+
+        /********************
+            Custom Select
+        ********************/
+
+        select {
+            width: 100%;
+        }
+
+        .customSelect {
+            .customSelectInner {
+                .inline();
+                width: auto !important;
+            }
+            .arrow {
+                float: right;
+                display: block;
+                text-align: center;
+                width: 25px;
+                i {
+                    line-height: 30px;
+                }
+            }
+            &.customSelectDisabledOption {
+                color: @form_input_placeholder_colour;
+            }
+        }
+
+    }
+
+    /****************
+        Form Submit
+    ****************/
+    .form-submit {
+        clear: both;
+        &:extend(.btn all);
+        &:extend(.btn-primary all);
+    }
+}
+
+/**********************
+    Chosen
+********************/
+
+.chosen-container {
+    .defaultFont();
+    font-size: 14px;
+    color: @form_input_text_colour;
+
+    &.chosen-container-active {
+        .chosen-single {
+            border: 1px solid @form_input_border_focus;
+            .transition(all, 0.3s);
+        }
+    }
+
+    .chosen-single {
+        height: 45px;
+        line-height: 45px;
+        background: @white;
+        .shadow-none();
+        border: 1px solid @form_input_border;
+        div {
+            b {
+                background-position: 0 12px;
+            }
+        }
+    }
+
+    .chosen-drop {
+        border: 1px solid @form_input_border_focus;
+        ul.chosen-results {
+            li {
+                background: none;
+                &.highlighted {
+                    .gradient(lighten(@main_colour, 15%), @main_colour);
+                }
+            }
+        }
+    }
+}

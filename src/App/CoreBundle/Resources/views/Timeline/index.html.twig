@@ -1,0 +1,36 @@
+<div class="block tertiary-colour padded">
+    <div class="wrapper">
+
+        <div class="timeline">
+            <h2>History</h2>
+
+
+
+            <section id="cd-timeline" class="cd-container">
+
+                {% for item in items %}
+
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img {{ item.iconLabel|lower }}">
+                            <span class="icon">
+                                <i class="pin-{{ item.iconLabel|lower }}-circled"></i>
+                            </span>
+                            <span class="date">{{ item.date }}</span>
+                        </div> <!-- cd-timeline-img -->
+
+                        <div class="cd-timeline-content tear-bottom">
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.content }}</p>
+                        </div> <!-- cd-timeline-content -->
+                    </div> <!-- cd-timeline-block -->
+                {% endfor %}
+
+
+
+            </section> <!-- cd-timeline -->
+        </div>
+
+
+    </div>
+</div>
+

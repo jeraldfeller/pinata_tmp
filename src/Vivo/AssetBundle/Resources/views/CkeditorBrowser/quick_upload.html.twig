@@ -1,0 +1,36 @@
+{%- spaceless -%}
+<script type="text/javascript">
+    window.parent.CKEDITOR.tools.callFunction(
+        {{ app.request.query.get('CKEditorFuncNum') }},
+        {{ '\'' -}}
+            {% if asset and error|length < 1 -%}
+                {%- if type == 'image' and asset.file.image and asset.imagePreviewPath -%}
+                    {{- trim_path(resolved_path is not null ? resolved_path : asset.imagePreviewPath|imagine_filter('content')) -}}
+                {%- else -%}
+                    {{- trim_path(path(asset.routeName('download'), asset.routeParameters('download'))) -}}
+                {%- endif -%}
+            {%- endif %}
+        {{- '\'' -}},
+        function() {
+            {%- if error -%}
+                alert('{{ error }}');
+            {%- else -%}
+                var element, dialog = this.getDialog();
+
+                if (dialog.getName() == 'image') {
+                    element = dialog.getContentElement('info', 'txtAlt');
+
+                    if (element) {
+                        element.setValue('{{ asset.title }}');
+                    }
+                } else if (dialog.getName() == 'link') {
+                    element = dialog.getContentElement('info', 'protocol');
+                    if (element) {
+                        element.setValue('');
+                    }
+                }
+            {%- endif -%}
+        }
+    );
+</script>
+{%- endspaceless -%}

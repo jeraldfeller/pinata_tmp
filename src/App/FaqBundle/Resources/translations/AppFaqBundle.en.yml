@@ -1,0 +1,22 @@
+admin:
+    form:
+        category:
+            title: 'Title *'
+        faq:
+            question: 'Question *'
+            answer:   'Answer *'
+            category: 'Category *'
+    flash:
+        category:
+            create.success: 'Category successfully created.'
+            update.success: 'Category successfully updated.'
+            delete:
+                success:  'Category successfully deleted.'
+                notEmpty: 'This category is not empty.'
+        faq:
+            create.success: 'FAQ successfully created.'
+            update.success: 'FAQ successfully updated.'
+            delete.success: 'FAQ successfully deleted.'
+            rank:
+                failed:   'A FAQ/Category submitted no longer exists. Please try again.'
+                success: 'The order of the FAQs were successfully saved.'

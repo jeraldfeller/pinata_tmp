@@ -1,0 +1,40 @@
+<div class="block tertiary-alt-colour tear-top">
+    <div class="wrapper">
+
+        <div class="fruit-cards">
+            <ul>
+                {% for fruit in fruits %}
+                    {% set firstimg = fruit.primaryImage %}
+                    <li class="{{ fruit.colorClass }}">
+                        <a href="{{ fruit.primarySlug is not null and fruit.primarySlug.slug is not null ? path('app_core.fruit.view', { slug: fruit.primarySlug.slug }) : 'javascript:void(0)' }}" title="{{ fruit.name }}">
+                            <div class="card-pop">
+                                <div class="image" style="background-image: url('{{ firstimg.imagePreviewPath|imagine_filter("360x210p") }}');"></div>
+                                <div class="text">
+                                    {% include 'Elements/common/tear_top_small.html.twig' %}
+
+                                    <div class="hidden">
+                                        <span class="subtitle">{{ fruit.subtitle }}</span>
+                                        <h3>{{ fruit.name }}</h3>
+                                    </div>
+                                    <p>{{ fruit.intro }}</p>
+                                    {% include 'Elements/common/tear_bottom_small.html.twig' %}
+                                </div>
+                            </div>
+                            <div class="card-inner">
+                                <div class="icon">
+                                    <i class="pin-{{ fruit.colorClass }}-circled"></i>
+                                </div>
+                                <span class="subtitle">{{ fruit.subtitle }}</span>
+                                <h3>{{ fruit.name }}</h3>
+                            </div>
+                        </a>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+

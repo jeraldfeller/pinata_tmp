@@ -1,0 +1,93 @@
+{% extends '@AppTeam/Admin/Profile/layout.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">{% block title 'Sort Profiles' %}</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    <div class="btn-toolbar pull-right">
+        <div class="btn-group">
+            <a href="{{ path('app_team.admin.profile.index') }}" class="btn"><i class="icon-list"></i> Return to List</a>
+        </div>
+    </div>
+
+    <form action="{{ path('app_team.admin.profile.sort') }}" method="post">
+        {% if profiles|length > 0 %}
+            <input type="hidden" name="ranks" id="app_team_profile_rank_data" value="" />
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Order</button>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="nested-tree" id="app_team_profile_rank">
+                <ol class="tree-group">
+                    {% for profile in profiles %}
+                        <li class="item" id="app_team_profile_{{ profile.id }}">
+                            <div class="item-container">
+                                <a href="{{ path('app_team.admin.profile.update', {'id': profile.id}) }}">{{ profile.name }}{% if profile.disabled %} <span class="text-error">(Disabled)</span>{% endif %}</a>
+
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown">
+                                        <button class="btn btn-mini btn-link dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu open-left">
+                                            <li><a href="{{ path('app_team.admin.profile.update', {'id': profile.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                            <li><a class="confirm" href="{{ path('app_team.admin.profile.delete', {'id': profile.id, 'token': csrf_token(profile.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <script type="text/javascript">
+                jQuery('#app_team_profile_rank > ol').each(function() {
+                    var treeContainer = jQuery(this);
+                    var initialData;
+
+                    jQuery(this).nestedSortable({
+                        forcePlaceholderSize: true,
+                        handle: 'div.item-container',
+                        helper:	'clone',
+                        items: 'li.item',
+                        opacity: .6,
+                        placeholder: 'placeholder',
+                        tabSize: 25,
+                        tolerance: 'pointer',
+                        toleranceElement: '.item-container',
+                        maxLevels: 1,
+                        isTree: false,
+                        update: function (event, ui) {
+                            var data = treeContainer.nestedSortable('serialize');
+
+                            console.log(data);
+
+                            if (data == initialData) {
+                                jQuery('#app_team_profile_rank_data').val('');
+                            } else {
+                                jQuery('#app_team_profile_rank_data').val(data);
+                            }
+                        },
+                        start: function(event, ui){
+                            ui.item.find('.nav').hide();
+                            ui.placeholder.height(ui.item.height());
+                        },
+                        stop: function (event, ui) {
+                            ui.item.find('.nav').show();
+                        }
+                    });
+
+                    initialData = treeContainer.nestedSortable('serialize');
+                });
+            </script>
+        {% else %}
+            <div class="alert alert-notice">
+                No results available.
+            </div>
+        {% endif %}
+    </form>
+{% endblock content %}

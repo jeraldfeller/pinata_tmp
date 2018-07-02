@@ -1,0 +1,15 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_admin.user.index') }}">Users</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@VivoAdminBundle/Resources/public/js/security/change_password.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}

@@ -1,0 +1,153 @@
+{% form_theme form 'AppCoreBundle:Form:form_theme.html.twig' %}
+<fieldset>
+    {{ form_errors(form) }}
+
+    {{ form_row(form.name) }}
+
+    <fieldset class="collection-container app_core_questions" data-prototype="{% filter escape %}{% include '@AppCore/Form/promo_prototype.html.twig' with {'form': form.blocks.vars.prototype} %}{% endfilter %}">
+        <legend>Blocks</legend>
+        <div class="table collection"{% if form.blocks|length < 1 %} style="display:none;"{% endif %}>
+            <ol class="collection-body">
+                {{ form_widget(form.blocks) }}
+            </ol>
+        </div>
+        <div class="controls collection-empty"{% if form.blocks|length > 0 %} style="display:none;"{% endif %}>
+            <p class="text-info">There are currently no blocks assigned.</p>
+        </div>
+        <div class="control-group collection-add-container">
+            <div class="controls controls-row">
+                <a href="#" class="btn question-collection-add">Add Promo Block</a>
+            </div>
+        </div>
+    </fieldset>
+
+    {{ form_rest(form) }}
+</fieldset>
+<script>
+    jQuery(document).ready(function(){
+        $('select.answer-type').change(function(e){
+            var isVisible         = true;
+            var answersCollection = $('.app_core_answers');
+
+            switch ($(this).val()) {
+                case "1": // multiple choice
+                    break;
+
+                case "3":
+                case "4":// true or false
+                    isVisible   = false;
+                    break;
+            }
+
+            if (isVisible) {
+                $('.app_core_answers').show();
+            } else {
+                $('.app_core_answers').hide();
+            }
+
+        }).change();
+
+        jQuery('.collection-container').delegate('.question-answer-collection-add', 'click', function(event){
+            event.preventDefault();
+
+            var collectionContainer = $(this).parents('.collection-container:first');
+            var html                = collectionContainer.attr('data-prototype');
+            var index               = 0;
+
+            var emptyDiv   = $('<div/>');
+            var firstInput = emptyDiv.append(html).find('input, textarea, select').eq(0);
+
+            if (firstInput.attr('id')) {
+                while ($('#' + firstInput.attr('id').replace(/__name__/g, index)).size() > 0) {
+                    index++;
+
+                    if (index > 1000){
+                        break;
+                    }
+                }
+            }
+
+            collectionContainer.find('.collection-empty:first').hide();
+            collectionContainer.find('.collection .collection-body:first').append(html.replace(/__name__/g, index));
+            collectionContainer.find('.collection:first').show();
+            $('select.answer-type').trigger('change');
+        });
+
+        $('#app_core_category_type_quotable').change(function(e){
+            var questionsCollection = $('#nittyGrittyAssigned');
+
+            if ($(this).is(':checked')) {
+                questionsCollection.show();
+                setupChosen();
+            } else {
+                questionsCollection.hide();
+            }
+
+
+        }).change();
+
+    });
+
+
+    var updateRanks = function(collectionContainer)
+    {
+        var rank = 1;
+        collectionContainer.find('input.rank').each(function() {
+            jQuery(this).val(rank++);
+        });
+    };
+
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
+    var setupChosen = function(){
+        //prepend blank option for placeholder support
+        $('.chosen:visible').prepend('<option value=""></option>').chosen({width: "60%"});
+    };
+
+    var make_sortable = function(){
+        $(".collection-body").sortable({
+            helper: fixHelper,
+            placeholder: "placeholder",
+            handle: '.handle'
+        }).bind('sortupdate', function(e,ui) {
+            updateRanks(ui.item.closest('.collection-container'));
+        });
+    };
+
+    jQuery(document).ready(function() {
+        jQuery('.collection-container').delegate('.question-collection-add', 'click', function(event){
+            event.preventDefault();
+
+            var collectionContainer = $(this).parents('.collection-container:first');
+            var html                = collectionContainer.attr('data-prototype');
+            var index               = 0;
+
+            var emptyDiv   = $('<div/>');
+            var firstInput = emptyDiv.append(html).find('input, textarea, select').eq(0);
+
+            if (firstInput.attr('id')) {
+                while ($('#' + firstInput.attr('id').replace(/__name__/g, index)).size() > 0) {
+                    index++;
+
+                    if (index > 1000){
+                        break;
+                    }
+                }
+            }
+
+            collectionContainer.find('.collection-empty:first').hide();
+            collectionContainer.find('.collection .collection-body:first').append(html.replace(/__name__/g, index));
+            collectionContainer.find('.collection:first').show();
+            make_sortable();
+            setupChosen();
+        });
+        make_sortable();
+        setupChosen();
+
+    });
+</script>

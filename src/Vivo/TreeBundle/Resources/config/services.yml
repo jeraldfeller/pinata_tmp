@@ -1,0 +1,15 @@
+services:
+    # Form Types
+    vivo_tree.form.choice.tree:
+        class: Vivo\TreeBundle\Form\Choice\TreeChoice
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: form.type }
+
+    # Event Listeners
+    vivo_tree.listener.fix_broken_tree:
+        class: Vivo\TreeBundle\EventListener\FixParentLoopListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postFlush, priority: -50 }

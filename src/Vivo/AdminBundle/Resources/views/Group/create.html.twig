@@ -1,0 +1,20 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block title 'Create User Group' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_admin.group.index') }}">User Groups</a> <span class="divider">/</span></li>
+    <li class="active">Create Group</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {% include '@VivoAdmin/Group/_form.html.twig' with {'form': form, 'group': group} %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Group</button>
+        <a href="{{ path('vivo_admin.group.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

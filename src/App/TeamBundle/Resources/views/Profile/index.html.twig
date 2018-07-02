@@ -1,0 +1,60 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+
+{% block post_main_content_block %}
+    <div class="block tertiary-colour padded">
+        <div class="wrapper">
+
+            <div class="team-members">
+                <h2>Meet the Team</h2>
+
+                <ul class="profiles">
+                    {% for profile in profiles %}
+
+                        {% if profile.quote %}
+                            <li class="quote">
+                                <div class="quote-inner">
+                                    {% include 'Elements/common/tear_top_small.html.twig' %}
+                                    <i class="pin-quotes"></i>
+                                    <blockquote>
+                                        {{ profile.introduction|raw }}
+                                    </blockquote>
+                                    <h4 class="author">- {{ profile.name }}</h4>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="profile">
+                                {% if profile.description is not empty and profile.primarySlug is not null %}
+                                    <a href="{{ path('app_team.profile.view',{ slug:profile.primarySlug.slug }) }}" title="Read {{ profile.name }}'s full bio">
+                                {% endif %}
+                                <div class="image">
+                                    {% if profile.image is not empty %}
+                                        <img src="{{ profile.image.imagePreviewPath|imagine_filter('280x230p') }}" alt="{{ profile.name }}" title="{{ profile.name }}" />
+                                    {% else %}
+                                        <img src="http://placehold.it/280x230" alt="{{ profile.name }}" title="{{ profile.name }}" />
+                                    {% endif %}
+                                </div>
+                                <div class="text">
+                                    <span class="position">{{ profile.position }}</span>
+                                    <h3>{{ profile.name }}</h3>
+                                    <p>{{ profile.introduction|raw }}</p>
+                                    {% if profile.description is not empty and profile.primarySlug is not null %}
+                                    <span class="readmore">Read more...</span>
+                                    {% endif %}
+                                </div>
+                                {% if profile.description is not empty %}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock post_main_content_block %}
+
+

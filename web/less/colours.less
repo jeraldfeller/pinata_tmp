@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+
+/***********************************
+    Colour Specific Styling Loops
+**********************************/
+
+
+& {
+    .for(@brand_colours);
+    .-each(@color) {
+        @name: e(@color);
+        @colour: @@name;
+
+        @menuSub: "_menu";
+        //@opacitySub: "_tab_opacity";
+
+        @menu_colour_test: "@{name}@{menuSub}";
+        @menu_colour: @@menu_colour_test;
+
+
+        body.@{name} {
+
+            .block.colour-inherit {
+                background-color: @menu_colour;
+            }
+
+            .btn-primary-alt {
+                background-color: darken(@colour,15%);
+                &:hover {
+                    background-color: darken(@colour,5%);
+                }
+                &:active {
+                    background-color: darken(@colour,20%);
+                }
+            }
+
+        }
+
+    }
+}

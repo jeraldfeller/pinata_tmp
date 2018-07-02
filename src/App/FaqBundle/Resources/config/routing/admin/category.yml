@@ -1,0 +1,15 @@
+app_faq.admin.category.index:
+    pattern:  /category
+    defaults: { _controller: AppFaqBundle:Admin/Category:index }
+
+app_faq.admin.category.create:
+    pattern:  /category/new
+    defaults: { _controller: AppFaqBundle:Admin/Category:create }
+
+app_faq.admin.category.update:
+    pattern:  /category/{id}/edit
+    defaults: { _controller: AppFaqBundle:Admin/Category:update }
+
+app_faq.admin.category.delete:
+    pattern:  /category/{id}/delete/{token}
+    defaults: { _controller: AppFaqBundle:Admin/Category:delete }

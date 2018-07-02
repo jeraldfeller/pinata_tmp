@@ -1,0 +1,133 @@
+{% block fieldset_general %}
+    <fieldset>
+        {% block fieldset_general_errors %}
+            <p>{{ form_errors(form) }}</p>
+        {% endblock fieldset_general_errors %}
+
+        {% block form_status_row %}
+            {% if form.status is defined %}
+                {{ form_row(form.status) }}
+            {% endif %}
+        {% endblock form_status_row %}
+
+        {% block form_primary_row %}
+            {% if form.primary is defined %}
+                {{ form_row(form.primary) }}
+            {% endif %}
+        {% endblock form_primary_row %}
+
+        {% block form_name_row %}
+            {% if form.name is defined %}
+                {{ form_row(form.name) }}
+            {% endif %}
+        {% endblock form_name_row %}
+
+        {% block form_theme_row %}
+            {% if form.theme is defined %}
+                {{ form_row(form.theme) }}
+            {% endif %}
+        {% endblock form_theme_row %}
+
+        {% block form_short_name_row %}
+            {% if form.shortName is defined %}
+                {{ form_row(form.shortName) }}
+            {% endif %}
+        {% endblock form_short_name_row %}
+
+        {% block form_mailer_row %}
+            {% if form.mailer is defined %}
+                {{ form_row(form.mailer) }}
+            {% endif %}
+        {% endblock form_mailer_row %}
+
+        {% block form_sender_name_row %}
+            {% if form.senderName is defined %}
+                {{ form_row(form.senderName) }}
+            {% endif %}
+        {% endblock form_sender_name_row %}
+
+        {% block form_sender_email_row %}
+            {% if form.senderEmail is defined %}
+                {{ form_row(form.senderEmail) }}
+            {% endif %}
+        {% endblock form_sender_email_row %}
+
+        {% block form_notification_email_row %}
+            {% if form.notificationEmail is defined %}
+                {{ form_row(form.notificationEmail) }}
+            {% endif %}
+        {% endblock form_notification_email_row %}
+    </fieldset>
+{% endblock fieldset_general %}
+
+{% block fieldset_domains %}
+    {% if form.domains is defined %}
+        <fieldset class="collection-container" data-prototype="{{ form_widget(form.domains.vars.prototype)|e }}">
+            <legend>Domains</legend>
+            <table class="table collection"{% if form.domains|length < 1 %} style="display:none;"{% endif %}>
+                <thead>
+                <tr>
+                    <th>{{ 'admin.form.domain.primary'|trans({}, 'VivoSiteBundle') }}</th>
+                    <th>{{ 'admin.form.domain.host'|trans({}, 'VivoSiteBundle') }}</th>
+                    <th>{{ 'admin.form.domain.wwwSubdomain'|trans({}, 'VivoSiteBundle') }}</th>
+                    <th>{{ 'admin.form.domain.secure'|trans({}, 'VivoSiteBundle') }}</th>
+                    <th>{{ 'admin.form.domain.remove'|trans({}, 'VivoSiteBundle') }}</th>
+                </tr>
+                </thead>
+                <tbody class="collection-body">
+                    {% for domain in form.domains %}
+                        {{ form_widget(domain) }}
+                    {% else %}
+                        {{ form_widget(form.domains) }}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="controls collection-empty"{% if form.domains|length > 0 %} style="display:none;"{% endif %}>
+                <p class="text-info">There are currently no domains associated with this site.</p>
+            </div>
+            <div class="control-group">
+                <div class="controls controls-row">
+                    <a href="#" class="btn collection-add">Add additional domain</a>
+                </div>
+            </div>
+        </fieldset>
+    {% endif %}
+{% endblock fieldset_domains %}
+
+{% block fieldset_google_settings %}
+    {% if form.googleAnalyticsId is defined or form.googleAdvertiserSupport is defined or form.googleSiteVerificationCode is defined or form.googleApiServerKey is defined or form.googleApiBrowserKey is defined %}
+        <fieldset>
+            <legend>Google Settings</legend>
+
+            {% block form_google_analytics_id_row %}
+                {% if form.googleAnalyticsId is defined %}
+                    {{ form_row(form.googleAnalyticsId) }}
+                {% endif %}
+            {% endblock form_google_analytics_id_row %}
+
+            {% block form_google_advertiser_support_row %}
+                {% if form.googleAdvertiserSupport is defined %}
+                    {{ form_row(form.googleAdvertiserSupport) }}
+                {% endif %}
+            {% endblock form_google_advertiser_support_row %}
+
+            {% block form_google_site_verfication_code_row %}
+                {% if form.googleSiteVerificationCode is defined %}
+                    {{ form_row(form.googleSiteVerificationCode) }}
+                {% endif %}
+            {% endblock form_google_site_verfication_code_row %}
+
+            {% block form_google_api_server_key_row %}
+                {% if form.googleApiServerKey is defined %}
+                    {{ form_row(form.googleApiServerKey) }}
+                {% endif %}
+            {% endblock form_google_api_server_key_row %}
+
+            {% block form_google_browser_key_row %}
+                {% if form.googleApiBrowserKey is defined %}
+                    {{ form_row(form.googleApiBrowserKey) }}
+                {% endif %}
+            {% endblock form_google_browser_key_row %}
+        </fieldset>
+    {% endif %}
+{% endblock fieldset_google_settings %}

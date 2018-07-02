@@ -1,0 +1,26 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block topnav %}{% endblock topnav %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body_class 'vivo_admin_security' %}
+
+{% block content %}
+    <form action="{{ path('vivo_admin.security.check') }}" method="post" class="ignore-unsaved-form">
+        <h2>{% block title %}Please verify{% endblock title %}</h2>
+        {% if error %}
+            <p class="text-error">{{ error.message|trans({}, 'VivoAdminBundle') }}</p>
+        {% endif %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+        <input type="text" name="_username" value="{{ app.user.username }}" class="input-block-level" required="required" readonly="readonly" />
+        <input type="password" name="_password" class="input-block-level" required="required" placeholder="Password" autofocus="autofocus" />
+
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Verify</button>
+            <a href="{{ path('vivo_admin.security.logout') }}" class="btn">Logout</a>
+        </div>
+    </form>
+{% endblock content %}

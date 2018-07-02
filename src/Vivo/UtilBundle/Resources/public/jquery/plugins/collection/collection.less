@@ -1,0 +1,56 @@
+.collection-container {
+    &.is-sortable {
+        .handle {
+            min-width: 29px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: move;
+        }
+
+        .placeholder {
+            outline: 1px dashed #4183C4;
+            margin: 5px;
+        }
+    }
+
+    table.collection {
+        width: auto;
+        margin-left: 180px;
+        margin-bottom: 0;
+
+        &.sortable {
+            .handle {
+                min-width: 29px;
+                text-align: center;
+                vertical-align: middle;
+                cursor: move;
+            }
+        }
+
+        td {
+            padding-left: 0;
+
+            &.center {
+                text-align: center;
+            }
+        }
+
+        .control-group {
+            margin-bottom: 0;
+
+            .controls {
+                margin-left: 0;
+            }
+
+            .radio input[type="radio"],
+            .checkbox input[type="checkbox"] {
+                float: none;
+                margin-left: 0;
+            }
+
+            label.checkbox {
+                padding-left: 0;
+            }
+        }
+    }
+}

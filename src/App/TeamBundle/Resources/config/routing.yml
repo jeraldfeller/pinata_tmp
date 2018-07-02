@@ -1,0 +1,4 @@
+app_team.admin.profile:
+    resource: "@AppTeamBundle/Resources/config/routing/admin/profile.yml"
+    prefix: /admin/team
+    requirements: { _requires_channel: https }

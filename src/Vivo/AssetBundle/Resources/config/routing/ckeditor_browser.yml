@@ -1,0 +1,12 @@
+vivo_asset.ckeditor_browser.quick_upload:
+    path: /asset/ckeditor/quick-upload/{type}
+    defaults: { _controller: VivoAssetBundle:CkeditorBrowser:quickUpload, type: null }
+    methods:  [POST]
+
+vivo_asset.ckeditor_browser.index:
+    path: /asset/ckeditor/{type}
+    defaults: { _controller: VivoAssetBundle:CkeditorBrowser:index, type: 'all' }
+
+vivo_asset.ckeditor_browser.delete:
+    path: /asset/ckeditor/{id}/delete/{token}
+    defaults: { _controller: VivoAssetBundle:CkeditorBrowser:delete }

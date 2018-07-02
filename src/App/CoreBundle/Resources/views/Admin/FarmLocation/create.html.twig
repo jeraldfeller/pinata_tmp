@@ -1,0 +1,18 @@
+{% extends '@AppCore/Admin/FarmLocation/layout.html.twig' %}
+
+{% block title 'Create Farm Location' %}
+
+    {% block breadcrumb_crumbs %}
+        {{ parent() }}
+        <li class="active">Create Farm Location</li>
+    {% endblock breadcrumb_crumbs %}
+
+    {% block content %}
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@AppCore/Admin/FarmLocation/_form.html.twig' with {'form': form, 'farm': farm} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Farm Location</button>
+            <a href="{{ path('app_core.admin.farm_location.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    {% endblock content %}

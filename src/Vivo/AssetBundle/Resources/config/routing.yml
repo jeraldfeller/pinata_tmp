@@ -1,0 +1,23 @@
+vivo_asset.asset:
+    resource:     "@VivoAssetBundle/Resources/config/routing/asset.yml"
+    prefix:       /
+    requirements: { _requires_channel: https }
+
+vivo_asset.ckeditor_browser:
+    resource:     "@VivoAssetBundle/Resources/config/routing/ckeditor_browser.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_asset.liip.resolve_runtime:
+    path: /media/cache/{filter}/rc/{hash}/{path}
+    defaults: { _controller: "%liip_imagine.controller.filter_runtime_action%" }
+    requirements:
+        filter: "(?!\\bresolve\\b)[A-z0-9_\\-]*"
+        path: .+
+
+vivo_asset.liip.resolve:
+    path: /media/cache/{filter}/{path}
+    defaults: { _controller: "%liip_imagine.controller.filter_action%" }
+    requirements:
+        filter: "(?!\\bresolve\\b)[A-z0-9_\\-]*"
+        path: .+

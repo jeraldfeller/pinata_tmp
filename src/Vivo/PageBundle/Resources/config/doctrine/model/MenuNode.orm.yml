@@ -1,0 +1,70 @@
+Vivo\PageBundle\Model\MenuNode:
+    type: mappedSuperclass
+    table: vivo_page_menu_node
+    indexes:
+        alias: { columns: [alias] }
+        rank: { columns: [rank] }
+        disabled: { columns: [disabled] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        alias:
+            type: string
+            length: 50
+            nullable: true
+        title:
+            type: string
+            length: 255
+        rank:
+            type: smallint
+        disabled:
+            type: boolean
+    oneToMany:
+        children:
+            targetEntity: Vivo\PageBundle\Model\MenuNodeInterface
+            cascade: {  }
+            mappedBy: parent
+            inversedBy: null
+            orphanRemoval: false
+            fetch: EXTRA_LAZY
+            orderBy:
+                rank: ASC
+                id: ASC
+    manyToOne:
+        menu:
+            targetEntity: Vivo\PageBundle\Model\MenuNodeInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: EXTRA_LAZY
+            joinColumns:
+                menu_id:
+                    referencedColumnName: id
+                    onDelete: RESTRICT
+            orphanRemoval: false
+        parent:
+            targetEntity: Vivo\PageBundle\Model\MenuNodeInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: children
+            fetch: EXTRA_LAZY
+            joinColumns:
+                parent_id:
+                    referencedColumnName: id
+                    onDelete: RESTRICT
+            orphanRemoval: false
+        page:
+            targetEntity: Vivo\PageBundle\Model\PageInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: menuNodes
+            fetch: EXTRA_LAZY
+            joinColumns:
+                vivo_page_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

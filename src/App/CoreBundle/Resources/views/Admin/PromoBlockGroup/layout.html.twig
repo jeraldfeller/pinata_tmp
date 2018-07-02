@@ -1,0 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path((promo_block_group_index_route is defined ? promo_block_group_index_route : 'app_core.admin.promo_block_group.index')) }}">Promo Blocks</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}

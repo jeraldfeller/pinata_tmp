@@ -1,0 +1,6 @@
+{% if months|length > 0 %}
+    <li class="nav-header">Archive</li>
+    {% for month in months %}
+        <li{% if selected_date|default(null) and selected_date|date("Ym") == month.date|date("Ym") %} class="active"{% endif %}><a href="{{ path('vivo_blog.archive.index', { 'year' : month.date|date("Y"), 'month' : month.date|date("m") }) }}">{{ month.date|date("F Y") }}{% if count_posts %} ({{ month.post_count }}){% endif %}</a></li>
+    {% endfor %}
+{% endif %}

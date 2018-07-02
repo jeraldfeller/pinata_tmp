@@ -1,0 +1,873 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="//maps.googleapis.com/maps/api/js?key=&sensor=false&extension=.js"></script>
+    <script src="{{ asset('javascript/infobubble-compiled.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('javascript/markerwithlabel.js') }}" type="text/javascript"></script>
+    <script>
+    google.maps.event.addDomListener(window, 'load', init);
+    var map;
+    var infoBubbles = [];
+    var markerClusterer;
+    var markers = [];
+
+    var closeAllInfoBubbles = function(){
+        infoBubbles.forEach(function(b){
+            b.close()
+        });
+    };
+
+    function init() {
+        var sizeX = 24,
+                sizeY = 35;
+
+        {# TODO: icons? #}
+
+
+        var newIcon = new google.maps.MarkerImage('{{ asset('img/pineapple.svg') }}', null, null, null, new google.maps.Size(35,35));
+
+        var mango = {
+            url: '{{ asset('img/mango.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+
+        var strawberry = {
+            url: '{{ asset('img/strawberry.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var pineapple = {
+            url: '{{ asset('img/pineapple.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var berryworld = {
+            url: '{{ asset('img/berryworld.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+        
+        var berryworld_strawberry = {
+            url: '{{ asset('img/berryworld_strawberry.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var berryworld_blackberry = {
+            url: '{{ asset('img/berryworld_blackberry.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var berryworld_raspberry = {
+            url: '{{ asset('img/berryworld_raspberry.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var berryworld_strawberry_third_party = {
+            url: '{{ asset('img/berryworld_strawberry_third_party.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var berryworld_third_party = {
+            url: '{{ asset('img/berryworld.png') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var mango_third_party = {
+            url: '{{ asset('img/mango_third_party.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+
+        var strawberry_third_party = {
+            url: '{{ asset('img/strawberry_third_party.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var pineapple_third_party = {
+            url: '{{ asset('img/pineapple_third_party.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var greenStar = {
+            url: '{{ asset('img/star.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var headOffice = {
+            url: '{{ asset('img/star.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(25, 25),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+        var dotIcon = {
+            url: '{{ asset('img/dot.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(35, 35),
+            scaledSize: new google.maps.Size(5, 5),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(5, -6)
+        };
+
+        var thirdPartyIcon = {
+            url: '{{ asset('img/pin.svg') }}',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(25, 25),
+            scaledSize: new google.maps.Size(22, 22),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(-5, 7)
+        };
+
+
+        var icon = {
+            path: "M0,11.9C0,14.8,3.6,21,3.6,21L12,35l7.9-14c0,0,4.1-6.2,4.1-9.1 C24,5.3,18.6,0,12,0C5.4,0,0,5.3,0,11.9z",
+            fillColor: '#483728',
+            fillOpacity: 1,
+            strokeWeight: 1,
+            strokeColor: '#dbd3cd',
+            scale: 1,
+            size: new google.maps.Size(sizeX, sizeY),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(sizeX/2, sizeY/2)
+        };
+
+        var styles = [
+            {
+                "featureType": "all",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.country",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "color": "#9b9b9b"
+                    },
+                    {
+                        "weight": 0.8
+                    },
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    },
+                    {
+                        "saturation": "7"
+                    },
+                    {
+                        "color": "#ffffff"
+                    },
+                    {
+                        "weight": "0.45"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "saturation": "76"
+                    },
+                    {
+                        "color": "#acacac"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#897e73"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#ffffff"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.province",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#6e6862"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    },
+                    {
+                        "color": "#ff0000"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "elementType": "labels.icon",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#6e6862"
+                    }
+                ]
+            },
+            {
+                "featureType": "landscape",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#d8d0c9"
+                    },
+                    {
+                        "lightness": "0"
+                    },
+                    {
+                        "saturation": "0"
+                    },
+                    {
+                        "gamma": "01"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    },
+                    {
+                        "color": "#ff0000"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    },
+                    {
+                        "color": "#f9f6f2"
+                    }
+                ]
+            }
+        ];
+
+        var mapOptions = {
+            center: new google.maps.LatLng(-26.528201736510667,135.46987606874998),
+            zoom: 5,
+            zoomControl: false,
+            disableDoubleClickZoom: false,
+            mapTypeControl: false,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+            },
+            scaleControl: true,
+            scrollwheel: false,
+            panControl: true,
+            streetViewControl: false,
+            draggable : true,
+            overviewMapControl: true,
+            overviewMapControlOptions: {
+                opened: false
+            },
+            minZoom: 5,
+            maxZoom: 5,
+            styles: styles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var mapElement = document.getElementById('locations-map');
+        map = new google.maps.Map(mapElement, mapOptions);
+
+        var overlay = new google.maps.OverlayView();
+        overlay.draw = function() {};
+        overlay.onAdd = function() {
+            var projection = this.getProjection();
+
+
+            var farms = new Array();
+            {% for farm in allFarms %}
+            farms[{{ farm.id }}] = [
+                '{{ farm.locationName }}',
+                {{ farm.latitude }},
+                {{ farm.longitude }},
+                icon,
+                '{{ farm.suburb }}',
+                '{{ farm.addressLine1 }}',
+                {% if farm.image is not null %}'{{ farm.image.imagePreviewPath|imagine_filter("340x180p") }}',{% else %}'',{% endif %}
+                '{{ path('app_core.farm.view', { slug: farm.primarySlug.slug }) }}',
+                '{{ farm.mapIcon }}',
+                '{{ farm.mapFruits|raw }}',
+                '{{ farm.thirdPartyFarm }}',
+                '{{ farm.headOffice }}'
+            ]
+            {% endfor %}
+
+            var labelLocations = [
+                {% for location in locations %}
+                [
+                    '{{ location.name }}',
+                    {{ location.latitude }},
+                    {{ location.longitude }},
+                    [
+                        {% if location.pinataFarms|length %}
+                            {% for farm in location.pinataFarms %}
+                            {% if farm.disabledAt is null %}
+                                {{ farm.id }},
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if location.thirdPartyFarms|length %}
+                            {% for farm in location.thirdPartyFarms %}
+                            {% if farm.disabledAt is null %}
+                                {{ farm.id }},
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    ],
+                    {{ location.id }}
+                ],
+                {% endfor %}
+            ];
+            for (i = 0; i < labelLocations.length; i++) {
+                index = i;
+                var position = new google.maps.LatLng(labelLocations[i][1], labelLocations[i][2]);
+                var locationMarker = new MarkerWithLabel({
+                    icon: dotIcon,
+                    position: position,
+                    map: map,
+                    title: labelLocations[i][0],
+                    labelContent: labelLocations[i][0],
+                    labelAnchor: new google.maps.Point(-5, 5),
+                    labelClass: "map-labels",
+                    labelInBackground: false,
+                    origin: new google.maps.Point(0, 0),
+                    // The anchor for this image is the base of the flagpole at (0, 32).
+                    anchor: new google.maps.Point(0, 0),
+                    id: labelLocations[i][4]
+                });
+
+                var newDiv = document.createElement("span");
+                newDiv.className = 'map-labels';
+                var newContent = document.createTextNode(labelLocations[index][0]);
+                newDiv.appendChild(newContent);
+                $('#width_test').append(newDiv);
+                var offset = $('#width_test span').width() - 25;
+                $('#width_test span').remove();
+                var pixel = projection.fromLatLngToContainerPixel(position);
+                if(labelLocations[index][3].length){
+                    for (x = 0; x < labelLocations[index][3].length; x++) {
+                        var farm = farms[labelLocations[index][3][x]];
+                        offset = offset + 30;
+                        var marker = new google.maps.Marker({
+                            position: projection.fromContainerPixelToLatLng(new google.maps.Point(pixel.x +offset, pixel.y)),
+                            optimized: false,
+                            map: map,
+                            icon: eval(farm[8])
+                        });
+                        var green_star = '<li class="green-star"><i class="pin-star-relief"></i></li>';
+                        var content = '' +
+                                '<a class="popup-content" href="'+farm[7]+'">' +
+                                '<div class="image" style="background-image:url('+farm[6] + ')"></div>'+
+                                '<div class="details tear-top-small">' +
+                                '<ul class="fruit">'+
+                                 ( farm[11]  ? green_star : farm[9]) +
+                                '</ul>';
+                            if (farm[8].indexOf("berryworld") !=-1) {
+                                content += '<h4>Berryworld</h4>';
+                            } else {
+                                content += '<h4>Piñata Farms</h4>';
+                            }
+                            content += '<h3>'+farm[0]+'</h3>' +
+                                '</div>' +
+                                '</a>';
+                        var newPosition = projection.fromContainerPixelToLatLng(new google.maps.Point(pixel.x +offset, pixel.y))
+                        var thisInfoBubble = new InfoBubble({
+                            map: map,
+                            content: content,
+                            position: newPosition,
+                            shadowStyle: 1,
+                            padding: 0,
+                            backgroundColor: 'rgb(255,255,255)',
+                            borderRadius: 0,
+                            arrowSize: 30,
+                            borderWidth: 0,
+                            borderColor: '#FFFFFF',
+                            disableAutoPan: true,
+                            hideCloseButton: true,
+                            arrowPosition: 50,
+                            backgroundClassName: 'pinata-map-popup',
+                            arrowStyle: 0,
+                            //minWidth: 250,
+                            minWidth: 350,
+                            maxWidth: 350,
+                            //minHeight: 200,
+                            minHeight: 300,
+                            maxHeight: 300
+                        });
+                        infoBubbles.push(thisInfoBubble);
+                        var marker = new google.maps.Marker({
+                            position: newPosition,
+                            optimized: false,
+                            map: map,
+                            icon:  eval(farm[8]),
+                            thirdParty: farm[10]
+                        });
+            marker.setCursor('default');
+            
+            if(!farm[10]){
+              
+              marker.setCursor('pointer');
+                            marker.addListener('click', (function (infoBubbleTarget, map){
+                                return function(){
+                                    closeAllInfoBubbles();
+                                    infoBubbleTarget.open(map, this);
+                                    map.setCenter(new google.maps.LatLng(infoBubbleTarget.position.lat(), infoBubbleTarget.position.lng()));
+                                }
+                            })(thisInfoBubble, map));
+                            markerMap[ "marker-" + labelLocations[index][3][x] ] = marker;
+                        }
+                }
+            }
+                markers.push(locationMarker);
+            }
+        };
+        overlay.setMap(map);
+        map.addListener('click', function(){
+            closeAllInfoBubbles();
+        });
+        $('.pinata-map-popup').parent().css('overflow', 'hidden');
+        /*(function(mapObj, farms){
+            var fixMap = function(){
+            $('#locations-map').css('position', '');
+            var bounds = new google.maps.LatLngBounds();
+            for (i = 0; i < locations.length; i++) {
+                var latLngPosition = new google.maps.LatLng(locations[i][1], locations[i][2]);
+                bounds.extend(latLngPosition);
+            }
+            mapObj.fitBounds(bounds);
+        };
+            //fixMap();
+            $(window).resize(fixMap);
+        })(map, locations)*/
+        $(".marker-list a").click( function(e) {
+            e.preventDefault();
+            var id = $(this).attr( 'data-id' );
+            google.maps.event.trigger(markerMap["marker-"+id], "click");
+            $('html,body').animate({
+                scrollTop:$('#locations-map')[0].offsetTop
+            });
+        });
+        {#var locations = [#}
+            {#{% for farm in farms %}#}
+            {#[#}
+                {#'{{ farm.locationName }}',#}
+                {#{{ farm.latitude }},#}
+                {#{{ farm.longitude }},#}
+                {#icon,#}
+                {#'{{ farm.suburb }}',#}
+                {#'{{ farm.addressLine1 }}',#}
+                {#{% if farm.image is not null %}'{{ farm.image.imagePreviewPath|imagine_filter("340x180p") }}',{% else %}'',{% endif %}#}
+                {#'{{ path('app_core.farm.view', { slug: farm.primarySlug.slug }) }}',#}
+                {#'{{ farm.mapIcon }}',#}
+                {#'{{ farm.mapFruits|raw }}'#}
+            {#],#}
+            {#{% endfor %}#}
+        {#];#}
+        {#var thirdParty = [#}
+            {#{% for farm in thirdParty %}#}
+            {#[#}
+                {#'{{ farm.locationName }}',#}
+                {#{{ farm.latitude }},#}
+                {#{{ farm.longitude }},#}
+                {#icon,#}
+                {#'{{ farm.suburb }}',#}
+                {#'{{ farm.addressLine1 }}',#}
+                {#'{{ farm.mapIcon }}',#}
+                {#'{{ farm.mapFruits|raw }}'#}
+            {#],#}
+            {#{% endfor %}#}
+        {#];#}
+        var markerMap = {};
+//        // Loop over locations to generate infobubble
+//        for (i = 0; i < thirdParty.length; i++) {
+//
+//            if (thirdParty[i][3] =='undefined'){ markericon ='';} else { markericon = eval(thirdParty[i][8]);}
+//
+//            var tpmarker = new MarkerWithLabel({
+//                icon: thirdPartyIcon,
+//                position: new google.maps.LatLng(thirdParty[i][1], thirdParty[i][2]),
+//                map: map,
+//                title: thirdParty[i][0],
+//                labelContent: thirdParty[i][0],
+//                labelAnchor: new google.maps.Point(-10, 5),
+//                labelClass: "labels",
+//                labelInBackground: false
+//            });
+//
+//            markers.push(tpmarker);
+//
+//        }
+//        // Loop over locations to generate infobubble
+//        for (i = 0; i < locations.length; i++) {
+//
+//            var content = '' +
+//                    '<a class="popup-content" href="'+locations[i][7]+'">' +
+//                        '<div class="image" style="background-image:url('+locations[i][6] + ')"></div>'+
+//                        '<div class="details tear-top-small">' +
+//                            '<ul class="fruit">'+
+//                                locations[i][9] +
+//                            '</ul>'+
+//                            '<h4>Piñata Farms</h4>' +
+//                            '<h3>'+locations[i][0]+'</h3>' +
+//                        '</div>' +
+//                    '</a>';
+//
+//            var thisInfoBubble = new InfoBubble({
+//                map: map,
+//                content: content,
+//                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+//                shadowStyle: 1,
+//                padding: 0,
+//                backgroundColor: 'rgb(255,255,255)',
+//                borderRadius: 0,
+//                arrowSize: 30,
+//                borderWidth: 0,
+//                borderColor: '#FFFFFF',
+//                disableAutoPan: true,
+//                hideCloseButton: true,
+//                arrowPosition: 50,
+//                backgroundClassName: 'pinata-map-popup',
+//                arrowStyle: 0,
+//                //minWidth: 250,
+//                minWidth: 350,
+//                maxWidth: 350,
+//                //minHeight: 200,
+//                minHeight: 300,
+//                maxHeight: 300
+//            });
+//
+//            infoBubbles.push(thisInfoBubble);
+//
+//
+//            if (locations[i][3] =='undefined'){ markericon ='';} else { markericon = eval(locations[i][8]);}
+//
+//
+//            var marker = new MarkerWithLabel({
+//                icon: markericon,
+//                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+////                map: map,
+//                title: locations[i][0],
+//                labelContent: locations[i][0],
+//                labelAnchor: new google.maps.Point((locations[i][0].length*8), -5),
+//                labelClass: "labels",
+//                labelInBackground: false
+//            });
+//
+//
+//            marker.addListener('click', (function (infoBubbleTarget, map){
+//                return function(){
+//                    closeAllInfoBubbles();
+//                    infoBubbleTarget.open(map, this);
+//                    map.setCenter(new google.maps.LatLng(infoBubbleTarget.position.lat(), infoBubbleTarget.position.lng()));
+//                }
+//            })(thisInfoBubble, map));
+//
+//            markerMap[ "marker-" + i ] = marker;
+//
+//
+//
+//            markers.push(marker);
+//
+//        }
+//        google.maps.event.addListener(map, "center_changed", function() {
+//            var lat = map.getCenter().lat();
+//            var lng = map.getCenter().lng();
+//            console.log(lat+" "+lng);
+//        });
+        {#markerClusterer = new MarkerClusterer(map, markers,{#}
+            {#gridSize: 5,#}
+            {#styles: [{#}
+                {#url: '{{ asset('img/cluster-icon.png') }}',#}
+                {#width: 53,#}
+                {#height: 52#}
+            {#}]#}
+        {#});#}
+        {#map.addListener('click', function(){#}
+            {#closeAllInfoBubbles();#}
+        {#});#}
+        {#$('.pinata-map-popup').parent().css('overflow', 'hidden');#}
+        {#(function(mapObj, locations){#}
+            {#var fixMap = function(){#}
+                {#$('#locations-map').css('position', '');#}
+                {#var bounds = new google.maps.LatLngBounds();#}
+                {#for (i = 0; i < locations.length; i++) {#}
+                    {#var latLngPosition = new google.maps.LatLng(locations[i][1], locations[i][2]);#}
+                    {#bounds.extend(latLngPosition);#}
+                {#}#}
+                {#mapObj.fitBounds(bounds);#}
+            {#};#}
+            {#//fixMap();#}
+            {#$(window).resize(fixMap);#}
+        {#})(map, locations)#}
+        {#$(".marker-list a").click( function(e) {#}
+            {#e.preventDefault();#}
+            {#var id = $(this).attr( 'data-id' );#}
+            {#google.maps.event.trigger(markerMap["marker-"+id], "click");#}
+            {#$('html,body').animate({#}
+                {#scrollTop:$('#locations-map')[0].offsetTop#}
+            {#});#}
+        {#});#}
+    }
+    </script>
+{% endblock %}
+{% block main_content_section %}
+    <article class="block padded tear-top tear-bottom">
+    <div class="wrapper">
+        {% block main_intro_content %}
+            {% if page.introduction is defined and page.introduction is not null %}
+                <p class="intro">{{ page.introduction }}</p>
+            {% endif %}
+        {% endblock main_intro_content %}
+    </div>
+    </article>
+    <div class="map" id="locations-map"></div>
+    <div class="block padded">
+        <div class="wrapper">
+            <div id="width_test"></div>
+            <div class="farms-list">
+                <div class="col">
+                    <div class="inner-content">
+                        <h3>Our Farms</h3>
+                        <ul class="marker-list">
+                            {% for farm in farms %}
+                                <li>
+                                    <a class="{{ farm.mapListFruitColour }}" data-id="{{ farm.id }}" href="{{ farm.primarySlug is not null and farm.primarySlug.slug is not null ? path('app_core.farm.view', { slug: farm.primarySlug.slug }) : 'javascript:void(0)' }}" title="{{ farm.name }}">
+                                        {% if farm.headOffice %}<i class="pin-star-relief"></i>{% else %}{{ farm.mapListFruitIcon|raw }}{% endif %} {{ farm.locationName }} <i class="pin-arrow-right"></i>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col second">
+                    <div class="inner-content">
+                        <h3>3rd Party Farms</h3>
+                        <ul class="marker-list third-party">
+                            {% for farm in thirdParty %}
+                                <li class="{{ farm.mapListFruitColour }}">
+                                    {{ farm.mapListFruitIcon|raw }} {{ farm.locationName }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main_content_section %}

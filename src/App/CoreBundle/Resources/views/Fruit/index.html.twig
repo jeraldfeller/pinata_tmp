@@ -1,0 +1,61 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+{% block body_class %}fruits{% endblock body_class %}
+
+{% block post_title_block %}
+    {% if page.assetGroupByAlias('banner') is not empty and page.assetGroupByAlias('banner').assets is not empty %}
+        {% for asset in page.assetGroupByAlias('banner').assets %}
+            <div class="hero-image" style="background-image:url('{{ asset.imagePreviewPath|imagine_filter('1920x450p') }}');"></div>
+        {% endfor %}
+    {% endif %}
+{% endblock post_title_block %}
+
+{% block post_main_content_block %}
+    <div class="block tertiary-colour cards tear-top">
+        <div class="wrapper">
+
+            <div class="fruit-cards">
+                <ul>
+                    {% for fruit in fruits %}
+                        {% set firstimg = fruit.primaryImage %}
+                        <li class="{{ fruit.colorClass }}">
+                            <div class="card-pop">
+                                <div class="image" style="background-image: url('{{ firstimg.imagePreviewPath|imagine_filter("360x210p") }}');"></div>
+                                <div class="text">
+                                    {% include 'Elements/common/tear_top_small.html.twig' %}
+
+                                    <div class="hidden">
+                                        <span class="subtitle">{{ fruit.subtitle }}</span>
+                                        <h3>{{ fruit.name }}</h3>
+                                    </div>
+                                    <p>{{ fruit.intro }}</p>
+                                    {% include 'Elements/common/tear_bottom_small.html.twig' %}
+                                </div>
+                            </div>
+                            <div class="card-inner">
+                                <div class="icon">
+                                    <i class="pin-{{ fruit.colorClass }}-circled"></i>
+                                </div>
+                                <span class="subtitle">{{ fruit.subtitle }}</span>
+                                <h3>
+                                    <a href="{{ fruit.primarySlug is not null and fruit.primarySlug.slug is not null ? path('app_core.fruit.view', { slug: fruit.primarySlug.slug }) : 'javascript:void(0)' }}" title="{{ fruit.name }}">
+                                        {{ fruit.name }}
+                                    </a>
+                                </h3>
+                            </div>
+                        </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock post_main_content_block %}
+
+{% block main_col_content %}
+     {{ page.contentByAlias('main').content|default('')|raw }}
+{% endblock main_col_content %}
+
+

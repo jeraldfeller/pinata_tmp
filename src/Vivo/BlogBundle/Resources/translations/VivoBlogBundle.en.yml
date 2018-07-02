@@ -1,0 +1,46 @@
+admin:
+    form:
+        category:
+            title:               'Title *'
+            slug:                'Category URL *'
+            metaTitle:           'Title'
+            metaDescription:     'Description'
+            noIndex:             'Noindex'
+            noFollow:            'Nofollow'
+            socialTitle:         'Share title'
+            socialDescription:   'Share description'
+            excludedFromSitemap: 'Exclude from sitemap'
+        post:
+            publicationDate:     'Publication date *'
+            title:               'Title *'
+            excerpt:             'Excerpt'
+            body:                'Body *'
+            author:              'Author *'
+            disabledAt:
+                label: 'Active'
+                help:  'Tick to enable post'
+            categories:      'Categories'
+            slug:                'Post URL *'
+            metaTitle:           'Title'
+            metaDescription:     'Description'
+            noIndex:             'Noindex'
+            noFollow:            'Nofollow'
+            socialTitle:         'Share title'
+            socialDescription:   'Share description'
+            excludedFromSitemap: 'Exclude from sitemap'
+
+    flash:
+        category:
+            create.success: 'Category successfully created.'
+            update.success: 'Category successfully updated.'
+            delete:
+                success:  'Category successfully deleted.'
+                notEmpty: 'This category is not empty.'
+            rank:
+                success: 'Category order successfully updated.'
+                invalid: 'Data could not be validated. A new category may have been added before saving.'
+                none:    'There were no changes to the ranks.'
+        post:
+            create.success: 'Post successfully created.'
+            update.success: 'Post successfully updated.'
+            delete.success: 'Post successfully deleted.'

@@ -1,0 +1,19 @@
+vivo_blog.admin.category.index:
+    path: /category
+    defaults: { _controller: VivoBlogBundle:Admin/Category:index }
+
+vivo_blog.admin.category.rank:
+    path: /category/rank
+    defaults: { _controller: VivoBlogBundle:Admin/Category:rank }
+
+vivo_blog.admin.category.create:
+    path: /category/new
+    defaults: { _controller: VivoBlogBundle:Admin/Category:create }
+
+vivo_blog.admin.category.update:
+    path: /category/{id}/edit
+    defaults: { _controller: VivoBlogBundle:Admin/Category:update }
+
+vivo_blog.admin.category.delete:
+    path: /category/{id}/delete/{token}
+    defaults: { _controller: VivoBlogBundle:Admin/Category:delete }

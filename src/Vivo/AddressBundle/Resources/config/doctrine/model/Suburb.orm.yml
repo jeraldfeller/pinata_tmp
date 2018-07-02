@@ -1,0 +1,18 @@
+Vivo\AddressBundle\Model\Suburb:
+    type: mappedSuperclass
+    table: vivo_address_suburb
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: string
+            length: 50
+        postcode:
+            type: smallint
+        state:
+            type: string
+            length: 3
+    lifecycleCallbacks: {  }

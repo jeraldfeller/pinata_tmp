@@ -1,0 +1,19 @@
+app_core.admin.farm.index:
+  pattern:  /farm
+  defaults: { _controller: AppCoreBundle:Admin/Farm:index }
+
+app_core.admin.farm.create:
+  pattern:  /farm/new
+  defaults: { _controller: AppCoreBundle:Admin/Farm:create }
+
+app_core.admin.farm.update:
+  pattern:  /farm/{id}/edit
+  defaults: { _controller: AppCoreBundle:Admin/Farm:update }
+
+app_core.admin.farm.delete:
+  pattern:  /farm/{id}/delete/{token}
+  defaults: { _controller: AppCoreBundle:Admin/Farm:delete }
+
+app_core.admin.farm.rank:
+  pattern:  /farm/rank
+  defaults: { _controller: AppCoreBundle:Admin/Farm:rank }

@@ -1,0 +1,103 @@
+services:
+    # Repos
+    app_core.repository.farm_location:
+        class: App\CoreBundle\Repository\FarmLocationRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+          - App\CoreBundle\Entity\FarmLocation
+
+    app_core.repository.farm:
+        class: App\CoreBundle\Repository\FarmRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+          - App\CoreBundle\Entity\Farm
+
+    app_core.repository.fruit:
+        class: App\CoreBundle\Repository\FruitRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+          - App\CoreBundle\Entity\Fruit
+
+    app_core.repository.timeline:
+        class: App\CoreBundle\Repository\TimelineRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+          - App\CoreBundle\Entity\Timeline
+
+    # Page Types
+
+    app_core.page_type.media:
+        class: App\CoreBundle\PageType\MediaPageType
+        public: false,
+        arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+        tags:
+            - { name: vivo_page.page_type, alias: media }
+
+    app_core.page_type.contact:
+        class: App\CoreBundle\PageType\ContactPageType
+        public: false,
+        arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+        tags:
+            - { name: vivo_page.page_type, alias: contact }
+
+    app_core.page_type.farms:
+            class: App\CoreBundle\PageType\FarmListPageType
+            public: false,
+            arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+            tags:
+                - { name: vivo_page.page_type, alias: farms }
+
+    app_core.page_type.fruits:
+            class: App\CoreBundle\PageType\FruitListPageType
+            public: false,
+            arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+            tags:
+                - { name: vivo_page.page_type, alias: fruits }
+
+    app_core.page_type.fruits:
+            class: App\CoreBundle\PageType\FruitListPageType
+            public: false,
+            arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+            tags:
+                - { name: vivo_page.page_type, alias: fruits }
+
+    # Event Listeners
+    app_product.listener.category_menu_listener:
+        class: App\CoreBundle\EventListener\FruitMenuEventListener
+        arguments: [@app_core.repository.fruit, @router, @templating, @service_container]
+        tags:
+            - { name: kernel.event_listener, event: vivo_page.menu.post_set_children, method: addFruits }
+
+    # Form Extensions
+    app_core.form.extension.asset_background_image:
+        class: App\CoreBundle\Form\Extension\AssetBackgroundImageExtension
+        tags:
+            - { name: form.type_extension, alias: vivo_asset_asset_image }
+
+    app_core.form.extension.homepage:
+        class: App\CoreBundle\Form\Extension\PageExtension
+        tags:
+            - { name: form.type_extension, alias: vivo_page_base_page_type }
+
+    app_core.form.transformer.two_col_transformer:
+        class: App\CoreBundle\Form\DataTransformer\TwoColTransformer
+        public: false
+        tags:
+            - { name: trsteel_ckeditor.transformer, alias: app_core_two_col_transformer }
+
+    # Util
+    app_core.util.mailer:
+        class: App\CoreBundle\Util\Mailer
+        arguments:
+            - @vivo_site.util.mailer
+            - @vivo_site.factory.site
+
+
+    # paginator
+    app_core.knp_paginator:
+        class: App\CoreBundle\Util\Paginator
+        arguments: [@event_dispatcher]

@@ -1,0 +1,19 @@
+vivo_admin.group.index:
+    path: /user/group
+    defaults: { _controller: VivoAdminBundle:Group:index }
+
+vivo_admin.group.rank:
+    path: /user/group/rank
+    defaults: { _controller: VivoAdminBundle:Group:rank }
+
+vivo_admin.group.create:
+    path: /user/group/new
+    defaults: { _controller: VivoAdminBundle:Group:create }
+
+vivo_admin.group.update:
+    path: /user/group/{id}/edit/{token}
+    defaults: { _controller: VivoAdminBundle:Group:update }
+
+vivo_admin.group.delete:
+    path: /user/group/{id}/delete/{token}
+    defaults: { _controller: VivoAdminBundle:Group:delete }

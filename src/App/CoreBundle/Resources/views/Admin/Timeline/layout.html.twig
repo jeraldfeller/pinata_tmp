@@ -1,0 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+{{ parent() }}
+<li><a href="{{ path((timeline_index_route is defined ? timeline_index_route : 'app_core.admin.timeline.index')) }}">Timelines</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}

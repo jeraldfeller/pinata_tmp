@@ -1,0 +1,112 @@
+<fieldset>
+    {{ form_errors(form) }}
+
+    {% if form.disabledAt is defined %}
+        {{ form_row(form.disabledAt) }}
+    {% endif %}
+
+    {% if form.publicationDate is defined %}
+        {{ form_row(form.publicationDate) }}
+    {% endif %}
+
+    {% if form.author is defined %}
+        {{ form_row(form.author) }}
+    {% endif %}
+
+    {% if form.title is defined %}
+        {{ form_row(form.title) }}
+    {% endif %}
+
+    {% if form.excerpt is defined %}
+        {{ form_row(form.excerpt) }}
+    {% endif %}
+
+    {% if form.introduction is defined %}
+        {{ form_row(form.introduction) }}
+    {% endif %}
+
+    {% if form.body is defined %}
+        {{ form_row(form.body) }}
+    {% endif %}
+
+    {% if form.categories is defined %}
+        {{ form_row(form.categories) }}
+    {% endif %}
+</fieldset>
+<fieldset>
+    <legend>Chatter thumbnail image</legend>
+    {{ form_row(form.image) }}
+    <br><p class="help-inline alert">NOTE: In some images where the subject is near the top of the frame, the system will crop from top and bottom to display at 615 x 270 on non-mobile screens. Where possible, upload images where subject is centred in frame. </p>
+</fieldset>
+<fieldset>
+    <legend>Page Hero Image - Under Introduction</legend>
+    {{ form_row(form.contentImage) }}
+</fieldset>
+{% if form.primarySlug is defined or form.metaTitle is defined or form.metaDescription is defined %}
+    <fieldset>
+        <legend>SEO</legend>
+        {% if form.primarySlug is defined %}
+            {{ form_row(form.primarySlug) }}
+        {% endif %}
+
+        {% if form.metaTitle is defined %}
+            {{ form_row(form.metaTitle) }}
+        {% endif %}
+
+        {% if form.metaDescription is defined %}
+            {{ form_row(form.metaDescription) }}
+        {% endif %}
+    </fieldset>
+{% endif %}
+
+<fieldset>
+    {% if form.robotsNoIndex is defined or form.robotsNoFollow is defined or form.socialTitle is defined or form.socialDescription is defined or form.excludedFromSitemap is defined %}
+        <div class="accordion accordion-in-form indent">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" href="#advancedMeta">
+                        Advanced Options
+                    </a>
+                </div>
+                <div id="advancedMeta" class="accordion-body collapse
+                    {%-
+                if
+                (form.socialTitle is defined and not form.socialTitle.vars.valid) or
+                (form.socialDescription is defined and not form.socialDescription.vars.valid) or
+                (form.robotsNoIndex is defined and not form.robotsNoIndex.vars.valid) or
+                (form.robotsNoFollow is defined and not form.robotsNoFollow.vars.valid) or
+                (form.excludedFromSitemap is defined and not form.excludedFromSitemap.vars.valid)
+                -%} in{% else %} collapse{% endif %}">
+                    <div class="accordion-inner">
+                        {% if form.socialTitle is defined or form.socialDescription is defined %}
+                            <legend>Social Media</legend>
+                            {% if form.socialTitle is defined %}
+                                {{ form_row(form.socialTitle) }}
+                            {% endif %}
+                            {% if form.socialDescription is defined %}
+                                {{ form_row(form.socialDescription) }}
+                            {% endif %}
+                        {% endif %}
+
+                        {% if form.robotsNoIndex is defined or form.robotsNoFollow is defined or form.excludedFromSitemap is defined %}
+                            <legend>Robots</legend>
+                            <div class="checkbox-group">
+                                {% if form.robotsNoIndex is defined %}
+                                    {{ form_row(form.robotsNoIndex) }}
+                                {% endif %}
+                                {% if form.robotsNoFollow is defined %}
+                                    {{ form_row(form.robotsNoFollow) }}
+                                {% endif %}
+                                {% if form.excludedFromSitemap is defined %}
+                                    {{ form_row(form.excludedFromSitemap) }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</fieldset>
+
+{{ form_rest(form) }}

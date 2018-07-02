@@ -1,0 +1,7 @@
+vivo_site.admin.site:
+    resource:     "@VivoSiteBundle/Resources/config/routing/admin/site.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_site.site:
+    resource: "@VivoSiteBundle/Resources/config/routing/site.yml"

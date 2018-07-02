@@ -1,0 +1,15 @@
+app_core.admin.promo_block.index:
+    pattern:  /promo-block
+    defaults: { _controller: AppCoreBundle:Admin/PromoBlock:index }
+
+app_core.admin.promo_block.create:
+    pattern:  /promo-block/new
+    defaults: { _controller: AppCoreBundle:Admin/PromoBlock:create }
+
+app_core.admin.promo_block.update:
+    pattern:  /promo-block/{id}/edit
+    defaults: { _controller: AppCoreBundle:Admin/PromoBlock:update }
+
+app_core.admin.promo_block.delete:
+    pattern:  /promo-block/{id}/delete/{token}
+    defaults: { _controller: AppCoreBundle:Admin/PromoBlock:delete }

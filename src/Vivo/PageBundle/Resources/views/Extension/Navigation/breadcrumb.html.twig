@@ -1,0 +1,27 @@
+{% if breadcrumbs|length > 0 %}
+    <ul class="breadcrumbs">
+        {% if intro is defined %}
+            <li class="intro">{{ intro }}</li>
+        {% endif %}
+        {% for breadcrumb in breadcrumbs %}
+            {% set url = url(breadcrumb[1], breadcrumb[2]) %}
+            {% if not loop.last %}
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <meta itemprop="url" content="{{ url }}" />
+                    <meta itemprop="title" content="{{ breadcrumb[0] }}" />
+                    <a href="{{ path(breadcrumb[1], breadcrumb[2]) }}">{{ breadcrumb[0] }}</a>
+                </li>
+
+                {% if separator is not null %}
+                    <li class="seperator">{{ separator }}</li>
+                {% endif %}
+            {% else %}
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <meta itemprop="url" content="{{ url }}" />
+                    <meta itemprop="title" content="{{ breadcrumb[0] }}" />
+                    {{ breadcrumb[0] }}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

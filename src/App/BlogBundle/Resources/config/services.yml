@@ -1,0 +1,13 @@
+services:
+    app_blog.repository.post:
+        class: App\BlogBundle\Repository\PostRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - %vivo_blog.model.post%
+
+    # Form Extensions
+    app_blog.form.extension.site:
+        class: App\BlogBundle\Form\Extension\PostExtension
+        tags:
+            - { name: form.type_extension, extended_type: Vivo\BlogBundle\Form\Type\PostType }

@@ -1,0 +1,26 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block topnav %}{% endblock topnav %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body_class 'vivo_admin_security' %}
+
+{% block content %}
+    {{ form_start(form) }}
+        <h2>{% block title %}Reset password{% endblock title %}</h2>
+        <div class="control-group error">
+            {{ form_errors(form) }}
+            {{ form_errors(form.newPassword.first) }}
+            {{ form_errors(form.newPassword.second) }}
+        </div>
+
+        {{ form_widget(form.newPassword.first, {'attr': {'class': 'input-block-level', 'placeholder': form.newPassword.first.vars.label, 'autofocus': 'autofocus'}}) }}
+        {{ form_widget(form.newPassword.second, {'attr': {'class': 'input-block-level', 'placeholder': form.newPassword.second.vars.label}}) }}
+
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Reset &amp; Login</button>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

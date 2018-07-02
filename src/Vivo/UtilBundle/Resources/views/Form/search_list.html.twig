@@ -1,0 +1,167 @@
+{% block search_list_widget %}
+    {{ form_errors(form) }}
+
+    {% if form|length > 1 %}
+        {% for key, row in form %}
+            {% if 'query' != key and not row.rendered %}
+                <div class="search-field">
+                    {{ form_row(row) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if not form.query.rendered %}
+            <div class="search-field">
+                <label for="{{ form.query.vars.id }}">{{ form.query.vars.label|trans({}, form.vars.translation_domain) }}</label>
+                <div class="clearfix"></div>
+                <div class="input-prepend">
+                    <button type="submit" class="btn"><i class="icon-search"></i> </button>
+                    {{ form_widget(form.query, {'attr': {'class': 'search-query input-large', 'autofocus': 'autofocus'}}) }}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        {% if not form.query.rendered %}
+            <div class="input-prepend">
+                <button type="submit" class="btn"><i class="icon-search"></i> </button>
+                {{ form_widget(form.query, {'attr': {'class': 'search-query input-large', 'autofocus': 'autofocus'}}) }}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {{ form_rest(form) }}
+
+    {{ block('search_list_js') }}
+{% endblock search_list_widget %}
+
+{% block search_list_js %}
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            var autoSubmitTimeout;
+            var ajaxRequest;
+            var form = jQuery('#{{ form.query.vars.id }}').closest('form');
+            var lastData = form.serialize();
+
+            form
+                .delegate('input[type="text"]', 'keyup', function() {
+                    var form = jQuery(this).closest('form');
+
+                    if (autoSubmitTimeout) {
+                        clearTimeout(autoSubmitTimeout);
+                    }
+
+                    autoSubmitTimeout = setTimeout(function() {
+                        form.submit();
+                    }, 250);
+                })
+                .delegate('input[type="checkbox"],input[type="radio"]', 'click', function() {
+                    var form = jQuery(this).closest('form');
+
+                    if (autoSubmitTimeout) {
+                        clearTimeout(autoSubmitTimeout);
+                    }
+
+                    autoSubmitTimeout = setTimeout(function() {
+                        form.submit();
+                    }, 250);
+                })
+                .delegate('select', 'change', function() {
+                    var form = jQuery(this).closest('form');
+
+                    if (autoSubmitTimeout) {
+                        clearTimeout(autoSubmitTimeout);
+                    }
+
+                    autoSubmitTimeout = setTimeout(function() {
+                        form.submit();
+                    }, 250);
+                })
+            ;
+
+            form.submit(function(){
+                if ($('.control-group.error', form).size() > 0) {
+                    // Form contains errors - Allow submit
+                    return true;
+                }
+
+                var data = form.serialize();
+
+                if (data == lastData) {
+                    return false;
+                }
+
+                lastData = data;
+
+                if (ajaxRequest) {
+                    ajaxRequest.abort();
+                }
+
+                ajaxRequest = jQuery.ajax({
+                    url: form.attr('action'),
+                    data: data,
+                    beforeSend: function() {
+                        form.addClass('loading');
+                    },
+                    complete: function() {
+                        form.removeClass('loading');
+                    },
+                    success: function(response) {
+                        if (typeof window.history.pushState === 'undefined') {
+                            // html5 history is not supported
+                        } else {
+                            window.history.pushState({
+                                payload  : response.payload,
+                                formData : form.serializeArray(),
+                                lastData : lastData
+                            }, '', response.uri);
+                        }
+
+                        jQuery('#{{ form.vars.id ~ '_results' }}').html(response.payload);
+                    }
+                });
+
+                return false;
+            });
+
+            if (typeof window.history.replaceState !== 'undefined') {
+                window.history.replaceState({
+                    payload  : jQuery('#{{ form.vars.id ~ '_results' }}').html(),
+                    formData : form.serializeArray(),
+                    lastData : form.serialize()
+                }, '', null);
+
+                window.addEventListener('popstate', function(event) {
+                    if ('undefined' !== typeof event.state && event.state) {
+                        lastData = event.state.lastData;
+
+                        jQuery(event.state.formData).each(function(key, data) {
+                            var $field = form.find('[name="' + data.name + '"]');
+
+                            if ($field && $field.is('select')) {
+                                // remove all selected values - This is important to multi selects
+                                jQuery('option:selected', $field).prop('selected', false);
+                            }
+                        });
+
+                        jQuery(event.state.formData).each(function(key, data) {
+                            var $field = form.find('[name="' + data.name + '"]');
+
+                            if ($field) {
+                                if ($field.is('select')) {
+                                    jQuery('[value="' + data.value + '"]', $field)
+                                        .prop('selected', true)
+                                        .change();
+                                } else {
+                                    $field.val(data.value)
+                                        .change();
+                                }
+                            }
+                        });
+
+                        jQuery('#{{ form.vars.id ~ '_results' }}').html(event.state.payload);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock search_list_js %}

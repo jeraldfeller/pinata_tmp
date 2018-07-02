@@ -1,0 +1,12 @@
+Vivo\AddressBundle\Model\Locality:
+    constraints:
+        - Vivo\AddressBundle\Validator\Constraints\Locality: { groups: [DefaultAddress] }
+    getters:
+        postcode:
+            - NotBlank: { groups: [DefaultAddress] }
+        suburb:
+            - NotBlank: { groups: [DefaultAddress] }
+
+Vivo\AddressBundle\Model\Point:
+    constraints:
+        - Vivo\AddressBundle\Validator\Constraints\Point: { groups: [Point] }

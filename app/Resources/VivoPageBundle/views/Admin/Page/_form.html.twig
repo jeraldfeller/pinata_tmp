@@ -1,0 +1,162 @@
+{% form_theme form '@VivoPage/Admin/Page/_form_theme.html.twig' %}
+
+<fieldset>
+    {{ form_errors(form) }}
+
+    {% if form.page.disabledAt is defined %}
+        <div{% if page.pageTypeInstance.alwaysEnabled|default(false) is sameas(true) %} style="display: none;"{% endif %}>
+            {{ form_row(form.page.disabledAt) }}
+        </div>
+    {% endif %}
+
+    {% if form.pageTypeInstance is defined %}
+        {{ form_row(form.pageTypeInstance, {'attr': {'class': 'page_type_instance'}}) }}
+    {% endif %}
+
+    {% if form.page.pageTitle is defined %}
+        {{ form_row(form.page.pageTitle) }}
+    {% endif %}
+
+    {% if form.page.promoGroup is defined %}
+        {{ form_row(form.page.promoGroup) }}
+    {% endif %}
+
+    {% if form.page.subTitle is defined %}
+        {{ form_row(form.page.subTitle) }}
+    {% endif %}
+
+    {% if form.page.introduction is defined %}
+        {{ form_row(form.page.introduction) }}
+    {% endif %}
+
+    {% if form.page.alias is defined %}
+        {{ form_row(form.page.alias) }}
+    {% endif %}
+</fieldset>
+
+{% if form.page.menuNodes is defined %}
+    <fieldset class="collection-container" data-prototype="{{ form_widget(form.page.menuNodes.vars.prototype)|e }}">
+        <legend>Menu</legend>
+        <table class="table collection"{% if form.page.menuNodes|length < 1 %} style="display:none;"{% endif %}>
+            <thead>
+            <tr>
+                <th>Parent</th>
+                <th>Title</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody class="collection-body">
+            {{ form_widget(form.page.menuNodes) }}
+            </tbody>
+        </table>
+        <div class="controls collection-empty"{% if form.page.menuNodes|length > 0 %} style="display:none;"{% endif %}>
+            <p class="text-info">This page is currently not displayed in the navigation.</p>
+        </div>
+        <div class="control-group">
+            <div class="controls controls-row">
+                <a href="#" class="btn collection-add">Add to menu</a>
+            </div>
+        </div>
+    </fieldset>
+{% endif %}
+
+{% if form.page.content is defined %}
+    {% if page.content|length > 0 %}
+        {% if page.pageTypeInstance.contentBlocks|length > 0 %}
+            <legend>Page Content</legend>
+        {% endif %}
+        {% for content in form.page.content %}
+            <fieldset>
+                {{ form_widget(content) }}
+            </fieldset>
+        {% endfor %}
+    {% else %}
+        {{ form_widget(form.page.content) }}
+    {% endif %}
+{% endif %}
+
+{% if form.page.assetGroups is defined %}
+    {% for assetGroup in form.page.assetGroups %}
+        {% if assetGroup.assets is defined %}
+            <fieldset>
+                <legend>{{ assetGroup.assets.vars.label }}</legend>
+                {{ form_widget(assetGroup) }}
+            </fieldset>
+        {% else %}
+            {{ form_widget(assetGroup) }}
+        {% endif %}
+    {% else %}
+        {{ form_widget(form.page.assetGroups) }}
+    {% endfor %}
+{% endif %}
+
+{% if form.page.primarySlug is defined or form.page.metaTitle is defined or form.page.metaDescription is defined %}
+    <fieldset>
+        <legend>SEO</legend>
+        {% if form.page.primarySlug is defined %}
+            {{ form_row(form.page.primarySlug) }}
+        {% endif %}
+
+        {% if form.page.metaTitle is defined %}
+            {{ form_row(form.page.metaTitle) }}
+        {% endif %}
+
+        {% if form.page.metaDescription is defined %}
+            {{ form_row(form.page.metaDescription) }}
+        {% endif %}
+    </fieldset>
+{% endif %}
+
+<fieldset>
+    {% if form.page.robotsNoIndex is defined or form.page.robotsNoFollow is defined or form.page.socialTitle is defined or form.page.socialDescription is defined or form.page.excludedFromSitemap is defined %}
+        <div class="accordion accordion-in-form indent">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" href="#advancedMeta">
+                        Advanced Options
+                    </a>
+                </div>
+                <div id="advancedMeta" class="accordion-body collapse
+                    {%-
+                if
+                (form.page.socialTitle is defined and not form.page.socialTitle.vars.valid) or
+                (form.page.socialDescription is defined and not form.page.socialDescription.vars.valid) or
+                (form.page.robotsNoIndex is defined and not form.page.robotsNoIndex.vars.valid) or
+                (form.page.robotsNoFollow is defined and not form.page.robotsNoFollow.vars.valid) or
+                (form.page.excludedFromSitemap is defined and not form.page.excludedFromSitemap.vars.valid)
+                -%} in{% else %} collapse{% endif %}">
+                    <div class="accordion-inner">
+                        {% if form.page.socialTitle is defined or form.page.socialDescription is defined %}
+                            <legend>Social Media</legend>
+                            {% if form.page.socialTitle is defined %}
+                                {{ form_row(form.page.socialTitle) }}
+                            {% endif %}
+                            {% if form.page.socialDescription is defined %}
+                                {{ form_row(form.page.socialDescription) }}
+                            {% endif %}
+                        {% endif %}
+
+                        {% if form.page.robotsNoIndex is defined or form.page.robotsNoFollow is defined or form.page.excludedFromSitemap is defined %}
+                            <legend>Robots</legend>
+                            <div class="checkbox-group">
+                                {% if form.page.robotsNoIndex is defined %}
+                                    {{ form_row(form.page.robotsNoIndex) }}
+                                {% endif %}
+                                {% if form.page.robotsNoFollow is defined %}
+                                    {{ form_row(form.page.robotsNoFollow) }}
+                                {% endif %}
+                                {% if form.page.excludedFromSitemap is defined %}
+                                    {{ form_row(form.page.excludedFromSitemap) }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</fieldset>
+
+{{ form_widget(form.softPost, {'attr': {'class': 'soft_post', 'formnovalidate': 'formnovalidate'}}) }}
+
+{{ form_rest(form) }}

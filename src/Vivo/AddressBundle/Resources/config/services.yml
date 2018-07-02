@@ -1,0 +1,53 @@
+services:
+    # Repositories
+    vivo_address.repository.suburb:
+        class: Vivo\AddressBundle\Repository\SuburbRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - Vivo\AddressBundle\Model\Suburb
+
+    # Form Types
+    vivo_address.form.address:
+        class: Vivo\AddressBundle\Form\Type\AddressType
+        tags:
+            - { name: form.type }
+
+    vivo_address.form.map:
+        class: Vivo\AddressBundle\Form\Type\MapType
+        tags:
+            - { name: form.type }
+
+    vivo_address.form.point:
+        class: Vivo\AddressBundle\Form\Type\PointType
+        tags:
+            - { name: form.type }
+
+    vivo_address.form.locality:
+        class: Vivo\AddressBundle\Form\Type\LocalityType
+        arguments: ["@vivo_address.repository.suburb"]
+        tags:
+            - { name: form.type }
+
+    vivo_address.form.choice.suburb:
+        class: Vivo\AddressBundle\Form\Choice\SuburbChoice
+        arguments: ["@vivo_address.repository.suburb"]
+        tags:
+            - { name: form.type }
+
+    # Validator
+    vivo_address.validator.au_postcode:
+        class: Vivo\AddressBundle\Validator\Constraints\AuPostcodeValidator
+        arguments: ["@vivo_address.repository.suburb"]
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_address.validator.au_postcode }
+
+    vivo_address.validator.locality:
+        class: Vivo\AddressBundle\Validator\Constraints\LocalityValidator
+        arguments: ["@vivo_address.repository.suburb"]
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_address.validator.locality }
+
+    vivo_address.validator.point:
+        class: Vivo\AddressBundle\Validator\Constraints\PointValidator
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_address.validator.point }

@@ -1,0 +1,14 @@
+{% spaceless %}
+    <?xml version="1.0" encoding="UTF-8"?>
+    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        {% for name, sitemap in sitemaps %}
+            {% if sitemap.pagination|length > 0 %}
+                {% for page in sitemap.pagination.paginationData.pagesInRange %}
+                    <sitemap>
+                        <loc>{{ url('vivo_site.site.sitemap', {'_format': 'xml', 'name': name, 'page': page}) }}</loc>
+                    </sitemap>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </sitemapindex>
+{% endspaceless %}

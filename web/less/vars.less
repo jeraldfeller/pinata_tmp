@@ -1,0 +1,203 @@
+@charset "UTF-8";
+
+/***********
+    Basic Colours
+************/
+
+@white: #FFFFFF;
+@black: #000000;
+@grey3: #333333;
+@grey6: #666666;
+@grey9: #999999;
+@greyD: #DDDDDD;
+@greyC: #CCCCCC;
+
+/**********/
+
+@img_dir: '../img/';
+@plugin_dir: '../plugins/';
+@loader: '../img/bx_loader.gif';
+
+/**************
+    Primary Colours
+*********************/
+
+@main_colour: #77C149;
+@secondary_colour: #53493B;
+@tertiary_colour: #eeeeee;
+
+@main_colour_alt: #789066;
+@secondary_colour_alt: #473d30;
+@tertiary_colour_alt: #ede9e6;
+
+@main_colour_alt_2: #71A74D;
+
+
+@brand_colour_a: @main_colour_alt;
+@brand_colour_b: @secondary_colour_alt;
+
+@brand_colour_c: #B7202B;
+@brand_colour_d: #ecd053;
+@brand_colour_e: #e76c2d;
+@brand_colour_f: #782b90;
+
+@brand_colours: 'strawberry', 'pineapple', 'mango', 'berryworldstrawberry', 'berryworldraspberry', 'berryworldblackberry','blackberry','raspberry';
+
+@default_brand: @brand_colour_a;
+@alt_brand: @brand_colour_b;
+
+@strawberry: @brand_colour_c;
+@pineapple: @brand_colour_d;
+@mango: @brand_colour_e;
+@berryworldstrawberry: @brand_colour_f;
+@berryworldraspberry: @brand_colour_f;
+@berryworldblackberry: @brand_colour_f;
+@blackberry: @brand_colour_f;
+@raspberry: @brand_colour_f;
+
+@strawberry_menu: #9e4444;
+@pineapple_menu: @pineapple;
+@mango_menu: @mango;
+@berryworldstrawberry_menu: @berryworldstrawberry;
+@berryworldraspberry_menu: @berryworldraspberry;
+@berryworldblackberry_menu: @berryworldblackberry;
+@blackberry_menu: @blackberry;
+@raspberry_menu: @raspberry;
+
+/********************
+    Default Text Colours
+********************/
+
+@default_text_colour: #5F5343;
+@defaultH1: @white;
+@defaultH2: @secondary_colour;
+@defaultH3: #84796a;
+@defaultH4: @default_text_colour;
+@defaultH5: @default_text_colour;
+@defaultH6: @default_text_colour;
+@defaultP: @default_text_colour;
+
+@intro_colour: @default_text_colour;
+
+@default_a_colour: @main_colour_alt_2;
+@default_a_hover_colour: lighten(@default_a_colour, 10%);
+@default_a_active_colour: darken(@default_a_colour, 10%);
+
+@primary_btn_colour: @white;
+@primary_btn_bg: @main_colour_alt_2;
+@primary_btn_colour_hover: @primary_btn_colour;
+@primary_btn_bg_hover: lighten(@primary_btn_bg, 10%);
+@primary_btn_colour_active: @primary_btn_colour;
+@primary_btn_bg_active: darken(@primary_btn_bg, 10%);
+@primary_btn_colour_disabled: @greyC;
+@primary_btn_bg_disabled: lighten(@primary_btn_bg, 30%);
+
+@primary_alt_btn_colour: @white;
+@primary_alt_btn_bg: @main_colour_alt;
+@primary_alt_btn_colour_hover: @primary_alt_btn_colour;
+@primary_alt_btn_bg_hover: lighten(@primary_alt_btn_bg, 10%);
+@primary_alt_btn_colour_active: @primary_alt_btn_colour;
+@primary_alt_btn_bg_active: darken(@primary_alt_btn_bg, 10%);
+@primary_alt_btn_colour_disabled: @greyC;
+@primary_alt_btn_bg_disabled: lighten(@primary_alt_btn_bg, 30%);
+
+@secondary_btn_colour: @white;
+@secondary_btn_bg: @secondary_colour;
+@secondary_btn_colour_hover: @secondary_btn_colour;
+@secondary_btn_bg_hover: lighten(@secondary_btn_bg, 10%);
+@secondary_btn_colour_active: @secondary_btn_colour;
+@secondary_btn_bg_active: darken(@secondary_btn_bg, 10%);
+@secondary_btn_colour_disabled: @greyC;
+@secondary_btn_bg_disabled: lighten(@secondary_btn_bg, 30%);
+
+@tertiary_btn_colour: @tertiary_colour_alt;
+@tertiary_btn_bg: @white;
+@tertiary_btn_colour_hover: @tertiary_btn_colour;
+@tertiary_btn_bg_hover: #F2F2F2;
+@tertiary_btn_colour_active: @tertiary_btn_colour;
+@tertiary_btn_bg_active: darken(@tertiary_btn_bg, 10%);
+@tertiary_btn_colour_disabled: @greyC;
+@tertiary_btn_bg_disabled: lighten(@tertiary_btn_bg, 30%);
+
+
+
+/******************
+    Nav Colours
+*******************/
+
+@nav_item_colour: @secondary_colour;
+@nav_item_colour_hover: lighten(@nav_item_colour,10%);
+@nav_item_colour_active: #9A8F80;
+
+/*******************
+    Form Styles
+********************/
+
+@form_label_colour: @default_text_colour;
+@form_input_bg_colour: @white;
+@form_input_border: @greyC;
+@form_input_border_focus: #00c0f2;
+@form_input_border_error: #F00;
+
+@form_input_placeholder_colour: #D6D4CD;
+@form_input_text_colour: #2D2D2D;
+
+/*********************
+    Borders/Shadows/Wrappers
+***********************/
+
+@default_border_colour: #E3E3E3;
+@default_shadow_colour: #DDD;
+
+/*********************
+    Breadcrumbs
+***********************/
+
+@breadcrumb_a_colour: #000000;
+@breadcrumb_a_colour_hover: @main_colour;
+@breadcrumb_span_colour: @breadcrumb_a_colour;
+
+/**********************
+    Alerts
+***************/
+
+@alerts: 'success','info', 'warning', 'error';
+
+@alert_success_bg: #d6e9c6;
+@alert_success_border: #dff0d8;
+@alert_success_colour: #3c763d;
+
+@alert_info_bg: #d9edf7;
+@alert_info_border: #bce8f1;
+@alert_info_colour: #31708f;
+
+@alert_warning_bg: #fcf8e3;
+@alert_warning_border: #faebcc;
+@alert_warning_colour: #8a6d3b;
+
+@alert_error_bg: #f2dede;
+@alert_error_border: #ebccd1;
+@alert_error_colour: #a94442;
+
+
+
+/*********************
+    Social Colours
+**********************/
+@twitter: #469dca;
+@facebook: #3c5a96;
+@linkedin: #3c5a96;
+@pinterest: #D02D29;
+
+
+/***********************
+    Widths and Heights
+*************************/
+
+@header_height: 150;
+
+@sidebar_width: 300px;
+
+
+
+

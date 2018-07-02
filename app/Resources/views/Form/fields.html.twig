@@ -1,0 +1,48 @@
+{% extends '@MopaBootstrapBundle/Resources/views/Form/fields.html.twig' %}
+
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        {% if type != 'hidden' and widget_addon.type|default(null) is not null %}
+            <div class="input-{{ widget_addon.type }}">
+            {% if widget_addon.type == 'prepend' %}
+                {{ block('widget_addon') }}
+            {% endif %}
+        {% endif %}
+        {% if not widget_remove_btn|default(null) %}
+            {% set attr = attr|merge({'class': 'text ' ~ attr.class|default('') ~ ' not-removable'}) %}
+        {% endif %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% if type != 'hidden' and  widget_addon.type|default(null) is not null %}
+            {% if widget_addon.type == 'append' %}
+                {{ block('widget_addon') }}
+            {% endif %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block choice_widget_collapsed %}
+    {% spaceless %}
+        {% if widget_addon.type == 'prepend' %}
+            {{ block('widget_addon') }}
+        {% endif %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+                <option value=""{% if required and value is empty %} selected="selected" disabled{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+        {% if widget_addon.type == 'append' %}
+            {{ block('widget_addon') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock choice_widget_collapsed %}

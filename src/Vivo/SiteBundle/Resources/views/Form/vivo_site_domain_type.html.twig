@@ -1,0 +1,20 @@
+{% block vivo_site_domain_type_widget %}
+    <tr class="collection-row">
+        <td class="center">
+            {{ form_row(form.primary, {'label': false, attr: { class: 'vivo_site_site_domain_primary' }}) }}
+        </td>
+        <td>
+            {{ form_row(form.host, {'label': false}) }}
+        </td>
+        <td class="center">
+            {{ form_row(form.wwwSubdomain, {'label': false}) }}
+        </td>
+        <td class="center">
+            {{ form_row(form.secure, {'label': false}) }}
+        </td>
+        <td class="center">
+            {{ form_row(form.remove, {'label': false, 'attr': {'class': 'collection-remove'}}) }}
+            {{ form_rest(form) }}
+        </td>
+    </tr>
+{% endblock vivo_site_domain_type_widget %}

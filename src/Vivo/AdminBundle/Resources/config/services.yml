@@ -1,0 +1,167 @@
+parameters:
+#    vivo_admin.example.class: Vivo\AdminBundle\Example
+
+services:
+    # Repositories
+    vivo_admin.repository.group:
+        class: Vivo\AdminBundle\Repository\GroupRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_admin.model.group%"]
+
+    vivo_admin.repository.user:
+        class: Vivo\AdminBundle\Repository\UserRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_admin.model.user%"]
+
+    # Security
+    vivo_admin.security.user_provider:
+        class: Vivo\AdminBundle\Security\UserProvider
+        arguments: ["@vivo_admin.repository.user"]
+
+    vivo_admin.security.user_authenticator:
+        class: Vivo\AdminBundle\Security\UserAuthenticator
+        arguments:
+          - "%vivo_admin.firewall_name%"
+          - "@security.token_storage"
+          - "@event_dispatcher"
+
+    vivo_admin.security.expired_password:
+        class: Vivo\AdminBundle\EventListener\ExpiredPasswordListener
+        arguments:
+            - "@security.token_storage"
+            - "@router"
+            - "@security.csrf.token_manager"
+            - "%vivo_admin.password_expiry.enabled%"
+            - "%vivo_admin.password_expiry.route%"
+            - "%vivo_admin.password_expiry.target_query_parameter%"
+            - "%vivo_admin.password_expiry.csrf_query_parameter%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    # Util
+    vivo_admin.util.mailer:
+        class: Vivo\AdminBundle\Util\Mailer
+        arguments:
+            - "@vivo_site.util.mailer"
+            - "@vivo_site.factory.site"
+
+    # Form Types
+    vivo_admin.form.group:
+        class: Vivo\AdminBundle\Form\Type\GroupType
+        arguments: ["%vivo_admin.model.group%"]
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.user_create:
+        class: Vivo\AdminBundle\Form\Type\UserCreateType
+        arguments: ["%vivo_admin.model.user%"]
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.user_update:
+        class: Vivo\AdminBundle\Form\Type\UserUpdateType
+        arguments: ["%vivo_admin.model.user%"]
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.user_search:
+        class: Vivo\AdminBundle\Form\Type\UserSearchType
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.group_search:
+        class: Vivo\AdminBundle\Form\Type\GroupSearchType
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.profile:
+        class: Vivo\AdminBundle\Form\Type\ProfileType
+        arguments: ["%vivo_admin.model.user%"]
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.password_reset:
+        class: Vivo\AdminBundle\Form\Type\PasswordResetType
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.password_expired:
+        class: Vivo\AdminBundle\Form\Type\PasswordExpiredType
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.group_choice:
+        class: Vivo\AdminBundle\Form\Choice\GroupChoice
+        arguments:
+            - "%vivo_admin.model.group%"
+            - "@security.token_storage"
+        tags:
+            - { name: form.type }
+
+    vivo_admin.form.roles_choice:
+        class: Vivo\AdminBundle\Form\Choice\RolesChoice
+        arguments:
+            - "@security.token_storage"
+            - "@security.authorization_checker"
+            - "%vivo_admin.roles%"
+        tags:
+            - { name: form.type }
+
+    vivo_admin.search.model.user:
+        class: Vivo\AdminBundle\Form\Model\UserSearch
+
+    vivo_admin.search.model.group:
+        class: Vivo\AdminBundle\Form\Model\GroupSearch
+
+    # Listeners
+    vivo_admin.listener.encode_plain_password:
+        class: Vivo\AdminBundle\EventListener\PasswordChangedListener
+        arguments: ["@security.encoder_factory"]
+        tags:
+            - { name: kernel.event_listener, event: vivo_admin.password_changed, method: encodePlainPassword }
+
+    vivo_admin.listener.group_rank:
+        class: Vivo\AdminBundle\EventListener\GroupRankEventListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    vivo_admin.listener.interactive_login:
+        class: Vivo\AdminBundle\EventListener\InteractiveLoginListener
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@request_stack"
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+
+    # Navigation
+    vivo_admin.navbar:
+        class: "%mopa_bootstrap.navbar.generic%"
+        arguments:
+            - { leftmenu: "@vivo_admin.menu.navbar_main_menu", rightmenu: "@vivo_admin.menu.navbar_site_switch_menu" }
+            - {}
+            - { fixedTop: true, isFluid: true, inverse: true }
+        tags:
+            - { name: mopa_bootstrap.navbar, alias: adminTopNav }
+
+    vivo_admin.menu.navbar_menu_builder:
+        class: "%vivo_admin.menu.class%"
+        arguments:
+            - "@knp_menu.factory"
+            - "@request_stack"
+            - "@security.token_storage"
+            - "@security.authorization_checker"
+            - "@vivo_site.factory.site"
+
+    vivo_admin.menu.navbar_main_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@vivo_admin.menu.navbar_menu_builder", createMainMenu]
+        tags:
+            - { name: knp_menu.menu, alias: main }
+
+    vivo_admin.menu.navbar_site_switch_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@vivo_admin.menu.navbar_menu_builder", createSiteSwitchMenu]
+        arguments: ["@vivo_site.repository.site"]
+        tags:
+            - { name: knp_menu.menu, alias: site_switch }

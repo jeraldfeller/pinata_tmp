@@ -1,0 +1,19 @@
+app_core.admin.fruit.index:
+  pattern:  /fruit
+  defaults: { _controller: AppCoreBundle:Admin/Fruit:index }
+
+app_core.admin.fruit.create:
+  pattern:  /fruit/new
+  defaults: { _controller: AppCoreBundle:Admin/Fruit:create }
+
+app_core.admin.fruit.update:
+  pattern:  /fruit/{id}/edit
+  defaults: { _controller: AppCoreBundle:Admin/Fruit:update }
+
+app_core.admin.fruit.delete:
+  pattern:  /fruit/{id}/delete/{token}
+  defaults: { _controller: AppCoreBundle:Admin/Fruit:delete }
+
+app_core.admin.fruit.rank:
+  pattern:  /fruit/rank
+  defaults: { _controller: AppCoreBundle:Admin/Fruit:rank }

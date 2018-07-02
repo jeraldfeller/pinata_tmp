@@ -1,0 +1,16 @@
+Vivo\BlogBundle\Model\CategorySlug:
+    type: mappedSuperclass
+    table: vivo_blog_category_slug
+    manyToOne:
+        category:
+            targetEntity: Vivo\BlogBundle\Model\CategoryInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: slugs
+            fetch: EXTRA_LAZY
+            joinColumns:
+                blog_category_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

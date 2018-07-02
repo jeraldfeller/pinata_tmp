@@ -1,0 +1,11 @@
+vivo_admin.reset.request:
+    path: /forgot-password
+    defaults: { _controller: VivoAdminBundle:Reset:request }
+
+vivo_admin.reset.sent:
+    path: /forgot-password/sent
+    defaults: { _controller: VivoAdminBundle:Reset:sent }
+
+vivo_admin.reset.reset_password:
+    path: /forgot-password/{id}/{token}
+    defaults: { _controller: VivoAdminBundle:Reset:resetPassword }

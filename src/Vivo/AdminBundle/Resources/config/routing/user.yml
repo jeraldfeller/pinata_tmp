@@ -1,0 +1,15 @@
+vivo_admin.user.index:
+    path: /user
+    defaults: { _controller: VivoAdminBundle:User:index }
+
+vivo_admin.user.create:
+    path: /user/new
+    defaults: { _controller: VivoAdminBundle:User:create }
+
+vivo_admin.user.update:
+    path: /user/{id}/edit/{token}
+    defaults: { _controller: VivoAdminBundle:User:update }
+
+vivo_admin.user.delete:
+    path: /user/{id}/delete/{token}
+    defaults: { _controller: VivoAdminBundle:User:delete }

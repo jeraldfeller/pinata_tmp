@@ -1,0 +1,270 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en_AU
+
+framework:
+    esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines:        ['twig']
+        assets_version: ~
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: [182.160.163.188]
+    session:
+        save_path:       "%kernel.root_dir%/var/sessions"
+        cookie_httponly: true
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    #bundles:        [ ]
+    filters:
+        less:
+            apply_to: ".less$"
+            node: "%node_js_path%"
+            node_paths: "%node_module_paths%"
+        cssrewrite:
+            apply_to: ".css$"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:      pdo_mysql
+        unix_socket: "%database_unix_socket%"
+        host:        "%database_host%"
+        port:        "%database_port%"
+        dbname:      "%database_name%"
+        user:        "%database_user%"
+        password:    "%database_password%"
+        charset:     UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        # path:     "%database_path%"
+    orm:
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:
+        type: file
+        path: "%kernel.root_dir%/var/spool"
+
+liip_imagine:
+    filter_sets:
+        40x40_crop:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [40, 40], mode: outbound }
+        100x100p:
+            quality: 100
+            format: png
+            filters:
+                strip: ~
+                thumbnail: { size: [100, 100], mode: inset }
+                padding: { size: [100, 100], background: '#ffffff', alpha: 100 }
+        130x130o:
+            quality: 100
+            format: png
+            filters:
+                strip: ~
+                thumbnail: { size: [130, 130], mode: outbound }
+        280x230p:
+            quality: 100
+            format: png
+            filters:
+                strip: ~
+                upscale: { min: [280, 230] }
+                thumbnail: { size: [280, 230], mode: outbound }
+        360x210p:
+            quality: 100
+            filters:
+                strip: ~
+                upscale: { min: [360, 210] }
+                thumbnail: { size: [360, 210], mode: outbound }
+        950x340o:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [950, 340], mode: outbound }
+        400x400i:
+            quality: 100
+            filters:
+                strip: ~
+                upscale: { min: [400, 400] }
+                thumbnail: { size: [400, 400], mode: outbound }
+        1300x300o:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1300, 300], mode: outbound }
+        615x338p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [615, 390], mode: outbound }
+        600x260p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [600, 260], mode: outbound }
+        340x180p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [340, 180], mode: outbound }
+        920x505p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [920, 505], mode: outbound }
+        1220x500p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1220, 500], mode: outbound }
+        750x350o:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [750, 350], mode: outbound }
+        375x375o:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [375, 375], mode: outbound }
+        1490x530o:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1136, 530], mode: outbound }
+        1220x670p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1220, 670], mode: outbound }
+        1920x725p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1920, 725], mode: outbound }
+        1920x450p:
+            quality: 100
+            filters:
+                strip: ~
+                thumbnail: { size: [1920, 450], mode: outbound }
+
+vivo_site:
+#    devices:
+#        tablet: true
+#        mobile: true
+    site_password: { passwords: "%site_passwords%" }
+    model:
+        site: App\SiteBundle\Entity\Site
+
+vivo_admin:
+    menu_class: App\CoreBundle\Menu\MainMenuBuilder
+
+vivo_page:
+    model:
+        page:  App\CoreBundle\Entity\Page
+        asset: App\CoreBundle\Entity\PageAsset
+    page_type:
+        homepage:
+            blocks:
+                content:
+                    main: 'Main Content'
+                    story: 'Pinata Story Content'
+                asset_group:
+                    main:
+                        name: 'Top Banner Image'
+                        options:
+                            note: 'Recommend six (6) images at size 1920x725px'
+                            options:
+                                linkable: true
+                    banners:
+                        name: 'Slider Images (Seasonal Theme)'
+                        options:
+                            note: 'Recommend six (6) images at size 1136x530px'
+                            options:
+                                include_background_colour_picker: true
+                                include_subtitle: true
+                                linkable:    true
+        standard:
+            blocks:
+                content:
+                    main: 'Main Content'
+                asset_group:
+                    main:
+                        name:   'Page Hero Image - Under Introduction'
+                        options:
+                            note: 'Page Hero image - Title will be displayed as a caption, remove for no caption. Size: 910px x 500px'
+                    banner:
+                        name:   'Banner Images - Above Introduction'
+                        options:
+                            note: 'Only the first will be used. Display full width so the higher resolution image you can upload the better. '
+
+vivo_blog:
+    model:
+        post: App\BlogBundle\Entity\Post
+    repository:
+        post: App\BlogBundle\Repository\PostRepository
+    page_type:
+        blog:
+            blocks:
+                content:
+                    main: 'Introduction'
+                asset_group:
+                    main:
+                        name:   'Banner Image'
+                        options:
+                            note: 'Larger images are recommended'
+
+trsteel_ckeditor:
+    extra_allowed_content: div(equal-cols);div(col);div(inner-content);div[contenteditable];div[unselectable];iframe[*]{*}
+    transformers:
+        - app_core_two_col_transformer
+        - html_purifier
+    height: 500
+    width: 1200
+    toolbar: ['document', 'clipboard', 'editing', 'basicstyles', '/', 'paragraph', 'links', 'insert', 'styles', 'tools']
+    toolbar_groups:
+        document: ['Source']
+        styles: ['Styles', 'Format', 'Templates','Youtube']
+    format_tags: [p, h2, h3, h4]
+    templates_files: ['/javascript/ckeditor/templates.js']
+    html_purifier:
+        config:
+            Attr.AllowedFrameTargets: ['_blank', '_top', '_self', '_parent']
+            HTML.SafeIframe: true
+            URI.SafeIframeRegexp: '%%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/|(www\.)?facebook\.com/)%%'
+    external_plugins:
+        youtube:
+            path: javascript/ckeditor/plugins/youtube

@@ -1,0 +1,80 @@
+imports:
+    - { resource: config.yml }
+
+#framework:
+#    validation:
+#        cache: apc
+
+# Assetic Configuration
+assetic:
+    filters:
+        uglifyjs2:
+            bin: "%uglifyjs_bin%"
+            apply_to: ".js$"
+            compress: true
+        uglifycss:
+            bin: "%uglifycss_bin%"
+            apply_to: ".css$"
+            ugly_comments: true"
+
+doctrine:
+    orm:
+        metadata_cache_driver: redis
+        result_cache_driver: redis
+        query_cache_driver: redis
+
+monolog:
+    handlers:
+        main:
+            type:                fingers_crossed
+            handler:             grouped
+            activation_strategy: vivo_util.monolog.activation_strategy
+        grouped:
+            type:    group
+            members: [streamed, buffered]
+        streamed:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        buffered:
+            type:    buffer
+            handler: swift
+        swift:
+            type:       swift_mailer
+            from_email: "%log_errors_from%"
+            to_email:   "%log_errors_to%"
+            subject:    An Error Occurred!
+            level:      info
+
+# Swiftmailer Configuration
+swiftmailer:
+    mailers:
+        default:
+            transport: "%mailer_transport%"
+            host:      "%mailer_host%"
+            username:  "%mailer_user%"
+            password:  "%mailer_password%"
+            spool:
+                type: file
+                path: "%kernel.root_dir%/var/spool"
+        #site_mailer_1:
+        #    transport: "%mailer_transport%"
+        #    host:      "%mailer_host%"
+        #    username:  "%mailer_user%"
+        #    password:  "%mailer_password%"
+        #    spool:
+        #        type: file
+        #        path: "%kernel.root_dir%/var/spool"
+        #site_mailer_2:
+        #    transport: "%mailer_transport%"
+        #    host:      "%mailer_host%"
+        #    username:  "%mailer_user%"
+        #    password:  "%mailer_password%"
+        #    spool:
+        #        type: file
+        #        path: "%kernel.root_dir%/var/spool"
+
+#vivo_site:
+#    mailers:
+#        site_mailer_1:  { name: "Lighting Illusions", mailer_id: swiftmailer.mailer.site_mailer_1 }
+#        site_mailer_2: { name: "Ceiling Fans Direct", mailer_id: swiftmailer.mailer.site_mailer_2 }

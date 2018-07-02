@@ -1,0 +1,14 @@
+<div class="title-bar">
+    {% if categories|length > 0 %}
+        <div class="title-select">
+            <select class="styled">
+                <option data-link="{{ path('vivo_blog.post.index') }}"{{ (selected_category == null) ? ' selected="selected"' }}>Show All News</option>
+                {% for category in categories %}
+                    <option{% if category == selected_category|default(null) %} selected="selected"{% endif %} data-link="{{ path('vivo_blog.category.index', { 'slug' : category.primarySlug.slug }) }}">{{ category.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% else %}
+        <h2>All News</h2>
+    {% endif %}
+</div>

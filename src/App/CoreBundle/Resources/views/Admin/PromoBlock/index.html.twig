@@ -1,0 +1,68 @@
+{% extends '@AppCore/Admin/PromoBlock/layout.html.twig' %}
+
+{% block title 'Promo blocks' %}
+
+    {% block breadcrumb_crumbs %}
+        {{ parent() }}
+        <li class="active">List Promo blocks</li>
+    {% endblock breadcrumb_crumbs %}
+
+    {% block content %}
+        <div class="btn-toolbar pull-left">
+            <div class="btn-group">
+                <a href="{{ path('app_core.admin.promo_block.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create Banner</a>
+            </div>
+        </div>
+
+        <div class="pull-right">
+            {{ form(searchForm, {'action': path(app.request.get('_route'), app.request.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+        </div>
+
+        <div class="clearfix"></div>
+        <div id="{{ searchForm.vars.id ~ '_results' }}">
+            {% block ajax_response %}
+                {% if pagination|length < 1 %}
+                    <div class="alert alert-notice">
+                        There is currently no banner available.
+                    </div>
+                {% else %}
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>{{ knp_pagination_sortable(pagination, 'Id', 'banner.id')|raw }}</th>
+                            <th>{{ knp_pagination_sortable(pagination, 'Name', 'banner.name')|raw }}</th>
+                            <th>{{ knp_pagination_sortable(pagination, 'Created', 'banner.createdAt')|raw }}</th>
+                            <th>{{ knp_pagination_sortable(pagination, 'Updated', 'banner.updatedAt')|raw }}</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for banner in pagination %}
+                            <tr>
+                                <td>{{ banner.id }}</td>
+                                <td>{{ banner.name }}</td>
+                                <td>{% if banner.createdAt %}{{ banner.createdAt|date('d-M-Y h:i:s a') }}{% endif %}</td>
+                                <td>{% if banner.updatedAt %}{{ banner.updatedAt|date('d-M-Y h:i:s a') }}{% endif %}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_core.admin.promo_block.update', {'id': banner.id}) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu open-left">
+                                            <li><a href="{{ path('app_core.admin.promo_block.update', {'id': banner.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                            <li><a class="confirm" href="{{ path('app_core.admin.promo_block.delete', {'id': banner.id, 'token': csrf_token(banner.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="navigation">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                {% endif %}
+            {% endblock ajax_response %}
+        </div>
+    {% endblock content %}

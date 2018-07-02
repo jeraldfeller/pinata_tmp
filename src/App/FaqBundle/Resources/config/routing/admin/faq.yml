@@ -1,0 +1,19 @@
+app_faq.admin.faq.index:
+    pattern:  /faq
+    defaults: { _controller: AppFaqBundle:Admin/Faq:index }
+
+app_faq.admin.faq.rank:
+    pattern:  /faq/sort
+    defaults: { _controller: AppFaqBundle:Admin/Faq:rank }
+
+app_faq.admin.faq.create:
+    pattern:  /faq/new
+    defaults: { _controller: AppFaqBundle:Admin/Faq:create }
+
+app_faq.admin.faq.update:
+    pattern:  /faq/{id}/edit
+    defaults: { _controller: AppFaqBundle:Admin/Faq:update }
+
+app_faq.admin.faq.delete:
+    pattern:  /faq/{id}/delete/{token}
+    defaults: { _controller: AppFaqBundle:Admin/Faq:delete }

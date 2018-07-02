@@ -1,0 +1,33 @@
+{% if item.children|length > 0 %}
+    {% spaceless %}
+        {{ _self.print_children(item.children, max_level) }}
+    {% endspaceless %}
+{% endif %}
+
+{% macro print_children(children, max_level, level = 1, parent_name = null) %}
+    {% if children|length > 0 %}
+        <ul class="level-{{ level }}">
+            {% for item in children %}
+                {% set attributes = item.attributes %}
+                {% if level < max_level and item.children|length > 0 %}
+                    {% set class = (attributes.class|default('') ~ ' has-children')|trim %}
+                    {% if class is not empty %}
+                        {% set attributes = attributes|merge({'class': class}) %}
+                    {% endif %}
+                {% endif %}
+                <li{% for attrname, attrvalue in attributes %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                    {% if item.itemTemplate is not null %}
+                        {% include item.itemTemplate with {'item': item, 'level': level, 'max_level': max_level} %}
+                    {% elseif item.rawContent is not null %}
+                        {{ item.rawContent|raw }}
+                    {% elseif item.name != parent_name %}
+                        <a{% for attrname, attrvalue in item.linkAttributes %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ item.name }}</a>
+                    {% endif %}
+                    {% if level < max_level and children|length > 0 %}
+                        {{ _self.print_children(item.children, max_level, level + 1, item.name) }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}

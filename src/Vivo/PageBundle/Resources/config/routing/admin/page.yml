@@ -1,0 +1,15 @@
+vivo_page.admin.page.index:
+    path: /page/list
+    defaults: { _controller: VivoPageBundle:Admin/Page:index }
+
+vivo_page.admin.page.create:
+    path: /page/new
+    defaults: { _controller: VivoPageBundle:Admin/Page:create }
+
+vivo_page.admin.page.update:
+    path: /page/{id}/edit
+    defaults: { _controller: VivoPageBundle:Admin/Page:update }
+
+vivo_page.admin.page.delete:
+    path: /page/{id}/delete/{token}
+    defaults: { _controller: VivoPageBundle:Admin/Page:delete }

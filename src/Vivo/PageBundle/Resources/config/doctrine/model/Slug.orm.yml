@@ -1,0 +1,16 @@
+Vivo\PageBundle\Model\Slug:
+    type: mappedSuperclass
+    table: vivo_page_slug
+    manyToOne:
+        page:
+            targetEntity: Vivo\PageBundle\Model\PageInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: slugs
+            fetch: EXTRA_LAZY
+            joinColumns:
+                page_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

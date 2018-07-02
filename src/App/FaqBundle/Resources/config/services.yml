@@ -1,0 +1,9 @@
+services:
+    # PageTypes
+    app_faq.page_type.faq:
+        class: App\FaqBundle\PageType\FaqPageType
+        public: false
+        arguments:
+            - %vivo_page.model.content%
+        tags:
+            - { name: vivo_page.page_type, alias: faq }

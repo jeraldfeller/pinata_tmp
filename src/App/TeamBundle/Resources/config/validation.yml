@@ -1,0 +1,6 @@
+App\TeamBundle\Entity\Profile:
+    properties:
+        name:
+            - NotBlank: ~
+        introduction:
+            - NotBlank: ~

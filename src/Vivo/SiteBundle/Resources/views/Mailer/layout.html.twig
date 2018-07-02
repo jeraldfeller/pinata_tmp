@@ -1,0 +1,38 @@
+{% block template_body_text -%}
+    {%- block body_text %}{% endblock body_text -%}
+{%- endblock template_body_text %}
+
+{% block template_body_html %}
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>
+            {%- block template_subject -%}
+                {%- block subject -%}{% endblock subject %} | {{ site.shortName }}
+            {%- endblock template_subject -%}
+        </title>
+        {% block body_html_css %}
+            <style type="text/css">
+                a {
+                    color: #0088cc;
+                    text-decoration: none;
+                }
+            </style>
+        {% endblock body_html_css %}
+    </head>
+    <body style="padding:0; margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #333333; background-color: #ffffff;">
+    <div style="padding: 5px 30px;">
+        {% block body_html_header %}
+            <h1>{{ site.shortName }}</h1>
+        {% endblock body_html_header %}
+
+        {% block body_html %}{% endblock body_html %}
+
+        {% block body_html_footer %}
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        {% endblock body_html_footer %}
+    </div>
+    </body>
+    </html>
+{% endblock template_body_html %}

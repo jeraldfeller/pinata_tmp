@@ -1,0 +1,34 @@
+parameters:
+    database_unix_socket:            /tmp/mysql.sock
+    database_host:                   ~
+    database_port:                   ~
+    database_name:                   pinata_cms
+    database_user:                   root
+    database_password:               ~
+
+    mailer_transport:                sendmail
+    mailer_host:                     127.0.0.1
+    mailer_user:                     ~
+    mailer_password:                 ~
+    mail_delivery_address:           aguawebs@gmail.com
+    mail_delivery_whitelist:
+        - "/@vivogroup.com.au$/"
+
+    log_errors_from:                 aguawebs@gmail.com
+    log_errors_to:                   aguawebs@gmail.com
+
+    secret:                          d40a7d3f67ea41e51faaf9207e7d976dcf34fdf3
+
+    uglifyjs_bin:                    /usr/local/bin/uglifyjs
+    uglifycss_bin:                   /usr/local/bin/uglifycss
+
+    node_js_path:                    /usr/local/bin/node #Vivo Group Server Node.js path
+    #node_js_path:                   C:\Progra~1\nodejs\node.exe #Windows Node.js path (Default Install path)
+
+    node_module_paths:               [/usr/local/lib/node_modules, /usr/lib/node_modules]
+    #node_module_paths:              [C:\\Progra~1\\nodejs\\node_modules]
+
+    site_passwords:                  [pinata2015]
+
+    # This should be the path to the web directory. eg "/client/website-name/web"
+    router.request_context.base_url: ~

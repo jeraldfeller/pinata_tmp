@@ -1,0 +1,19 @@
+{% extends '@AppCore/Admin/PromoBlock/layout.html.twig' %}
+
+{% block title 'Edit Promo block' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('app_core.admin.promo_block.update', {'id': promo.id}) }}">{{ promo.name }}</a> <span class="divider">/</span></li>
+    <li class="active">Edit Promo block</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {% include '@AppCore/Admin/PromoBlock/_form.html.twig' with {'form': form, 'promo': promo} %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Promo block</button>
+        <a href="{{ path('app_core.admin.promo_block.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

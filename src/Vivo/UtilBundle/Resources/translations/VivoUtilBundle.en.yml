@@ -1,0 +1,6 @@
+form:
+    searchList:
+        query: 'Keywords'
+    seoMeta:
+        title:       'Title'
+        description: 'Description'

@@ -1,0 +1,17 @@
+vivo_admin.security.login:
+    path: /security/login
+    defaults: { _controller: VivoAdminBundle:Security:login }
+
+vivo_admin.security.check:
+    path: /security/check
+    defaults: { _controller: VivoAdminBundle:Security:check }
+    methods: [POST]
+
+vivo_admin.security.check_get:
+    path: /security/check
+    defaults: { _controller: VivoAdminBundle:Security:login }
+    methods: [GET]
+
+vivo_admin.security.logout:
+    path: /security/logout
+    defaults: { _controller: VivoAdminBundle:Security:logout }

@@ -1,0 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_blog.admin.post.index') }}">Blog</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}

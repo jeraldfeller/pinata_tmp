@@ -1,0 +1,9 @@
+vivo_asset.asset.download_file:
+    path: /asset/download/{id}/{hash}/{name}
+    defaults: { _controller: VivoAssetBundle:Asset:downloadFile }
+
+vivo_asset.asset.upload:
+    path: /asset/upload.{_format}
+    defaults: { _controller: VivoAssetBundle:Asset:upload }
+    requirements: { _format: 'json' }
+    methods: [POST]

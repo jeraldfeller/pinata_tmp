@@ -1,0 +1,41 @@
+App\CoreBundle\Entity\Farm:
+    properties:
+        name:
+            - NotBlank: ~
+        locationName:
+            - NotBlank: ~
+        fruits:
+            - NotBlank: ~
+
+App\CoreBundle\Entity\Fruit:
+    properties:
+        name:
+            - NotBlank: ~
+        subtitle:
+            - NotBlank: ~
+        intro:
+            - NotBlank: ~
+        pageIntroduction:
+            - NotBlank: ~
+        colorClass:
+            - NotBlank: ~
+        primarySlug:
+            - NotBlank: ~
+        primaryImage:
+            - NotBlank:
+                message: 'Please upload a primary image'
+        contentImage:
+            - NotBlank:
+                message: 'Please upload a content image'
+
+App\CoreBundle\Entity\Contact:
+    properties:
+        name:
+            - NotBlank: { message: "Please enter your name" }
+        email:
+            - NotBlank: { message: "Please enter your email address" }
+            - Email: { message: "Please enter a valid email address" }
+        subject:
+            - NotBlank: { message: "Please choice your reason for contact" }
+        message:
+            - NotBlank: { message: "Please enter your message" }

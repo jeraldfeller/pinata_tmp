@@ -1,0 +1,24 @@
+vivo_page.page.unavailable:
+    path: /unavailable
+    defaults: { _controller: VivoPageBundle:Page:unavailable }
+
+vivo_page.admin.menu:
+    resource: "@VivoPageBundle/Resources/config/routing/admin/menu.yml"
+    prefix: /admin
+    requirements: { _requires_channel: https }
+
+vivo_page.admin.tree:
+    resource: "@VivoPageBundle/Resources/config/routing/admin/tree.yml"
+    prefix: /admin
+    requirements: { _requires_channel: https }
+
+vivo_page.admin.page:
+    resource: "@VivoPageBundle/Resources/config/routing/admin/page.yml"
+    prefix: /admin
+    requirements: { _requires_channel: https }
+
+vivo_page.page.permanent:
+    path: /page/{id}
+    defaults: { _controller: VivoPageBundle:Page:permanent }
+    requirements:
+        id: \d+

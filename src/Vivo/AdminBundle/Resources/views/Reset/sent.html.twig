@@ -1,0 +1,16 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block topnav %}{% endblock topnav %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body_class 'vivo_admin_security' %}
+
+{% block content %}
+    <form action="{{ path('vivo_admin.reset.request') }}" method="post" class="ignore-unsaved-form">
+        <h2>{% block title %}Email sent{% endblock title %}</h2>
+        <p>We've sent password reset instructions to your email address.</p>
+        <p>If you don't receive instructions within a minute or two, check your email's spam and junk filters, or <a href="{{ path('vivo_admin.reset.request') }}">try again</a>.</p>
+    </form>
+{% endblock content %}

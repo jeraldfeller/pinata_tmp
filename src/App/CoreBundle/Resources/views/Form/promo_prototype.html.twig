@@ -1,0 +1,8 @@
+{% form_theme form '@AppCore/Form/form_theme.html.twig' %}
+
+<li class="collection-row">
+    {{ form_widget(form.rank,{ 'attr': {'class': 'rank'} }) }}
+    <span class="handle" title="Drag to Re-order"><i class="icon-th-list"></i></span>
+    {{ form_widget(form.block,{attr:{'class':'chosen','data-placeholder':"Search for a promo block...",'placeholder':"Search for a promo block..."}}) }} <a href="#" class="btn collection-delete"><i class="icon-trash"></i></a>
+    {{ form_rest(form) }}
+</li>

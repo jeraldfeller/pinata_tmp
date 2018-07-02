@@ -1,0 +1,24 @@
+Vivo\BlogBundle\Model\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [primarySlug, site]
+    properties:
+        title:
+            - NotBlank: ~
+        primarySlug:
+            - NotBlank: ~
+
+Vivo\BlogBundle\Model\Post:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [primarySlug, site]
+    properties:
+        publicationDate:
+            - NotBlank: ~
+            - DateTime: ~
+        title:
+            - NotBlank: ~
+        body:
+            - NotBlank: ~
+        author:
+            - NotBlank: { groups: [DefaultWithAuthor] }
+        primarySlug:
+            - NotBlank: ~

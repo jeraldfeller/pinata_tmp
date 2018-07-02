@@ -1,0 +1,67 @@
+Vivo\AssetBundle\Model\Asset:
+    type: entity
+    table: vivo_asset_asset
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        fieldName: discr
+        type: string
+    discriminatorMap:
+        vivo_asset: Vivo\AssetBundle\Model\Asset
+    indexes:
+        rank: { columns: [rank] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        filename:
+            type: string
+            length: 255
+        filename_clean:
+            type: string
+            length: 255
+        title:
+            type: string
+            length: 255
+            nullable: true
+        link:
+            type: string
+            length: 255
+            nullable: true
+        linkTarget:
+            type: string
+            length: 20
+            nullable: true
+        activeAt:
+            type: datetime
+            length: null
+            nullable: true
+        expiresAt:
+            type: datetime
+            length: null
+            nullable: true
+        rank:
+            type: smallint
+            length: null
+            nullable: true
+        alt:
+            type: string
+            length: 255
+            nullable: true
+    manyToOne:
+        file:
+            targetEntity: Vivo\AssetBundle\Model\FileInterface
+            cascade:
+                - persist
+            mappedBy: null
+            inversedBy: assets
+            joinColumns:
+                file_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            orphanRemoval: false
+            fetch: 'EAGER'
+    lifecycleCallbacks: {  }

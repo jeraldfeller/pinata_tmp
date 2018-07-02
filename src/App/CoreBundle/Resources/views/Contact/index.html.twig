@@ -1,0 +1,41 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+{% block sidebar %}
+    <h3>Contact Piñata Farms</h3>
+    <ul class="contact-list">
+        <li><i class="pin-phone"></i> <a href="tel:{{ app.site.phone }}">{{ app.site.phone }}</a></li>
+        <li><i class="pin-fax"></i> {{ app.site.fax }}</li>
+        <li><i class="pin-mail"></i> <a href="mailto:{{ app.site.contactEmail }}">{{ app.site.contactEmail }}</a></li>
+        <li><i class="pin-pin"></i> {{ app.site.address }}</li>
+        <li><i class="pin-auspost"></i> {{ app.site.postOfficeBox }}</li>
+    </ul>
+    <h3>Contact Berryworld</h3>
+    <ul class="contact-list">
+        {% if app.site.berryWorldWebsite %}
+            <li>
+                <i class="pin-link"></i> 
+                <a href="http://{{ app.site.berryWorldWebsite }}" target="_blank">
+                    {{ app.site.berryWorldWebsite }}
+                </a>
+            </li>
+        {% endif %}
+        {% if app.site.berryWorldWebsite %}
+            <li>
+                <i class="pin-mail"></i> 
+                <a href="mailto:{{ app.site.berryWorldEmail }}">
+                    {{ app.site.berryWorldEmail }}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock sidebar %}
+
+{% block main_col_content %}
+    {{ parent() }}
+
+    <h2>Enquiry</h2>
+    <div class="contact-form">
+        {% include '@AppCore/Contact/_form.html.twig' with {form: form} %}
+    </div>
+
+{% endblock main_col_content %}

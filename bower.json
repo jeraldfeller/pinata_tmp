@@ -1,0 +1,20 @@
+{
+  "name": "pinata",
+  "authors": [
+    "Thomas Huxley <thuxley@vivogroup.com.au>"
+  ],
+  "description": "Pinata Farms website",
+  "license": "Closed",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11.3"
+  }
+}

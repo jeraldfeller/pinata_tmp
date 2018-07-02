@@ -1,0 +1,12 @@
+services:
+    vivo_slug.form.slug:
+        class: Vivo\SlugBundle\Form\Type\SlugType
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@vivo_site.factory.site"
+        tags:
+            - { name: form.type }
+
+    vivo_slug.util.unique_slug_generator:
+        class: Vivo\SlugBundle\Util\UniqueSlugGenerator
+        arguments: ["@doctrine.orm.default_entity_manager"]

@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+{% set imageTitle = false %}
+
+{% if page.assetGroupByAlias('main') and page.assetGroupByAlias('main').activeAssets|length > 0 %}
+    {% set image = page.assetGroupByAlias('main').activeAssets|first %}
+    {% if image.title is not null %}
+        {% set imageTitle = true %}
+    {% endif %}
+{% endif %}
+
+{% if page.promoGroup is defined and page.promoGroup is not null %}
+    {% set imageTitle = true %}
+{% endif %}
+
+{% block content_body %}
+
+    <div class="block title-bar colour-inherit padded padded-bottom-small">
+        <div class="wrapper">
+            <h1>
+                {% block page_title %}
+                    {{ page.pageTitle }}
+                {% endblock page_title %}
+            </h1>
+
+            <div class="lr-block">
+                <div class="left">
+                    {% if(page.alias != 'current jobs' and page.alias != 'seasonal worker programme') %}
+                    <nav>
+                        <a href="javascript:void(0);" class="mobile-sub-menu-trigger"><i class="pin-menu"></i></a>
+                        {{ render_sub_menu('primary', 2) }}
+                    </nav>
+                    {% endif %}
+                </div>
+                <div class="right">
+                    {% include 'Elements/common/social.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block post_title_block %}
+        {% if page.assetGroupByAlias('banner') is not empty and page.assetGroupByAlias('banner').assets is not empty %}
+            {% for asset in page.assetGroupByAlias('banner').assets %}
+                <div class="hero-image" style="background-image:url('{{ asset.imagePreviewPath|imagine_filter('1220x670p') }}');"></div>
+            {% endfor %}
+        {% endif %}
+    {% endblock post_title_block %}
+
+    {% block main_content_section %}
+    <article class="block padded tear-top tear-bottom">
+        <div class="wrapper">
+            {% block main_intro_content %}
+                {% if page.introduction is defined and page.introduction is not null %}
+                <p class="intro">{{ page.introduction }}</p>
+                {% endif %}
+            {% endblock main_intro_content %}
+
+            {% block main_intro_image %}
+                {% if page.assetGroupByAlias('main') and page.assetGroupByAlias('main').activeAssets|length > 0 %}
+                    {% set image = page.assetGroupByAlias('main').activeAssets|first %}
+
+                    <figure class="image-box {% if imageTitle %}has-caption{% endif %}">
+                        <div class="image">
+                            <img src="{% if image.title is not null %}{{ image.imagePreviewPath|imagine_filter('920x505p') }}{% else %}{{ image.imagePreviewPath|imagine_filter('1220x670p') }}{% endif %}" alt="{{ image.alt }}" />
+                        </div>
+                        {% if imageTitle %}
+                        <figcaption>{{ image.title }}</figcaption>
+                        {% endif %}
+                    </figure>
+                {% endif %}
+            {% endblock main_intro_image %}
+
+
+            <div class="main-content-cols">
+                {# TODO: Sam - I guess if no Image caption or sidebar content then we hide the sidebar? #}
+                <div class="sidebar">
+                    {% block sidebar %}
+                        {# TODO: Thom - these are the promo blocks on page 8 of the concepts pdf... #}
+                        {% if page.promoGroup is defined and page.promoGroup is not null %}
+                            <div class="sidebar-promos">
+                                {% for promo in page.promoGroup.blocks %}
+                                    <div class="promo">
+                                        <a {% if promo.block.newWindow %}target="_blank"{% endif %} href="{{ promo.block.url }}">
+                                            {% include 'Elements/common/tear_top_small.html.twig' %}
+
+                                            {% if promo.block.icon is not null and promo.block.iconPosition == 1%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+                                            <span>{{ promo.block.content|nl2br|raw }}</span>
+                                            {% if promo.block.icon is not null and promo.block.iconPosition == 2%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+
+                                            {% include 'Elements/common/tear_bottom_small.html.twig' %}
+
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endblock sidebar %}
+                    {{ (imageTitle) ? '&nbsp;' }}
+                </div>
+                <div class="main-col{{ (imageTitle) ? ' small-width-active' }}">
+                    {% block main_col_content %}
+                        {{ page.contentByAlias('main').content|default('')|raw }}
+                    {% endblock main_col_content %}
+                </div>
+
+
+                {% if page.alias == 'current jobs' %}
+                    {{ render_esi(controller('AppCoreBundle:CurrentJob:currentJob')) }}
+                {% endif %}
+            </div>
+        </div>
+    </article>
+    {% endblock main_content_section %}
+
+    {% block post_main_content_block %}{% endblock post_main_content_block %}
+
+    {% if page.alias == 'about' %}
+        {{ render_esi(controller('AppCoreBundle:Timeline:timeline')) }}
+    {% endif %}
+
+
+{% endblock content_body %}

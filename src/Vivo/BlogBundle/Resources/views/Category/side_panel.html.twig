@@ -1,0 +1,7 @@
+{% if categories|length > 0 %}
+    <li class="nav-header">Categories</li>
+    <li><a href="{{ path('vivo_blog.post.index') }}">All Categories</a></li>
+    {% for category in categories %}
+        <li{% if category == selected_category|default(null) %} class="active"{% endif %}><a href="{{ path('vivo_blog.category.index', { 'slug' : category.slug }) }}">{{ category.title }}{% if count_posts %} ({{ category.activePosts|length }}){% endif %}</a></li>
+    {% endfor %}
+{% endif %}

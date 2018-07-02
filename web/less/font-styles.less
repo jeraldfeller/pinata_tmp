@@ -1,0 +1,224 @@
+@charset "UTF-8";
+
+/****************
+    Fonts
+*****************/
+
+.MavenPro(@weight:400,@style:normal) {
+    .font-mixin(~"'Maven Pro','Helvetica Neue',Arial,sans-serif", @weight, @style);
+}
+
+.HVDPoster(@weight:400,@style:normal) {
+    .font-mixin(~"'HVD Poster Clean',Arial,sans-serif", @weight, @style);
+    text-transform: uppercase;
+}
+
+.Cocon(@weight:400,@style:normal) {
+    .font-mixin(~"'FFCoconWeb','Helvetica Neue',Arial,sans-serif", @weight, @style);
+}
+
+.defaultFont(@weight:400,@style:normal) {
+    .MavenPro(@weight, @style);
+}
+
+.secondaryFont(@weight:400,@style:normal) {
+    .HVDPoster(@weight, @style);
+}
+
+.tertiaryFont(@weight:400,@style:normal) {
+    .Cocon(@weight, @style);
+}
+
+html, body {
+    .defaultFont();
+    .smooth();
+}
+
+/****************
+    Text Styles
+*****************/
+
+.defaultH1() {
+    margin: 35px 0 40px;
+    font-size: 55px;
+    display: block;
+    color: @defaultH1;
+    .secondaryFont();
+}
+
+.defaultH2() {
+    color: @defaultH2;
+    margin: 70px 0 30px;
+    font-size: 40px;
+    text-transform: uppercase;
+    .secondaryFont();
+    line-height: 100%;
+}
+
+.defaultH3() {
+    color: @defaultH3;
+    font-size: 25px;
+    margin: 30px 0;
+    .secondaryFont();
+}
+
+.defaultH4() {
+    color: @defaultH4;
+}
+
+.defaultH5() {
+    color: @defaultH5;
+}
+
+.defaultH6() {
+    color: @defaultH6;
+}
+
+.defaultP() {
+    color: @defaultP;
+    .defaultFont();
+    font-size: 18px;
+    line-height: 150%;
+    margin: 0 0 25px;
+
+    strong {
+        font-weight: 700;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    &.intro {
+        font-size: 25px;
+        line-height: 160%;
+        color: @intro_colour;
+        //max-width: 1200px;
+    }
+
+}
+
+.defaultA() {
+    color: @default_a_colour;
+    .transition(color, 0.1s);
+    text-decoration: none;
+    &:hover {
+        color: @default_a_hover_colour;
+        text-decoration: none;
+    }
+    &:active {
+        color: @default_a_active_colour;
+    }
+}
+
+.defaultLi() {
+    li {
+        .defaultP();
+        margin: 0;
+    }
+}
+
+.defaultUl {
+    padding-left: 30px;
+    list-style: disc;
+    margin: 15px 0;
+    .defaultLi();
+    li {
+
+    }
+
+}
+
+.defaultOl {
+    list-style: decimal;
+    padding-left: 30px;
+    margin: 15px 0;
+    .defaultLi();
+    li {
+
+    }
+}
+
+.defaultTable() {
+    width: 100%;
+    margin: 0 0 20px;
+}
+
+
+.pin-general-circled {
+    &:before {
+        content: "\e816";
+        font-family: "pinata";
+        font-style: normal;
+        font-weight: normal;
+        speak: none;
+        display: inline-block;
+        text-decoration: inherit;
+        width: 1em;
+        margin-right: .2em;
+        text-align: center;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1em;
+        margin-left: .2em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+
+.defaultTextStyles() {
+    h1 {
+        .defaultH1();
+    }
+    h2 {
+        .defaultH2();
+    }
+    h3 {
+        .defaultH3();
+    }
+    h4 {
+        .defaultH4();
+    }
+    h5 {
+        .defaultH5();
+    }
+    h6 {
+        .defaultH6();
+    }
+    p {
+        .defaultP();
+    }
+    a {
+        .defaultA();
+    }
+    ul {
+        .defaultUl();
+    }
+    ol {
+        .defaultOl();
+    }
+    table {
+        .defaultTable()
+    }
+
+    img {
+        &.full-width-image {
+            width: 100%;
+            clear: both;
+            display: block;
+            margin: 30px 0;
+        }
+        &.inline-image {
+            display: inline-block!important;
+            margin: 20px 0!important;
+            clear: none;
+        }
+    }
+}
+
+/*
+ *  Print Styles are declaring them
+ */
+
+.defaultTextStyles();

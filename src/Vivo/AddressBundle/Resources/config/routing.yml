@@ -1,0 +1,5 @@
+vivo_address.suburb.search:
+    path: /suburb/search.{_format}
+    defaults: { _controller: VivoAddressBundle:Suburb:search, _format: json }
+    requirements:
+        _format: json

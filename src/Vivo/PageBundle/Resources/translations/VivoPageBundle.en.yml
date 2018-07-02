@@ -1,0 +1,40 @@
+admin:
+    form:
+        menu:
+            alias:   'Alias'
+            title:   'Name'
+            primary: 'Primary'
+        page:
+            disabledAt:
+                label: 'Active'
+                help:  'Tick to enable page'
+            type:                'Page type'
+            alias:               'Page alias'
+            pagePitle:           'Page title'
+            slug:                'Page URL'
+            metaTitle:           'Title'
+            metaDescription:     'Description'
+            noIndex:             'Noindex'
+            noFollow:            'Nofollow'
+            socialTitle:         'Share title'
+            socialDescription:   'Share description'
+            excludedFromSitemap: 'Exclude from sitemap'
+            mainContentNote:     '<p class="help-inline alert">1 column full width images upload at: 1220px wide (615px wide if a caption or sidebar is enabled). <br>2 column images upload at: 560x373px.<br>3 Podcast images only: 350x270px.</p>'
+            promotionalImageNote:     '<p></p>'
+    flash:
+        menu:
+            create.success: 'Menu successfully created.'
+            update.success: 'Menu successfully updated.'
+            delete:
+                success:  'Menu successfully deleted.'
+                notEmpty: 'This menu is not empty.'
+        tree:
+            success:          'The menu order was successfully updated.'
+            none:             'There were no changes to the menu order.'
+            missing:          'An item submitted no longer exists.'
+            invalid:          'The data submitted was invalid'
+            delete_menu_node: 'Menu item successfully deleted.'
+        page:
+            create.success: 'Page successfully created.'
+            update.success: 'Page successfully updated.'
+            delete.success: 'Page successfully deleted.'

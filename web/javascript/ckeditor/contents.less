@@ -1,0 +1,47 @@
+//@import "../../less/common-styles.less";
+
+@import "../../less/vars.less";
+@import "../../less/mixins.less";
+@import "../../less/common-styles";
+@import "../../less/font-styles.less";
+
+/*
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+
+body
+{
+  /* Font */
+  .defaultFont();
+  font-size: 14px;
+  /* Text color */
+  color: @default_text_colour;
+  /* Remove the background color to make it transparent */
+  background-color: #fff;
+  margin: 20px;
+}
+
+.defaultTextStyles();
+
+/*
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+
+//.defaultTextStyles();
+
+.equal-cols {
+    overflow: hidden;
+    width: 100%;
+    margin: 0 0 1em 0;
+    padding: 0 0;
+
+    .col {
+        width: 45%;
+        float: left;
+        padding-right: 2%;
+
+        box-sizing: border-box;
+    }
+}

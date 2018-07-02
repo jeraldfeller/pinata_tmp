@@ -1,0 +1,101 @@
+<div class="contact-form" id="job-contact-form">
+    <form id="current-job-form">
+        <div id="app_core_job_fname_control_group" class=" control-group">
+            <label for="app_core_job_fname" class=" control-label required">
+                Firstname
+            </label>
+            <div class=" controls">
+                <input type="text" id="app_core_job_fname" name="app_core_job[fname]" required="required" class="text  not-removable" />
+            </div>
+        </div>
+        <div id="app_core_job_sname_control_group" class=" control-group">
+            <label for="app_core_job_sname" class=" control-label required">
+                Surname
+            </label>
+            <div class=" controls">
+                <input type="text" id="app_core_job_sname" name="app_core_job[sname]" required="required" class="text  not-removable">
+            </div>
+        </div>
+        <div id="app_core_job_contact_phone_number_control_group" class=" control-group">
+            <label for="app_core_job_contact_phone_number" class=" control-label required">
+                Contact Phone Number
+            </label>
+            <div class=" controls">
+                <input type="text" id="app_core_job_contact_phone_number" name="app_core_job[contact_phone_number]" required="required" class="text  not-removable">
+            </div>
+        </div>
+        <div id="app_core_job_email_control_group" class=" control-group">
+            <label for="app_core_job_email" class=" control-label required">
+                Contact Email
+            </label>
+            <div class=" controls">
+                <input type="text" id="app_core_job_email" name="app_core_job[email]" required="required" class="text  not-removable">
+            </div>
+        </div>
+        <div id="app_core_job_available_from_control_group" class=" control-group">
+            <label for="app_core_job_available_from" class=" control-label required">
+                Available From
+            </label>
+            <div class=" controls">
+                <input min="2018-06-30" type="date" id="app_core_job_available_from" name="app_core_job[available_from]" required="required" class="text  not-removable">
+            </div>
+        </div>
+        <div id="app_core_job_available_to_control_group" class=" control-group">
+            <label for="app_core_job_available_to" class=" control-label required">
+                Available To
+            </label>
+            <div class=" controls">
+                <input type="date" id="app_core_job_available_to" name="app_core_job[available_to]" required="required" class="text  not-removable">
+            </div>
+        </div>
+        <div id="" class=" control-group">
+            <div class="checkbox">
+                <label class="checkbox-inline"><input type="checkbox" id="app_core_job_wamuran" name="app_core_job[wamuran]" value="1"> Wamuran</label>
+                <label class="checkbox-inline"><input type="checkbox" id="app_core_job_mareeba" name="app_core_job[mareeba]"  value="1"> Mareeba</label>
+                <label class="checkbox-inline"><input type="checkbox" id="app_core_job_katherine" name="app_core_job[katherine]"  value="1"> Katherine</label>
+                <label class="checkbox-inline"><input type="checkbox" id="app_core_job_darwin" name="app_core_job[darwin]"  value="1"> Darwin</label>
+                <label class=""><input type="checkbox" id="app_core_job_stanthorpe" name="app_core_job[stanthorpe]"  value="1"> Stanthorpe</label>
+            </div>
+        </div>
+        <div id="" class=" control-group">
+            <div class="checkbox">
+                <label class=""><input type="checkbox" name="app_core_job[farm5]" id="app_core_job_farm5"  value="1"> Farm 5</label>
+            </div>
+        </div>
+        <div id="" class=" control-group">
+            <div class="checkbox">
+                <label class=""><input type="checkbox" name="app_core_job[eligible]" id="app_core_job_eligible"  value="1"> I am eligible to work in Australia</label>
+            </div>
+        </div>
+        <div id="" class=" control-group">
+            <div class="checkbox">
+                <label class=""><input type="checkbox" name="app_core_job[share_contact]" id="app_core_job_share_contact" value="1"> I am happy to share my contact details with third party labour providers</label>
+            </div>
+        </div>
+        <div id="app_core_job_other_control_group" class=" control-group">
+            <label for="app_core_job_other" class=" control-label required">
+                Other
+            </label>
+            <div class=" controls">
+                <textarea id="app_core_job_other" name="app_core_job[other]" id="app_core_job_other" required="required" class="text  not-removable" rows="3" max="50"></textarea>
+
+            </div>
+        </div>
+        <div>
+            <button type="button" id="app_core_job_submit" class="btn form-submit">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+      var isSubmitted = {{ submit }};
+
+      if(isSubmitted == 1){
+        window.history.replaceState({}, document.title, "/" + "current-jobs?s=1");
+      }else if(isSubmitted == 2){
+        console.log(isSubmitted);
+        document.getElementById('job-contact-form').innerHTML = '<p>Your application has been received. We will be in touch if there is a job for you.</p>';
+      }
+</script>

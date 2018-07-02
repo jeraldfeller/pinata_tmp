@@ -1,0 +1,19 @@
+app_core.admin.timeline.index:
+  pattern:  /timeline
+  defaults: { _controller: AppCoreBundle:Admin/Timeline:index }
+
+app_core.admin.timeline.create:
+  pattern:  /timeline/new
+  defaults: { _controller: AppCoreBundle:Admin/Timeline:create }
+
+app_core.admin.timeline.update:
+  pattern:  /timeline/{id}/edit
+  defaults: { _controller: AppCoreBundle:Admin/Timeline:update }
+
+app_core.admin.timeline.delete:
+  pattern:  /timeline/{id}/delete/{token}
+  defaults: { _controller: AppCoreBundle:Admin/Timeline:delete }
+
+app_core.admin.timeline.rank:
+  pattern:  /timeline/rank
+  defaults: { _controller: AppCoreBundle:Admin/Timeline:rank }

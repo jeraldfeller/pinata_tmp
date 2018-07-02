@@ -1,0 +1,25 @@
+admin:
+    flash:
+        farm:
+            create.success: 'Farm successfully created.'
+            update.success: 'Farm successfully updated.'
+            delete.success: 'Farm successfully deleted.'
+        fruit:
+            create.success: 'Fruit successfully created.'
+            update.success: 'Fruit successfully updated.'
+            delete.success: 'Fruit successfully deleted.'
+        promoBlock:
+            create.success: 'Promo Block successfully created.'
+            update.success: 'Promo Block successfully updated.'
+            delete.success: 'Promo Block successfully deleted.'
+            delete.notEmpty: 'This block is being used, first delete the group it is assigned to'
+        promo_block_group:
+            create.success: 'Promo Group successfully created.'
+            update.success: 'Promo Group successfully updated.'
+            delete.success: 'Promo Group successfully deleted.'
+        timeline:
+            create.success: 'Timeline Item successfully created.'
+            update.success: 'Timeline Item successfully updated.'
+            delete.success: 'Timeline Item successfully deleted.'
+            rank.success: 'Timeline Item successfully updated.'
+            rank.none: 'Timeline Item has no change.'

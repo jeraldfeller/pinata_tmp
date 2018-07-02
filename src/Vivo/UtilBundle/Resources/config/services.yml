@@ -1,0 +1,150 @@
+parameters:
+    vivo_util.entity_inheritance_map: []
+
+services:
+    # Form Types
+    vivo_util.form.vivo_util_colour:
+        class: Vivo\UtilBundle\Form\Type\ColourType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.seo_meta:
+        class: Vivo\UtilBundle\Form\Type\SeoMetaType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.checkbox_datetime:
+        class: Vivo\UtilBundle\Form\Type\CheckboxToDateTimeType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.vivo_util_secure_hidden_entity:
+        class: Vivo\UtilBundle\Form\Type\SecureHiddenEntityType
+        arguments: ["@vivo_util.util.entity_signer"]
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.vivo_util_date:
+        class: Vivo\UtilBundle\Form\Type\DatePickerType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.vivo_util_time:
+        class: Vivo\UtilBundle\Form\Type\TimePickerType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.vivo_util_datetime:
+        class: Vivo\UtilBundle\Form\Type\DateTimePickerType
+        tags:
+            - { name: form.type }
+
+    vivo_util.form.search_list:
+        class: Vivo\UtilBundle\Form\Type\SearchListType
+        tags:
+            - { name: form.type }
+
+    # Event Listeners
+    vivo_util.listener.auto_flush_cache:
+        class: Vivo\UtilBundle\EventListener\AutoFlushCacheListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    vivo_util.listener.primary:
+        class: Vivo\UtilBundle\EventListener\PrimaryListener
+        public: false
+        arguments: ["@vivo_util.util.class_analyzer"]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    vivo_util.listener.timestampable:
+        class: Vivo\UtilBundle\EventListener\TimestampableListener
+        public: false
+        arguments: ["@vivo_util.util.class_analyzer"]
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    vivo_util.listener.seo_meta:
+        class: Vivo\UtilBundle\EventListener\SeoMetaListener
+        public: false
+        arguments: ["@vivo_util.util.class_analyzer"]
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    vivo_util.listener.mapped_superclass:
+        class: Vivo\UtilBundle\EventListener\MappedSuperclassListener
+        public: false
+        arguments: ["%vivo_util.mapped_superclasses%"]
+        tags:
+            - { name: doctrine.event_subscriber, priority: 10 }
+
+    vivo_util.listener.inheritance:
+        class: Vivo\UtilBundle\EventListener\InheritanceListener
+        public: false
+        arguments: ["%vivo_util.entity_inheritance_map%"]
+        tags:
+            - { name: doctrine.event_subscriber, priority: 9 }
+
+    vivo_util.listener.normalize_datatime:
+        class: Vivo\UtilBundle\EventListener\NormalizeDateTimeListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, priority: -100 }
+
+    # Utils
+    vivo_util.util.entity_signer:
+        class: Vivo\UtilBundle\Util\EntitySignerUtil
+        arguments: ["@doctrine.orm.default_entity_manager", "%secret%"]
+
+    vivo_util.util.ajax_response:
+        class: Vivo\UtilBundle\Util\AjaxResponse
+        arguments: ["@router", "@templating", "@twig"]
+
+    vivo_util.util.geoip:
+        class: Vivo\UtilBundle\Util\GeoIp
+        arguments: ["%vivo_util.geoip.city_database%", "%vivo_util.geoip.country_database%", "%vivo_util.geoip.cache_dir%"]
+
+    vivo_util.util.class_analyzer:
+        class: Vivo\UtilBundle\Util\ClassAnalyzer
+
+    # Doctrine
+    vivo_util.doctrine.inheritance_manager:
+        class: Vivo\UtilBundle\Doctrine\InheritanceManager
+
+    # Cache Clear
+    vivo_util.doctrine.result_cache_clear:
+        class: Vivo\UtilBundle\Doctrine\ResultCacheClearer
+        public: false
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: kernel.cache_clearer }
+
+    # Monolog
+    vivo_util.monolog.activation_strategy:
+        class: Vivo\UtilBundle\Monolog\ActivationStrategy
+
+    # Twig Extensions
+    vivo_util.twig.entity_signer:
+        class: Vivo\UtilBundle\Twig\EntitySignerExtension
+        public: false
+        arguments: ["@vivo_util.util.entity_signer"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_util.twig.extension.link:
+        class: Vivo\UtilBundle\Twig\LinkExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    vivo_util.twig.extension.time_ago:
+        class: Vivo\UtilBundle\Twig\TimeAgoExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+

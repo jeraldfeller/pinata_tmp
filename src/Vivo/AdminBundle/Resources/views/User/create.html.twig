@@ -1,0 +1,28 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block title 'Create User' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">Create User</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    <p>{{ form_errors(form) }}</p>
+    <fieldset>
+        {{ form_row(form.user.group) }}
+        {{ form_row(form.user.firstName) }}
+        {{ form_row(form.user.lastName) }}
+        {{ form_row(form.user.email) }}
+        {{ form_row(form.newPassword) }}
+        {{ form_rest(form.user) }}
+        {{ form_rest(form) }}
+
+    </fieldset>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save User</button>
+        <a href="{{ path('vivo_admin.user.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

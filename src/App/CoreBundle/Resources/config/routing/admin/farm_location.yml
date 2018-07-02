@@ -1,0 +1,23 @@
+app_core.admin.farm_location.index:
+  pattern:  /farm-locations
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:index }
+
+app_core.admin.farm_location.create:
+  pattern:  /farm-locations/new
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:create }
+
+app_core.admin.farm_location.update:
+  pattern:  /farm-locations/{id}/edit
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:update }
+
+app_core.admin.farm_location.delete:
+  pattern:  /farm-locations/{id}/delete/{token}
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:delete }
+
+app_core.admin.farm_location.rank:
+  pattern:  /farm-locations/rank
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:rank }
+
+app_core.admin.farm_location.update_location:
+  pattern:  /farm-locations/update-location/{id}/{lat}/{lng}
+  defaults: { _controller: AppCoreBundle:Admin/FarmLocation:updateLocation }

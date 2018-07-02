@@ -1,0 +1,21 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block title 'Update User Group' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_admin.group.index') }}">User Groups</a> <span class="divider">/</span></li>
+    <li><a href="{{ path('vivo_admin.group.update', {'id': group.id, 'token': csrf_token(group.csrfIntention('update'))}) }}">{{ group.name|trim }}</a> <span class="divider">/</span></li>
+    <li class="active">Edit Group</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {% include '@VivoAdmin/Group/_form.html.twig' with {'form': form, 'group': group} %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Group</button>
+        <a href="{{ path('vivo_admin.group.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

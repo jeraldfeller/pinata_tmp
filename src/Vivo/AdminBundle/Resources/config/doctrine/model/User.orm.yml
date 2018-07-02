@@ -1,0 +1,57 @@
+Vivo\AdminBundle\Model\User:
+    type: mappedSuperclass
+    table: vivo_admin_user
+    indexes:
+        email: { columns: [email] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        firstName:
+            type: string
+            length: 35
+        lastName:
+            type: string
+            length: 35
+        email:
+            type: string
+            length: 255
+        password:
+            type: string
+            length: 255
+        salt:
+            type: string
+            length: 16
+        lastLoginAt:
+            type: datetime
+            nullable: true
+        lastLoginFrom:
+            type: string
+            length: 100
+            nullable: true
+        passwordExpiredAt:
+            type: datetime
+            nullable: true
+        passwordResetRequestAt:
+            type: datetime
+            nullable: true
+        disabledAt:
+            type: datetime
+            nullable: true
+        deletedAt:
+            type: datetime
+            nullable: true
+    manyToOne:
+        group:
+            targetEntity: Vivo\AdminBundle\Model\GroupInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: users
+            fetch: EXTRA_LAZY
+            joinColumns:
+                group_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

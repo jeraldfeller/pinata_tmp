@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                {% block vivo_blog_sidebar_content %}
+                    <ul class="nav nav-list">
+                        {{ render_esi(controller('VivoBlogBundle:Category:sidePanel', { 'selected_category_id' : category.id|default(null), 'count_posts' : true, 'show_active_only' : true })) }}
+                        {{ render_esi(controller('VivoBlogBundle:Archive:sidePanel', { 'selected_date' : archive_date is defined ? archive_date|date("Y-m-d H:i:s") : null, 'number_of_months' : 12, 'count_posts' : true, 'show_active_only' : true })) }}
+                    </ul>
+                {% endblock vivo_blog_sidebar_content %}
+            </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+            {% block vivo_blog_main_content %}
+                <div class="hero-unit">
+                    <h1>{{ page.pageTitle }}</h1>
+                    {{ page.contentByAlias('main').content|default('')|raw }}
+                </div>
+            {% endblock vivo_blog_main_content %}
+        </div><!--/span-->
+    </div><!--/row-->
+{% endblock content_body %}

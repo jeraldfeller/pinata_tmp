@@ -1,0 +1,41 @@
+Vivo\PageBundle\Form\Model\PageModel:
+    constraints:
+        - Vivo\PageBundle\Validator\Constraints\UniquePageType: { groups: [Default] }
+    properties:
+      pageTypeInstance:
+        - NotBlank: { groups: [Default] }
+
+Vivo\PageBundle\Model\Page:
+    constraints:
+        - Vivo\PageBundle\Validator\Constraints\Route: { groups: [Default] }
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            groups:    [Default]
+            fields:    [site, alias]
+            errorPath: alias
+    properties:
+        pageTypeInstance:
+            - NotBlank: { groups: [Default] }
+        pageTitle:
+            - NotBlank: { groups: [Default] }
+        primarySlug:
+            - NotBlank: { groups: [validate_slug] }
+        menuNodes:
+            - Count: { min: 1, groups: [RequiresMenuNode], minMessage: 'You must add at least 1 menu item.' } 
+
+Vivo\PageBundle\Model\MenuNode:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            groups:    [menu]
+            fields:    [site, alias]
+            errorPath: alias
+    properties:
+        alias:
+            - NotBlank: { groups: [menu] }
+        title:
+            - NotBlank: { groups: [menu] }
+        parent:
+            - NotBlank: { groups: [Default] }
+
+Vivo\PageBundle\Model\Asset:
+    constraints:
+        - Vivo\PageBundle\Validator\Constraints\Asset: { groups: [Default] }

@@ -1,0 +1,118 @@
+admin_homepage:
+    path: /admin
+    defaults: { _controller: VivoAdminBundle:Profile:edit }
+    requirements: { _requires_channel: https }
+
+vivo_admin: { resource: "@VivoAdminBundle/Resources/config/routing.yml" }
+vivo_site:  { resource: "@VivoSiteBundle/Resources/config/routing.yml" }
+vivo_asset: { resource: "@VivoAssetBundle/Resources/config/routing.yml" }
+vivo_page:  { resource: "@VivoPageBundle/Resources/config/routing.yml" }
+vivo_blog:  { resource: "@VivoBlogBundle/Resources/config/routing.yml" }
+vivo_address: { resource: "@VivoAddressBundle/Resources/config/routing.yml" }
+
+app_core: { resource: "@AppCoreBundle/Resources/config/routing.yml" }
+app_team: { resource: "@AppTeamBundle/Resources/config/routing.yml" }
+app_faq: { resource: "@AppFaqBundle/Resources/config/routing.yml" }
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+301.roger:
+    path: /the-team/roger-turner
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: app_team.profile.view, permanent: true, ignoreAttributes: false, slug: roger-turner }
+
+301.gavin:
+    path: /the-team/gavin-scurr
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: app_team.profile.view, permanent: true, ignoreAttributes: false, slug: gavin-scurr }
+
+301.stephen:
+    path: /the-team/stephen-scurr
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: app_team.profile.view, permanent: true, ignoreAttributes: false, slug: stephen-scurr }
+
+301.team:
+    path: /the-team/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.app_team_profile, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.contact:
+    path: /contact
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.contact, permanent: true, ignoreAttributes: true }
+
+301.team2:
+    path: /team
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.app_team_profile, permanent: true, ignoreAttributes: true }
+
+301.products:
+    path: /our-products
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.fruits, permanent: true, ignoreAttributes: true }
+
+301.products2:
+    path: /our-products/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.fruits, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.social:
+    path: /social-news
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.blog, permanent: true, ignoreAttributes: true }
+
+301.terms:
+    path: /terms-and-conditions{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.alias.terms, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.farm:
+    path: /our-farms
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.farms, permanent: true, ignoreAttributes: true }
+
+301.farms:
+    path: /our-farms/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.farms, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.strawberries:
+    path: /strawberries
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: app_core.fruit.view, permanent: true, ignoreAttributes: false, slug: pinata-strawberries }
+
+301.home:
+    path: /home
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage, permanent: true, ignoreAttributes: true }
+
+301.bites:
+    path: /bites
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_blog.category.index, permanent: true, ignoreAttributes: [uri], slug: recipes }
+    requirements: { uri: .+ }
+
+301.bites.page:
+    path: /bites/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_blog.category.index, permanent: true, ignoreAttributes: [uri], slug: recipes }
+    requirements: { uri: .+ }
+
+301.blog:
+    path: /blog/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.blog, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.news:
+    path: /news
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.blog, permanent: true, ignoreAttributes: true }
+
+301.faqs:
+    path: /faqs/{uri}
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: vivo_page.page.page_type.faq, permanent: true, ignoreAttributes: true }
+    requirements: { uri: .+ }
+
+301.intranet:
+    path: /intranet-home
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage, permanent: true, ignoreAttributes: true }
+
+301.documents:
+    path: /documents
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage, permanent: true, ignoreAttributes: true }
+
+301.node:
+    path: /node/78
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage, permanent: true, ignoreAttributes: true }
+
+301.subscribe:
+    path: /subscribe
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage, permanent: true, ignoreAttributes: true }

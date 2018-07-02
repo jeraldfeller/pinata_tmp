@@ -1,0 +1,8 @@
+services:
+    # Page Types
+    app_team.page_type.profile:
+        class: App\TeamBundle\PageType\ProfilePageType
+        public: false
+        arguments: [%vivo_page.model.content%, %vivo_page.model.asset_group%]
+        tags:
+            - { name: vivo_page.page_type, alias: app_team_profile }

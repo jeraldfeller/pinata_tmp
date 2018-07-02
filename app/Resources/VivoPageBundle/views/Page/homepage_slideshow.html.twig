@@ -1,0 +1,45 @@
+{% if page.assetGroupByAlias('banners') and page.assetGroupByAlias('banners').activeAssets|length > 0 %}
+<div class="home-slideshow">
+    <ul class="bxslider">
+        {% for image in page.assetGroupByAlias('banners').activeAssets %}
+          {% if image.status %}
+            <li{% if image.colorClass is not null %} class="{{ image.colorClass }}"{% endif %}>
+                <div class="image" style="background-image:url('{{ image.imagePreviewPath|imagine_filter('1490x530o') }}');"></div>
+                <div class="overlay" style="
+                     background: -moz-linear-gradient(left, {{ image.colorClass }} 0%, {{ image.colorClass }} 40%, rgba(169, 186, 155, 0) 80%, rgba(169, 186, 155, 0) 100%); /* FF3.6+ */
+                    background: -webkit-gradient(linear, left top, right top, color-stop(0%, {{ image.colorClass }}), color-stop(50%, {{ image.colorClass }}), color-stop(75%, rgba(169, 186, 155, 0)), color-stop(100%, rgba(169, 186, 155, 0))); /* Chrome,Safari4+ */
+                    background: -webkit-linear-gradient(left, {{ image.colorClass }} 0%, {{ image.colorClass }} 40%, rgba(169, 186, 155, 0) 80%, rgba(169, 186, 155, 0) 100%); /* Chrome10+,Safari5.1+ */
+                    background: -o-linear-gradient(left, {{ image.colorClass }} 0%, {{ image.colorClass }} 40%, rgba(169, 186, 155, 0) 80%, rgba(169, 186, 155, 0) 100%); /* Opera 11.10+ */
+                    background: -ms-linear-gradient(left, {{ image.colorClass }} 0%, {{ image.colorClass }} 40%, rgba(169, 186, 155, 0) 80%, rgba(169, 186, 155, 0) 100%); /* IE10+ */
+                    background: linear-gradient(to right, {{ image.colorClass }} 0%, {{ image.colorClass }} 40%, rgba(169, 186, 155, 0) 80%, rgba(169, 186, 155, 0) 100%); /* W3C */
+                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a9ba9b', endColorstr='#00a9ba9b', GradientType=1); /* IE6-9 */">
+                    <div class="table">
+                        <div class="cell">
+                            <div class="cell-inner">
+                                <div class="wrapper">
+                                    <div class="text">
+                                        <h2>{{ image.title }}</h2>
+                                        <h3>{{ image.subtitle }}</h3>
+                                        {% if image.link %}
+                                            <a class="btn btn-tertiary{% if image.colorClass is not null %} {{ image.colorClass }}{% endif %}" href="{{ image.link }}"{% if image.linkTarget %} target="{{ image.linkTarget }}"{% endif %}>
+                                                Read More
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+           {% endif %}
+        {% endfor %}
+    </ul>
+
+    <div class="slider-controls">
+        <a href="javascript:void(0);" class="slide-prev"><i class="pin-arrow-left"></i></a>
+        <a href="javascript:void(0);" class="slide-next"><i class="pin-arrow-right"></i></a>
+    </div>
+</div>
+{% endif %}

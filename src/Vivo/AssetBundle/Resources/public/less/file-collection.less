@@ -1,0 +1,139 @@
+.file-collection {
+    .editable-unsaved {
+        font-weight: normal;
+    }
+
+    .btn-toolbar {
+        .input-append {
+            margin-right: 5px;
+        }
+    }
+
+    .progress-bars {
+        width: 400px;
+
+        .progress-container {
+            display: none;
+
+            .upload-text {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+    }
+
+    .errors {
+        .alert {
+            display: none;
+        }
+    }
+
+    .thumbnails > li {
+        width: 270px;
+    }
+
+    .asset-container {
+        .assets {
+            &.ui-sortable {
+                .asset {
+                    .drag-handle {
+                        cursor: move;
+                    }
+                }
+            }
+
+            .asset {
+                min-height: 282px;
+                background: #fff;
+            }
+
+            .placeholder {
+                outline: 1px dashed #4183C4;
+            }
+
+            .item {
+                .btn-toolbar {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+            }
+
+            .view-item {
+                .preview {
+                    position: relative;
+
+                    .labels {
+                        position: absolute;
+                        top: 5px; left: 5px;
+
+                        .label {
+                            margin-right: 2px;
+                        }
+                    }
+                }
+
+                .caption {
+                    .detail-row {
+                        clear: both;
+
+                        label {
+                            width: 50px;
+                            float: left;
+
+                        }
+
+                        span {
+                            width: 190px;
+                            float: left;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                    }
+                }
+            }
+
+            .asset-form {
+                display: none;
+            }
+        }
+    }
+
+    &.single {
+        .asset-container .assets .asset .drag-handle {
+            cursor: hand;
+        }
+    }
+}
+
+.vivo-asset-asset-file-fancy {
+    min-width: 600px;
+
+    textarea {
+        width: 380px;
+        height: 100px;
+    }
+
+    input[type="text"], input[type="url"] {
+        width: 380px;
+    }
+
+    .controls {
+        .input-append.date {
+            input[type="text"], input[type="url"] {
+                width: 190px;
+            }
+        }
+
+        .minicolors input[type="text"] {
+            width: 80px;
+        }
+    }
+
+    .control-group.error {
+        input[type="text"], input[type="url"] {
+            width: 220px;
+        }
+    }
+}

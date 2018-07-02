@@ -1,0 +1,9 @@
+<fieldset>
+    {{ form_errors(form) }}
+
+    {% if form.title is defined %}
+        {{ form_row(form.title) }}
+    {% endif %}
+</fieldset>
+
+{{ form_rest(form) }}

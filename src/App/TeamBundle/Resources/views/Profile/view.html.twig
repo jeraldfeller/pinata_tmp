@@ -1,0 +1,62 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+{% block body_class %}profile-profile{% endblock body_class %}
+
+{% block profile_title %}
+    {% if app.request.attributes.get('_route') == 'app_team.profile.view' %}
+        {{ profile.name }}
+    {% else %}
+        {{ profile.profileTitle }}
+    {% endif %}
+{% endblock profile_title %}
+
+{% block main_intro_content %}
+    {% if profile.introduction is defined and profile.introduction is not null %}
+        <p class="intro">{{ profile.introduction }}</p>
+    {% endif %}
+{% endblock main_intro_content %}
+
+{% block post_title_block %}
+    {% if profile.bannerImage is not empty and profile.bannerImage is not empty %}
+        <div class="hero-image" style="background-image:url('{{ profile.bannerImage.imagePreviewPath|imagine_filter('1920x450p') }}');"></div>
+    {% endif %}
+{% endblock post_title_block %}
+
+{% block main_intro_image %}
+    {% if profile.contentImage %}
+        {% set image = profile.contentImage %}
+        <figure class="image-box {% if image.title is not null %}has-caption{% endif %}">
+            <div class="image">
+                <img src="{% if image.title is not null %}{{ image.imagePreviewPath|imagine_filter('920x505p') }}{% else %}{{ image.imagePreviewPath|imagine_filter('1220x670p') }}{% endif %}" alt="{{ image.alt }}" />
+            </div>
+            {% if image.title is not null %}
+                <figcaption>{{ image.title }}</figcaption>
+            {% endif %}
+        </figure>
+    {% endif %}
+{% endblock main_intro_image %}
+
+{% block main_col_content %}
+    {{ profile.description|default('')|raw }}
+{% endblock main_col_content %}
+
+{% block sidebar %}
+    {% if profile.promoGroup is defined and profile.promoGroup is not null %}
+        <div class="sidebar-promos">
+            {% for promo in profile.promoGroup.blocks %}
+                <div class="promo">
+                    <a {% if promo.block.newWindow %}target="_blank"{% endif %} href="{{ promo.block.url }}">
+                        {% include 'Elements/common/tear_top_small.html.twig' %}
+
+                        {% if promo.block.icon is not null and promo.block.iconPosition == 1%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+                        <span>{{ promo.block.content|nl2br|raw }}</span>
+                        {% if promo.block.icon is not null and promo.block.iconPosition == 2%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+
+                        {% include 'Elements/common/tear_bottom_small.html.twig' %}
+
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock sidebar %}

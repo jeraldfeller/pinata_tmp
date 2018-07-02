@@ -1,0 +1,33 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block topnav %}{% endblock topnav %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body_class 'vivo_admin_security' %}
+
+{% block content %}
+    <form action="{{ path('vivo_admin.security.check') }}" method="post" class="ignore-unsaved-form">
+        <h2>{% block title %}Please login{% endblock title %}</h2>
+        {% if error %}
+            <p class="text-error">{{ error.messageKey|trans({}, 'VivoAdminBundle') }}</p>
+        {% endif %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+        <input type="text" name="_username" value="{{ last_username }}" class="input-block-level" required="required"{% if last_username is empty %} autofocus="autofocus"{% endif %} placeholder="Email address" />
+        <input type="password" name="_password" class="input-block-level" required="required"{% if last_username is not empty %} autofocus="autofocus"{% endif %} placeholder="Password" />
+        {#
+            If you want to control the URL the user is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+        #}
+        <label class="checkbox" for="remember_me">
+            <input type="checkbox" id="remember_me" name="_remember_me" />Remember me for 2 weeks</label>
+        </label>
+
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Login</button>
+            <a href="{{ path('vivo_admin.reset.request') }}" class="btn">Reset your password</a>
+        </div>
+    </form>
+{% endblock content %}

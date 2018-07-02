@@ -1,0 +1,65 @@
+Vivo\AdminBundle\Model\Group:
+    properties:
+        name:
+            - NotBlank: ~
+
+Vivo\AdminBundle\Model\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [email]
+            repositoryMethod: findNonDeletedUsersBy
+            groups: [userCreate]
+            message: vivo_admin.email.non_unique
+    properties:
+        group:
+            - NotBlank: ~
+        firstName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: { strict: true }
+
+Vivo\AdminBundle\Form\Model\PasswordChange:
+    properties:
+        currentPassword:
+            - Length:
+                max:    100
+                groups: [changePassword]
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                groups: [changePassword]
+                message: vivo_admin.password.current
+        newPassword:
+            - NotBlank:
+                message: vivo_admin.password.blank
+                groups:  [changePassword]
+            - Length:
+                max:    100
+                groups: [changePassword]
+            - Vivo\UtilBundle\Validator\PasswordStrength:
+                minLength: 8
+                groups:    [changePassword]
+
+Vivo\AdminBundle\Form\Model\PasswordCreate:
+    properties:
+        newPassword:
+            - NotBlank:
+                message: vivo_admin.password.blank
+            - Length:
+                max: 100
+            - Vivo\UtilBundle\Validator\PasswordStrength:
+                minLength: 8
+
+Vivo\AdminBundle\Form\Model\PasswordUpdate:
+    properties:
+        newPassword:
+            - NotBlank:
+                message: vivo_admin.password.blank
+                groups:  [changePassword]
+            - Length:
+                max:  100
+                groups: [changePassword]
+            - Vivo\UtilBundle\Validator\PasswordStrength:
+                minLength: 8
+                groups:    [updatePassword]

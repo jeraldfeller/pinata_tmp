@@ -1,0 +1,15 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_page.admin.tree.index') }}">Pages</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@VivoPageBundle/Resources/public/admin/js/page-form.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}

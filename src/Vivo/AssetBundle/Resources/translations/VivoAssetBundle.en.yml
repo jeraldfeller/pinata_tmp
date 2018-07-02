@@ -1,0 +1,13 @@
+form:
+    asset_file:
+        title:      'Title'
+        subtitle:   'SubTitle'
+        colorclass: 'Colour'
+        status:     'Slide visible'
+        filename:   'Filename'
+        activeAt:   'Active from'
+        expiresAt:  'Expiry date'
+        alt:        'Alt'
+    asset_image:
+        link:        'Link'
+        linkTarget:  'Link target'

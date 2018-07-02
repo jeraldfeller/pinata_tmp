@@ -1,0 +1,23 @@
+{% block vivo_address_row %}
+    {{ form_errors(form) }}
+
+    {% if form.countryCode is defined %}
+        {{ form_row(form.countryCode) }}
+    {% endif %}
+
+    {% if form.company is defined %}
+        {{ form_row(form.company) }}
+    {% endif %}
+
+    {% if form.addressLine1 is defined %}
+        {{ form_row(form.addressLine1) }}
+    {% endif %}
+
+    {% if form.addressLine2 is defined %}
+        {{ form_row(form.addressLine2) }}
+    {% endif %}
+
+    {% if form.locality is defined %}
+        {{ form_row(form.locality) }}
+    {% endif %}
+{% endblock vivo_address_row %}

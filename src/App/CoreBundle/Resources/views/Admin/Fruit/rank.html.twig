@@ -1,0 +1,91 @@
+{% extends 'admin.html.twig' %}
+
+{% block title 'Rank Fruits' %}
+
+    {% block breadcrumb_crumbs %}
+        {{ parent() }}
+        <li><a href="{{ path('app_core.admin.fruit.index') }}">Fruits</a> <span class="divider">/</span></li>
+        <li class="active">Rank Fruits</li>
+    {% endblock breadcrumb_crumbs %}
+
+    {% block content %}
+        <form action="{{ path('app_core.admin.fruit.rank') }}" method="post">
+            {% if fruits|length > 0 %}
+                <input type="hidden" name="ranks" id="app_core_fruit_rank_data" value="" />
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Ranks</button>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{{ path('app_core.admin.fruit.index') }}" class="btn"><i class="icon-list"></i> Return to List</a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="nested-tree" id="app_core_fruit_rank">
+                    <ol class="tree-group">
+                        {% for fruit in fruits %}
+                            <li class="item" id="app_core_fruit_{{ fruit.id }}">
+                                <div class="item-container">
+                                    <a href="{{ path('app_core.admin.fruit.update', {'id': fruit.id, 'token': csrf_token(fruit.csrfIntention('update'))}) }}" target="_blank">{{ fruit.name }}</a>
+
+                                    <ul class="nav nav-pills">
+                                        <li class="dropdown">
+                                            <button class="btn btn-mini btn-link dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu open-left">
+                                                <li><a href="{{ path('app_core.admin.fruit.update', {'id': fruit.id, 'token': csrf_token(fruit.csrfIntention('update'))}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                                <li><a class="confirm" href="{{ path('app_core.admin.fruit.delete', {'id': fruit.id, 'token': csrf_token(fruit.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <script type="text/javascript">
+                    jQuery('#app_core_fruit_rank > ol').each(function() {
+                        var treeContainer = jQuery(this);
+                        var initialData;
+
+                        jQuery(this).nestedSortable({
+                            forcePlaceholderSize: true,
+                            handle: 'div.item-container',
+                            helper:	'clone',
+                            items: 'li.item',
+                            opacity: .6,
+                            placeholder: 'placeholder',
+                            tabSize: 25,
+                            tolerance: 'pointer',
+                            toleranceElement: '.item-container',
+                            maxLevels: 1,
+                            isTree: false,
+                            update: function (event, ui) {
+                                var data = treeContainer.nestedSortable('serialize');
+
+                                if (data == initialData) {
+                                    jQuery('#app_core_fruit_rank_data').val('');
+                                } else {
+                                    jQuery('#app_core_fruit_rank_data').val(data);
+                                }
+                            },
+                            start: function(event, ui){
+                                ui.item.find('.nav').hide();
+                                ui.placeholder.height(ui.item.height());
+                            },
+                            stop: function (event, ui) {
+                                ui.item.find('.nav').show();
+                            }
+                        });
+
+                        initialData = treeContainer.nestedSortable('serialize');
+                    });
+                </script>
+            {% else %}
+                <div class="alert alert-notice">
+                    There are currently no fruits available for sorting.
+                </div>
+            {% endif %}
+        </form>
+    {% endblock content %}

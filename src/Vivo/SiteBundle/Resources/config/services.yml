@@ -1,0 +1,228 @@
+services:
+    # Repository
+    vivo_site.repository.site:
+        class: Vivo\SiteBundle\Repository\SiteRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_site.model.site%"]
+
+    vivo_site.repository.domain:
+        class: Vivo\SiteBundle\Repository\DomainRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_site.model.domain%"]
+
+    # Factory
+    vivo_site.factory.site:
+        class: Vivo\SiteBundle\Factory\SiteFactory
+        arguments:
+            - "@vivo_site.repository.site"
+            - "@request_stack"
+            - "%vivo_site.fallback_to_primary_site%"
+
+    # Listeners
+    vivo_site.listener.site_param_converter:
+        class: Vivo\SiteBundle\EventListener\SiteParamConverterListener
+        arguments: ["@vivo_site.factory.site"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    vivo_site.listener.site_trait:
+        class: Vivo\SiteBundle\EventListener\SiteTraitListener
+        public: false
+        arguments: ["@vivo_util.util.class_analyzer"]
+        tags:
+            - { name: doctrine.event_subscriber, priority: 5 }
+
+    vivo_site.listener.requires_channel:
+        class: Vivo\SiteBundle\EventListener\RequiresChannelListener
+        arguments:
+            - "@router"
+            - "@vivo_site.factory.site"
+            - "%request_listener.http_port%"
+            - "%request_listener.https_port%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 8 } # Fire listener before Symfony Authentication Listener intercepts the Request
+
+    vivo_site.listener.device_cache:
+        class: Vivo\SiteBundle\EventListener\DeviceCacheListener
+        arguments:
+            - "@vivo_site.util.mobile_detect"
+            - "%vivo_site.devices.mobile%"
+            - "%vivo_site.devices.tablet%"
+            - "@?esi"
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    vivo_site.listener.xhash:
+        class: Vivo\SiteBundle\EventListener\XHashCookieListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -200 }
+
+    vivo_site.listener.google_analytics:
+        class: Vivo\SiteBundle\EventListener\GoogleAnalyticsListener
+        arguments: ["@vivo_site.factory.site", "@twig"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    vivo_site.listener.live_access:
+        class: Vivo\SiteBundle\EventListener\LiveAccessListener
+        arguments:
+            - "@vivo_site.factory.site"
+            - "%vivo_site.live_environments%"
+            - "%kernel.environment%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    vivo_site.listener.site_aware_filter:
+        class: Vivo\SiteBundle\EventListener\SiteAwareFilterListener
+        arguments: ["@doctrine.orm.default_entity_manager", "@vivo_site.factory.site"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100 }
+            - { name: kernel.event_listener, event: cmf_routing.pre_dynamic_match_request, method: activateFilter }
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    vivo_site.listener.site_not_found:
+        class: Vivo\SiteBundle\EventListener\SiteNotFoundListener
+        arguments:
+            - "@router"
+            - "@twig"
+            - "@vivo_site.factory.site"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 30 }
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    vivo_site.listener.primary_host:
+        class: Vivo\SiteBundle\EventListener\PrimaryHostListener
+        arguments: ["@vivo_site.factory.site"]
+        tags:
+             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 29 }
+             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    vivo_site.listener.site_password:
+        class: Vivo\SiteBundle\EventListener\SitePasswordListener
+        arguments:
+            - "@vivo_site.factory.site"
+            - "@router"
+            - "@security.csrf.token_manager"
+            - "%vivo_site.site_password.enabled%"
+            - "%vivo_site.site_password.passwords%"
+            - "%vivo_site.site_password.route%"
+            - "%vivo_site.site_password.target_query_parameter%"
+            - "%vivo_site.site_password.csrf_query_parameter%"
+            - "%vivo_site.site_password.salt%"
+            - "@?esi"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 28 }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    vivo_site.listener.site_persist:
+        class: Vivo\SiteBundle\EventListener\SitePersistListener
+        arguments: ["@service_container"]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    # Form Types
+    vivo_site.form.site:
+        class: Vivo\SiteBundle\Form\Type\SiteType
+        arguments:
+            - "%vivo_site.model.site%"
+            - "%vivo_site.model.domain%"
+            - "%vivo_site.google.enabled%"
+            - "@vivo_site.util.mailer"
+        tags:
+            - { name: form.type }
+
+    vivo_site.form.site_domain:
+        class:  Vivo\SiteBundle\Form\Type\DomainType
+        arguments: ["%vivo_site.model.domain%"]
+        tags:
+            - { name: form.type }
+
+    vivo_site.form.choice.status:
+        class: Vivo\SiteBundle\Form\Choice\StatusChoice
+        tags:
+            - { name: form.type }
+
+    # Form Extensions
+    vivo_site.form.extension.set_site:
+        class: Vivo\SiteBundle\Form\Extension\SiteAwareExtension
+        arguments: ["@vivo_site.factory.site"]
+        tags:
+          - { name: form.type_extension, alias: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    vivo_site.form.extension.ckeditor:
+        class: Vivo\SiteBundle\Form\Extension\CkeditorExtension
+        arguments: ["@vivo_site.factory.site", "%kernel.root_dir%/../web/"]
+        tags:
+          - { name: form.type_extension, alias: Trsteel\CkeditorBundle\Form\Type\CkeditorType }
+
+    # Twig Extensions
+    vivo_site.twig.extension.seo_extension:
+        class: Vivo\SiteBundle\Twig\SeoExtension
+        public: false
+        arguments: ["@vivo_site.seo.page", "@router"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_site.twig.extension.mobile_detect:
+        class: Vivo\SiteBundle\Twig\MobileDetectExtension
+        public: false
+        arguments: ["@vivo_site.util.mobile_detect"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_site.twig.extension.site_switch_url_generator:
+        class: Vivo\SiteBundle\Twig\SiteSwitchUrlGenerator
+        arguments: ["@router", "@vivo_site.factory.site"]
+        tags:
+            - { name: twig.extension }
+
+    # Twig Template Loader
+    vivo_site.templating.loader:
+        class: Vivo\SiteBundle\Templating\Loader
+        arguments:
+            - "@templating.locator"
+            - "@templating.name_parser"
+            - "%kernel.root_dir%"
+            - "%kernel.bundles%"
+            - "@vivo_site.factory.site"
+            - "@vivo_site.util.mobile_detect"
+            - "%vivo_site.devices.mobile%"
+            - "%vivo_site.devices.tablet%"
+        tags:
+            - { name: twig.loader, priority: 100 }
+
+    # Util
+    vivo_site.util.mailer:
+        class: Vivo\SiteBundle\Util\Mailer
+        arguments:
+            - "@router"
+            - "@mailer"
+            - "@twig"
+            - "@vivo_site.util.site_template_finder"
+
+    vivo_site.util.site_template_finder:
+        class: Vivo\SiteBundle\Util\SiteTemplateFinder
+        arguments:
+            - "@vivo_site.factory.site"
+            - "@twig"
+            - ["@twig.loader"]
+            - "@templating.locator"
+            - "@templating.name_parser"
+            - "%kernel.root_dir%"
+            - "%kernel.bundles%"
+            - "@vivo_site.util.mobile_detect"
+            - "%vivo_site.devices.mobile%"
+            - "%vivo_site.devices.tablet%"
+
+    vivo_site.util.mobile_detect:
+        class: Vivo\SiteBundle\Util\MobileDetect
+        arguments: ["@request_stack"]
+
+    # SEO
+    vivo_site.seo.sitemap.manager:
+        class: Vivo\SiteBundle\Seo\Sitemap\Manager
+
+    vivo_site.seo.page:
+        class: Vivo\SiteBundle\Seo\Page
+        arguments: ["@vivo_site.factory.site"]

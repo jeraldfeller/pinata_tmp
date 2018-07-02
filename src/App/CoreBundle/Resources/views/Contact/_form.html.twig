@@ -1,0 +1,8 @@
+{% form_theme form 'Form/fields.html.twig' %}
+
+{{ form_start(form, { attr: { class: 'ajax-submit'}}) }}
+{{ form_row(form.name) }}
+{{ form_row(form.email) }}
+{{ form_row(form.subject) }}
+{{ form_row(form.message) }}
+{{ form_end(form) }}

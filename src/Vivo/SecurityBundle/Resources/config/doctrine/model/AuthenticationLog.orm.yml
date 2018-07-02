@@ -1,0 +1,45 @@
+Vivo\SecurityBundle\Model\AuthenticationLog:
+    type: mappedSuperclass
+    table: vivo_security_authentication_log
+    indexes:
+        status: { columns: [status] }
+        firewallName: { columns: [firewall_name] }
+        username: { columns: [username] }
+        ipAddress: { columns: [ip_address] }
+        loggedAt: { columns: [logged_at] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        status:
+            type: smallint
+            nullable: false
+        firewallName:
+            type: string
+            length: 100
+            nullable: false
+        username:
+            type: string
+            length: 255
+            nullable: true
+        ipAddress:
+            type: string
+            length: 45
+            nullable: false
+        ipCountry:
+            type: string
+            length: 100
+            nullable: true
+        ipSubdivision:
+            type: string
+            length: 10
+            nullable: true
+        ipCity:
+            type: string
+            length: 100
+            nullable: true
+        loggedAt:
+            type: datetime
+    lifecycleCallbacks: {  }

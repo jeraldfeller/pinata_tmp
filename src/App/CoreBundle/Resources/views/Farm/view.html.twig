@@ -1,0 +1,78 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+{% block body_class %}farm-page{% endblock body_class %}
+
+{% set farmImageTitle = false %}
+{% if farm.contentImage %}
+    {% set image = farm.contentImage %}
+    {% if image.title is not null %}
+        {% set farmImageTitle = true %}
+    {% endif %}
+{% endif %}
+
+{% block page_title %}
+    {% if app.request.attributes.get('_route') == 'app_core.farm.view' %}
+        {{ farm.name }}
+    {% else %}
+        {{ page.pageTitle }}
+    {% endif %}
+{% endblock page_title %}
+
+{% block post_title_block %}
+    {% if farm.bannerImage is not empty and farm.bannerImage is not empty %}
+        <div class="hero-image" style="background-image:url('{{ farm.bannerImage.imagePreviewPath|imagine_filter('1920x450p') }}');"></div>
+    {% endif %}
+{% endblock post_title_block %}
+
+
+{% block main_intro_content %}
+    {% if farm.introduction is defined and farm.introduction is not null %}
+        <p class="intro">{{ farm.introduction }}</p>
+    {% endif %}
+{% endblock main_intro_content %}
+
+{% block main_intro_image %}
+    {% if farm.contentImage %}
+        {% set image = farm.contentImage %}
+        <figure class="image-box {% if image.title is not null %}has-caption{% endif %}">
+            <div class="image">
+                <img src="{% if image.title is not null %}{{ image.imagePreviewPath|imagine_filter('920x505p') }}{% else %}{{ image.imagePreviewPath|imagine_filter('1220x670p') }}{% endif %}" alt="{{ image.alt }}" />
+            </div>
+            {% if image.title is not null %}
+                <figcaption>{{ image.title }}</figcaption>
+            {% endif %}
+        </figure>
+    {% endif %}
+{% endblock main_intro_image %}
+
+{% block main_col_content %}
+    {{ farm.content|default('')|raw }}
+    {% if farm_links.pre_url is not null %}
+    <a class="farm-link link-previous" href="farms/{{ farm_links.pre_url }}"><i class="pin-arrow-left"></i>Visit Previous Farm</a>
+    {% endif %}
+    {% if farm_links.next_url is not null %}
+    <a class="farm-link link-next" href="farms/{{ farm_links.next_url }}">Visit Next Farm<i class="pin-arrow-right"></i></a>
+    {% endif %}
+{% endblock main_col_content %}
+
+{% block sidebar %}
+    {% if farm.promoGroup is defined and farm.promoGroup is not null %}
+        <div class="sidebar-promos">
+            {% for promo in farm.promoGroup.blocks %}
+                <div class="promo">
+                    <a {% if promo.block.newWindow %}target="_blank"{% endif %} href="{{ promo.block.url }}">
+                        {% include 'Elements/common/tear_top_small.html.twig' %}
+
+                        {% if promo.block.icon is not null and promo.block.iconPosition == 1%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+                        <span>{{ promo.block.content|nl2br|raw }}</span>
+                        {% if promo.block.icon is not null and promo.block.iconPosition == 2%}<i class="{{ promo.block.iconClass }}"></i>{% endif %}
+
+                        {% include 'Elements/common/tear_bottom_small.html.twig' %}
+
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {{ farmImageTitle ? '&nbsp;' }}
+{% endblock sidebar %}

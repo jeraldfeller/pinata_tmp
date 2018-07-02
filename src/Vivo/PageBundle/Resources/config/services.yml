@@ -1,0 +1,240 @@
+services:
+    # Managers
+    vivo_page.manager.page_type:
+        class: Vivo\PageBundle\PageType\Manager\PageTypeManager
+
+    # PageTypes
+    vivo_page.page_type.homepage:
+        class: "%vivo_page.page_type.homepage.class%"
+        public: false
+        arguments:
+            - "%vivo_page.page_type.homepage.enabled%"
+            - "%vivo_page.page_type.homepage.blocks.content%"
+            - "%vivo_page.page_type.homepage.blocks.asset_group%"
+        tags:
+            - { name: vivo_page.page_type, alias: homepage }
+
+    vivo_page.page_type.standard:
+        class: "%vivo_page.page_type.standard.class%"
+        public: false
+        arguments:
+            - "%vivo_page.page_type.standard.enabled%"
+            - "%vivo_page.page_type.standard.blocks.content%"
+            - "%vivo_page.page_type.standard.blocks.asset_group%"
+        tags:
+            - { name: vivo_page.page_type, alias: standard }
+
+    vivo_page.page_type.placeholder:
+        class: "%vivo_page.page_type.placeholder.class%"
+        public: false
+        arguments:
+            - "%vivo_page.page_type.placeholder.enabled%"
+            - "%vivo_page.page_type.placeholder.blocks.content%"
+            - "%vivo_page.page_type.placeholder.blocks.asset_group%"
+        tags:
+            - { name: vivo_page.page_type, alias: placeholder }
+
+    # FormTypes
+    vivo_page.form.choice.page_type:
+        class: Vivo\PageBundle\Form\Choice\PageTypeChoice
+        arguments: ["@vivo_page.manager.page_type"]
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.page_type:
+        class: Vivo\PageBundle\Form\Type\PageType
+        arguments:
+            - "@vivo_page.form.listener.page_type_instance"
+            - "@vivo_page.form.listener.page_type"
+            - "@vivo_page.form.listener.sanitise_page"
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.base_page_type:
+        class: Vivo\PageBundle\Form\Type\BasePageType
+        arguments:
+            - "@security.authorization_checker"
+            - "%vivo_page.model.page%"
+            - "%vivo_page.model.slug%"
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.homepage_page_type:
+        class: Vivo\PageBundle\Form\Type\HomepagePageType
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.placeholder_page_type:
+        class: Vivo\PageBundle\Form\Type\PlaceholderPageType
+        arguments: ["@vivo_page.repository.menu_node"]
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.page_menu_type:
+        class: Vivo\PageBundle\Form\Type\MenuType
+        arguments: ["%vivo_page.model.menu_node%"]
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.page_menu_node_type:
+        class: Vivo\PageBundle\Form\Type\MenuNodeType
+        arguments: ["%vivo_page.model.menu_node%"]
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.page_content_type:
+        class: Vivo\PageBundle\Form\Type\ContentType
+        arguments: ["%vivo_page.model.content%", "@vivo_page.form.listener.page_content_subscriber"]
+        tags:
+            - { name: form.type }
+
+    vivo_page.form.page_asset_group_type:
+        class: Vivo\PageBundle\Form\Type\AssetGroupType
+        arguments: ["%vivo_page.model.asset_group%", "@vivo_page.form.listener.page_asset_group_subscriber"]
+        tags:
+            - { name: form.type }
+
+    # Form EventListeners
+    vivo_page.form.listener.page_type_instance:
+        class: Vivo\PageBundle\Form\EventListener\PageTypeInstanceListener
+
+    vivo_page.form.listener.page_type:
+        class: Vivo\PageBundle\Form\EventListener\PageTypeListener
+        arguments: ["@vivo_page.manager.page_type"]
+
+    vivo_page.form.listener.sanitise_page:
+        class: Vivo\PageBundle\Form\EventListener\SanitisePageListener
+
+    vivo_page.form.listener.page_content_subscriber:
+        class: Vivo\PageBundle\Form\EventListener\ContentListener
+
+    vivo_page.form.listener.page_asset_group_subscriber:
+        class: Vivo\PageBundle\Form\EventListener\AssetGroupListener
+        arguments: ["%vivo_page.model.asset%"]
+
+    # Twig Extensions
+    vivo_page.twig.page_extension:
+        class: Vivo\PageBundle\Twig\PageExtension
+        public: false
+        arguments: ["@vivo_page.repository.page", "@router"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_page.twig.navigation_extension:
+        class: Vivo\PageBundle\Twig\NavigationExtension
+        public: false
+        arguments:
+            - "@vivo_page.seo.active_page"
+            - "@vivo_site.seo.page"
+            - "@vivo_page.repository.menu_node"
+            - "@doctrine.orm.default_result_cache"
+            - "@twig"
+            - "@router"
+            - "@event_dispatcher"
+        tags:
+            - { name: twig.extension }
+
+    # Validators
+    vivo_page.validator.asset:
+        class: Vivo\PageBundle\Validator\Constraints\AssetValidator
+        arguments: ["@vivo_page.manager.page_type"]
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_page.validator.asset }
+
+    vivo_page.validator.route:
+        class: Vivo\PageBundle\Validator\Constraints\RouteValidator
+        arguments: ["@router", "@vivo_page.repository.page"]
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_page.validator.route }
+
+    vivo_page.validator.unique_page_type:
+        class: Vivo\PageBundle\Validator\Constraints\UniquePageTypeValidator
+        arguments: ["@vivo_page.manager.page_type", "@vivo_page.repository.page"]
+        tags:
+            - { name: validator.constraint_validator, alias: vivo_page.validator.unique_page_type }
+
+    # Repositories
+    vivo_page.repository.menu_node:
+        class: Vivo\PageBundle\Repository\MenuNodeRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_page.model.menu_node%"]
+
+    vivo_page.repository.page:
+        class: Vivo\PageBundle\Repository\PageRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_page.model.page%"]
+
+    # Routing
+    vivo_page.routing.provider:
+        class: Vivo\PageBundle\Routing\RouteProvider
+        arguments:
+            - "@vivo_site.factory.site"
+            - "@vivo_page.repository.page"
+            - "@vivo_page.manager.page_type"
+            - "@doctrine.orm.default_result_cache"
+
+    # Listeners
+    vivo_page.listener.page_reference_route:
+        class: Vivo\PageBundle\EventListener\PageReferenceRouteListener
+        arguments:
+            - "@vivo_page.manager.page_type"
+            - "@vivo_page.repository.page"
+            - "%vivo_page.model.page%"
+            - "%kernel.cache_dir%/vivosite/proxy-cache/"
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    vivo_page.listener.load_page_type_listener:
+        class: Vivo\PageBundle\EventListener\LoadPageTypeListener
+        public: false
+        arguments: ["@vivo_page.manager.page_type"]
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
+    vivo_page.listener.page_type_slug:
+        class: Vivo\PageBundle\EventListener\PageTypeSlugListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    vivo_page.listener.active_menu_node_listener:
+        class: Vivo\PageBundle\EventListener\ActiveMenuNodeListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    vivo_page.listener.delete_empty_placeholder:
+        class: Vivo\PageBundle\EventListener\DeleteEmptyPlaceholderPageListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: postRemove }
+
+    vivo_page.listener.seo:
+        class: Vivo\PageBundle\EventListener\SeoListener
+        arguments:
+            - "@vivo_page.seo.active_page"
+            - "@vivo_site.seo.page"
+            - "@vivo_page.repository.page"
+            - "@vivo_page.repository.menu_node"
+        tags:
+            - { name: kernel.event_listener, event: vivo_page.seo.prepare, method: prepareSeo }
+
+    vivo_page.listener.homepage_seo:
+        class: Vivo\PageBundle\EventListener\HomepageSeoListener
+        arguments: ["@vivo_site.seo.page"]
+        tags:
+            - { name: kernel.event_listener, event: vivo_page.seo.prepare, method: prepareSeo }
+
+    # SEO
+    vivo_page.seo.sitemap:
+        class: Vivo\PageBundle\Seo\Sitemap
+        arguments:
+            - "@vivo_page.repository.page"
+            - "@knp_paginator"
+            - "@router"
+        tags:
+            - { name: vivo_site.seo.sitemap }
+
+    vivo_page.seo.active_page:
+        class: Vivo\PageBundle\Seo\ActivePage

@@ -1,0 +1,149 @@
+{% extends 'admin.html.twig' %}
+
+{% block title 'File Browser' %}
+
+{% block topnav '' %}
+{% block breadcrumb '' %}
+
+{% block body_class 'vivo_asset_browser' %}
+
+{% block content %}
+    {% if asset_types|length > 0 and (app.request.get('CKEditor') is not defined or mode != 'image') %}
+        <ul class="nav nav-tabs">
+            {% for key, val in asset_types %}
+                <li{% if key == asset_type %} class="active"{% endif %}>
+                    <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'type': key, 'mode': mode})) }}">{{ val['name'] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="pull-left">
+        {{ form_start(uploadForm) }}
+        {{ form_row(uploadForm.file, {'attr': {'data-class-button': 'upload_icon-' ~ uploadForm.file.vars.id, 'class': 'auto-submit'}}) }}
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#vivo_asset_asset_upload_file').change(function() {
+                    $('.upload_icon-{{ uploadForm.file.vars.id }}').html('<i class="icon-refresh icon-refresh-animate"></i> Uploading...');
+                });
+            });
+        </script>
+
+        {{ form_end(uploadForm) }}
+    </div>
+
+    <div class="pull-right">
+        {{ form(searchForm, {'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="{{ searchForm.vars.id ~ '_results' }}">
+        {% block ajax_response %}
+            {% if pagination|length < 1 %}
+                <div class="alert alert-notice">
+                    There are currently no files available.
+                </div>
+            {% else %}
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        jQuery('a.select-file').click(function() {
+                            {% if app.request.query.get('CKEditorFuncNum') %}
+                                var btnGroup = jQuery(this).parents('.btn-group');
+                                var file = btnGroup.data('file');
+
+                                if (window.opener) {
+                                    window.opener.CKEDITOR.tools.callFunction({{ app.request.query.get('CKEditorFuncNum') }}, file, function() {
+                                        var element, dialog = this.getDialog();
+
+                                        if (dialog.getName() == 'image') {
+                                            element = dialog.getContentElement('info', 'txtAlt');
+
+                                            if (element) {
+                                                element.setValue(btnGroup.data('title'));
+                                            }
+                                        } else if (dialog.getName() == 'link') {
+                                            element = dialog.getContentElement('info', 'protocol');
+                                            if (element) {
+                                                element.setValue('');
+                                            }
+                                        }
+                                    });
+
+                                    window.close();
+                                } else {
+                                    alert('Unable to select file.');
+                                }
+                            {% else %}
+                                alert('Unable to select file.');
+                            {% endif %}
+
+                            return false;
+                        });
+                    });
+                </script>
+                <table class="table table-striped table-hover table-bordered file-list">
+                    <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Size</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for asset in pagination %}
+                        <tr>
+                            <td>
+                                {% if asset.file.image %}
+                                    <a href="{{ asset.imagePreviewPath|imagine_filter('asset') }}" class="fancy-image" title="{{ asset.title ~ ' - <a href="' ~ path(asset.routeName('download'), asset.routeParameters('download')) ~ '" target="_blank">Download Original</a>' }}">
+                                        <div class="image-container pull-left">
+                                            <img src="{{ asset|vivo_asset_preview('file_browser_thumb', 'file_browser_icon') }}" alt="{{ asset.title }}" title="{{ asset.title }}" />
+                                        </div>
+                                        <div class="pull-left">
+                                            {{- asset.filename -}}
+                                            {%- if asset.file.width is not same as(null) and asset.file.height is not same as(null) -%}
+                                                <br/>{{ asset.file.width|number_format(0) }}px by {{ asset.file.height|number_format(0) }}px
+                                            {%- endif -%}
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path(asset.routeName('download'), asset.routeParameters('download')) }}" title="{{ asset.title }}">
+                                        <div class="image-container pull-left">
+                                            <img src="{{ asset|vivo_asset_preview('file_browser_thumb', 'file_browser_icon') }}" alt="{{ asset.title }}" title="{{ asset.title }}" />
+                                        </div>
+                                        <div class="pull-left">{{ asset.filename }}</div>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>{{ asset.file.formattedSize }}</td>
+                            <td>{% if asset.updatedAt %}{{ asset.updatedAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>
+                                <div class="btn-group" data-file="
+                                {%- if mode == 'image' and asset.imagePreviewPath -%}
+                                    {{- trim_path(resolved_paths[asset.id]|default(asset.imagePreviewPath|imagine_filter('content'))) -}}
+                                {%- else -%}
+                                    {{- trim_path(path(asset.routeName('download'), asset.routeParameters('download'))) }}
+                                {%- endif -%}
+                                " data-title="{{ asset.title }}">
+                                    <a href="#" class="btn select-file"><i class="icon-ok"></i> Select</a>
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu open-left">
+                                        <li><a href="#" class="select-file"><i class="icon-ok"></i> Select</a></li>
+                                        <li><a class="confirm" href="{{ path('vivo_asset.ckeditor_browser.delete', {'id': asset.id, 'token': csrf_token(asset.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
+        {% endblock ajax_response %}
+    </div>
+{% endblock content %}

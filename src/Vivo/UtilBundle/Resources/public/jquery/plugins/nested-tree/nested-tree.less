@@ -1,0 +1,63 @@
+.nested-tree {
+    ol {
+        margin: 0 0 0 25px;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    &.space-root {
+        > ul.tree-group, > ol.tree-group {
+            > li.item {
+                margin-bottom: 30px;
+            }
+        }
+    }
+
+    > ul.tree-group, > ol.tree-group {
+        margin-left: 0;
+    }
+
+    li.item {
+        margin-top: 5px;
+
+        div.item-container {
+            height: 20px;
+            border: 1px solid #d4d4d4;
+            padding: 6px;
+            cursor: move;
+            background: #f6f6f6;
+            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+
+            .nav {
+                float: right;
+                margin-bottom: 0;
+
+                > li > a {
+                    padding-top: 4px;
+                    margin-top: 0;
+                }
+            }
+        }
+
+        div.item-container:hover {
+            background: #D7D7D7;
+        }
+    }
+
+    .mjs-nestedSortable-error {
+        background: #fbe3e4;
+        border-color: transparent;
+    }
+}
+
+.nested-tree, .sortable {
+    .placeholder {
+        outline: 1px dashed #4183C4;
+        margin: 5px 0 5px 0;
+    }
+}

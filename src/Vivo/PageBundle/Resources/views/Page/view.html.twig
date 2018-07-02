@@ -1,0 +1,5 @@
+{% extends 'base.html.twig' %}
+
+{% block content_body %}
+    {{ page.contentByAlias('main').content|default('')|raw }}
+{% endblock content_body %}

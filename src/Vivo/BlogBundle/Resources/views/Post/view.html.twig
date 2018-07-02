@@ -1,0 +1,38 @@
+{% extends '@VivoBlog/layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {%
+        set schema = {
+            '@context': 'http://schema.org',
+            '@type': 'BlogPosting',
+            'headline': post.title,
+            'articleBody': post.body,
+            'datePublished': post.publicationDate|date('c'),
+            'dateModified': post.updatedAt|date('c'),
+            'url': url('vivo_blog.post.view', {'year': post.publicationDate.format('Y'), 'month': post.publicationDate.format('m'), 'day': post.publicationDate.format('d'), 'slug': post.slug})
+        }
+    %}
+    {% if include_author %}
+        {% set schema = schema|merge({'author': {'name': post.author}}) %}
+    {% endif %}
+    <script type="application/ld+json">{{ schema|json_encode|raw }}</script>
+{% endblock javascripts %}
+
+{% block vivo_blog_main_content %}
+    <div class="row-fluid">
+        <h1>{{ post.title }}</h1>
+        <h2>{{ post.publicationDate|date("l jS F Y h:ia") }}</h2>
+        {{ post.body|raw }}
+
+        {% if post.categories|length > 0 %}
+            Posted in
+            <ul>
+                {% for category in post.categories %}
+                    <li><a href="{{ path('vivo_blog.category.index', { 'slug' : category.slug }) }}">{{ category.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div><!--/row-->
+{% endblock vivo_blog_main_content %}

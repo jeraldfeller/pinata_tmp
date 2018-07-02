@@ -1,0 +1,8 @@
+App\SiteBundle\Entity\Site:
+    properties:
+        phone:
+            - NotBlank: ~
+        address:
+            - NotBlank: ~
+        contactEmail:
+            - NotBlank: ~

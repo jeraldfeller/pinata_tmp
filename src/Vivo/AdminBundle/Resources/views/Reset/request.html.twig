@@ -1,0 +1,31 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block topnav %}{% endblock topnav %}
+{% block notices %}{% endblock notices %}
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block body_class 'vivo_admin_security' %}
+
+{% block content %}
+    <form action="{{ path('vivo_admin.reset.request') }}" method="post" class="ignore-unsaved-form">
+        <h2>{% block title %}Reset password{% endblock title %}</h2>
+        {% for type, flashMessages in app.session.flashbag.all() %}
+            {% for flashMessage in flashMessages %}
+                <div class="alert alert-{{ type }}">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        {%- endfor %}
+        {% if error %}
+            <p class="text-error">{{ error|trans({}, 'VivoAdminBundle') }}</p>
+        {% endif %}
+        <input type="email" name="_username" value="{{ last_username }}" class="input-block-level" required="required"{% if last_username is empty %} autofocus="autofocus"{% endif %} placeholder="Email address" />
+
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Reset</button>
+            <a href="{{ path('vivo_admin.security.login') }}" class="btn">Cancel</a>
+        </div>
+    </form>
+{% endblock content %}

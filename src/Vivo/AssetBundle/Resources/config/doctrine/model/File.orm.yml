@@ -1,0 +1,48 @@
+Vivo\AssetBundle\Model\File:
+    type: mappedSuperclass
+    table: vivo_asset_file
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        hash:
+            type: string
+            length: 64
+            unique: true
+        extension:
+            type: string
+            length: 10
+            nullable: true
+        mimeType:
+            type: string
+            length: 255
+        size:
+            type: integer
+            length: null
+        width:
+            type: smallint
+            length: null
+            nullable: true
+        height:
+            type: smallint
+            length: null
+            nullable: true
+        salt:
+            type: string
+            length: 16
+        touchedAt:
+            type: datetime
+            length: null
+    oneToMany:
+        assets:
+            targetEntity: Vivo\AssetBundle\Model\AssetInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: file
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    lifecycleCallbacks: {  }

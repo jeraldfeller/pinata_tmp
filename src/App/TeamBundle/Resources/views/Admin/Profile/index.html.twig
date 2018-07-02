@@ -1,0 +1,74 @@
+{% extends '@AppTeam/Admin/Profile/layout.html.twig' %}
+
+{% block title 'Profile' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">List Profiles</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group">
+            <a href="{{ path('app_team.admin.profile.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create Profile</a>
+        </div>
+
+        <div class="btn-group">
+            <a href="{{ path('app_team.admin.profile.sort') }}" class="btn"><i class="icon-list"></i> Sort Profiles</a>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        {{ form(searchForm, {'action': path(app.request.get('_route'), app.request.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="{{ searchForm.vars.id ~ '_results' }}">
+        {% block ajax_response %}
+            {% if pagination|length < 1 %}
+                <div class="alert alert-notice">
+                    No results available.
+                </div>
+            {% else %}
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ knp_pagination_sortable(pagination, 'Name', 'profile.name')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Position', 'profile.position')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Disabled?', 'profile.disabledAt')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Created', 'profile.createdAt')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Updated', 'profile.updatedAt')|raw }}</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for profile in pagination %}
+                        <tr>
+                            <td>{{ profile.name }}</td>
+                            <td>{{ profile.position }}</td>
+                            <td>{{ profile.disabled ? 'Yes' : 'No' }}</td>
+                            <td>{% if profile.createdAt %}{{ profile.createdAt|date('d-M-Y h:i:s a') }}{% endif %}</td>
+                            <td>{% if profile.updatedAt %}{{ profile.updatedAt|date('d-M-Y h:i:s a') }}{% endif %}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_team.admin.profile.update', {'id': profile.id}) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu open-left">
+                                        <li><a href="{{ path('app_team.admin.profile.update', {'id': profile.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                        <li><a class="confirm" href="{{ path('app_team.admin.profile.delete', {'id': profile.id, 'token': csrf_token(profile.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
+        {% endblock ajax_response %}
+    </div>
+{% endblock content %}

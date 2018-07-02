@@ -1,0 +1,4 @@
+Vivo\AssetBundle\Model\CkeditorAsset:
+    type: mappedSuperclass
+    table: ckeditor_asset
+    lifecycleCallbacks: {  }

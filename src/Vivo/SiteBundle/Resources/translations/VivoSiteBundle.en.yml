@@ -1,0 +1,34 @@
+admin:
+    form:
+        site:
+            name:         'Site name *'
+            status:       'Status *'
+            primary:      'Primary site'
+            theme:        'Theme directory'
+            shortName:
+                label: 'Short site name'
+                help:  'This will be used in email subjects etc..'
+            mailer: 'Mailer'
+            senderName:  'Sender name'
+            senderEmail: 'Sender email *'
+            notificationEmail: 'Notification email'
+            googleAnalyticsId: 'Analytics ID'
+            googleAdvertiserSupport: 'Display analytics advertiser support?'
+            googleSiteVerificationCode: 'Site verification code'
+            googleApiServerKey: 'API server key'
+            googleApiBrowserKey: 'API browser key'
+            berryWorldEmail: 'BerryWorld Email'
+            berryWorldWebsite: 'BerryWorld Website'
+        domain:
+            primary:      'Primary'
+            host:         'Host *'
+            wwwSubdomain: 'Prepend www.'
+            secure:       'Supports SSL?'
+            remove:       'Remove'
+    flash:
+        site:
+            create.success: 'Site successfully created.'
+            update.success: 'Site successfully updated.'
+            delete:
+                success:  'Site successfully deleted.'
+                failed:   'Site requires manual removal for related data conflicts.'

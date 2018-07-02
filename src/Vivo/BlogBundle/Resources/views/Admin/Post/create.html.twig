@@ -1,0 +1,18 @@
+{% extends '@VivoBlog/Admin/layout.html.twig' %}
+
+{% block title 'Create Post' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">Create Post</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@VivoBlog/Admin/Post/_form.html.twig' with {'form': form, 'post': post} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Post</button>
+            <a href="{{ path('vivo_blog.admin.post.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

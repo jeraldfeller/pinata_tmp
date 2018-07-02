@@ -1,0 +1,27 @@
+{% block vivo_address_locality_row %}
+    {{ form_errors(form) }}
+    {{ form_row(form.countryCode) }}
+    {{ form_row(form.postcode) }}
+    {{ form_row(form.suburb) }}
+    {% if form.state is defined %}
+        {{ form_row(form.state) }}
+    {% endif %}
+    {% if form.vars.value.countryCode == 'AU' %}
+        {% javascripts '@VivoAddressBundle/Resources/public/plugin/suburb.jquery.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script type="text/javascript">
+            jQuery('#{{ form.suburb.vars.id }}').vivoAddressSuburb({
+                defaultValue         : '{{ form.vars.value.suburb }}',
+                country              : '{{ form.vars.value.countryCode }}',
+                postcodeElement      : $('#{{ form.postcode.vars.id }}'),
+                suburbElement        : $('#{{ form.suburb.vars.id }}'),
+                stateElement         : $('#{{ form.state.vars.id }}'),
+                selectSuburbLabel    : '{{ form.suburb.vars.select_suburb_label }}',
+                emptyPostcodeLabel   : '{{ form.suburb.vars.empty_postcode_label }}',
+                invalidPostcodeLabel : '{{ form.suburb.vars.invalid_postcode_label }}',
+                requestUrl           : '{{ path('vivo_address.suburb.search') }}'
+            });
+        </script>
+    {% endif %}
+{% endblock vivo_address_locality_row %}

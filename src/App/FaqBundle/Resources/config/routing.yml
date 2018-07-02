@@ -1,0 +1,9 @@
+app_faq.admin.category:
+    resource:     "@AppFaqBundle/Resources/config/routing/admin/category.yml"
+    prefix:       /admin/faq
+    requirements: { _requires_channel: https }
+
+app_faq.admin.faq:
+    resource:     "@AppFaqBundle/Resources/config/routing/admin/faq.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }

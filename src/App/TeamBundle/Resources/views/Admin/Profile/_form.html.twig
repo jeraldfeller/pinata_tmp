@@ -1,0 +1,19 @@
+<fieldset>
+    {{ form_errors(form) }}
+    {{ form_row(form.disabledAt) }}
+    {{ form_row(form.quote) }}
+
+    {{ form_row(form.name, {'attr': {'class': 'span4'}}) }}
+    {{ form_row(form.position, {'attr': {'class': 'span6'}}) }}
+    {{ form_row(form.image) }}
+
+    {{ form_row(form.bannerImage) }}
+
+    {{ form_row(form.contentImage) }}
+    {{ form_row(form.introduction) }}
+    {{ form_row(form.description) }}
+
+
+</fieldset>
+
+{{ form_rest(form) }}

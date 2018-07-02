@@ -1,0 +1,13 @@
+App\FaqBundle\Entity\Category:
+    properties:
+        title:
+            - NotBlank: ~
+
+App\FaqBundle\Entity\Faq:
+    properties:
+        category:
+            - NotBlank: ~
+        question:
+            - NotBlank: ~
+        answer:
+            - NotBlank: ~

@@ -1,0 +1,72 @@
+Vivo\SiteBundle\Model\Site:
+    type: mappedSuperclass
+    table: vivo_site
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: string
+            length: 255
+            nullable: false
+        status:
+            type: smallint
+            length: null
+            nullable: false
+        shortName:
+            type: string
+            length: 255
+            nullable: true
+        mailer:
+            type: string
+            length: 30
+            nullable: true
+        senderName:
+            type: string
+            length: 255
+            nullable: true
+        senderEmail:
+            type: string
+            length: 255
+        notificationEmail:
+            type: string
+            length: 255
+            nullable: true
+        theme:
+            type: string
+            length: 255
+            nullable: true
+        googleAnalyticsId:
+            type: string
+            length: 15
+            nullable: true
+        googleAdvertiserSupport:
+            type: boolean
+            length: null
+            nullable: false
+        googleSiteVerificationCode:
+            type: string
+            length: 50
+            nullable: true
+        googleApiServerKey:
+            type: string
+            length: 50
+            nullable: true
+        googleApiBrowserKey:
+            type: string
+            length: 50
+            nullable: true
+    oneToMany:
+        domains:
+            targetEntity: Vivo\SiteBundle\Model\DomainInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: site
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+    lifecycleCallbacks: {  }

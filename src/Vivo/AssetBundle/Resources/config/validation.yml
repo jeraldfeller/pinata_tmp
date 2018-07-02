@@ -1,0 +1,12 @@
+Vivo\AssetBundle\Model\Asset:
+    properties:
+        link:
+            - Url: ~
+
+Vivo\AssetBundle\Model\File:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: hash
+    getters:
+        absolutePath:
+            - Image: { groups: [vivo_asset_asset_image] }
+            - File: { groups: [vivo_asset_asset_file] }

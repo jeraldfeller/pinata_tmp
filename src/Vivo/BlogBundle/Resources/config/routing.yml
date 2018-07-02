@@ -1,0 +1,9 @@
+vivo_blog.admin.post:
+    resource:     "@VivoBlogBundle/Resources/config/routing/admin/post.yml"
+    prefix:       /admin/blog
+    requirements: { _requires_channel: https }
+
+vivo_blog.admin.category:
+    resource:     "@VivoBlogBundle/Resources/config/routing/admin/category.yml"
+    prefix:       /admin/blog
+    requirements: { _requires_channel: https }

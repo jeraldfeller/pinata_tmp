@@ -1,0 +1,24 @@
+vivo_admin.security:
+    resource:     "@VivoAdminBundle/Resources/config/routing/security.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_admin.profile:
+    resource:     "@VivoAdminBundle/Resources/config/routing/profile.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_admin.reset:
+    resource:     "@VivoAdminBundle/Resources/config/routing/reset.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_admin.group:
+    resource:     "@VivoAdminBundle/Resources/config/routing/group.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }
+
+vivo_admin.user:
+    resource:     "@VivoAdminBundle/Resources/config/routing/user.yml"
+    prefix:       /admin
+    requirements: { _requires_channel: https }

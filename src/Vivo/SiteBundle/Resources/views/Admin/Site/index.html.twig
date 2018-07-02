@@ -1,0 +1,74 @@
+{% extends '@VivoSite/Admin/layout.html.twig' %}
+
+{% block title 'Sites' %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('admin_homepage') }}">Home</a> <span class="divider">/</span></li>
+        <li class="active">Sites</li>
+    </ul>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group">
+            <a href="{{ path('vivo_site.admin.site.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create Site</a>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        {{ form(searchForm, {'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="{{ searchForm.vars.id ~ '_results' }}">
+        {% block ajax_response %}
+            {% if pagination|length < 1 %}
+                <div class="alert alert-notice">
+                    There are currently no sites available.
+                </div>
+            {% else %}
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ knp_pagination_sortable(pagination, 'Site Id', 'site.id')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Status', 'site.status')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Site Name', 'site.name')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Primary', 'site.isPrimary')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Created', 'site.createdAt')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Updated', 'site.updatedAt')|raw }}</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for site in pagination %}
+                        <tr>
+                            <td>{{ site.id }}</td>
+                            <td>{{ site.statusName }}</td>
+                            <td>{{ site.name }}</td>
+                            <td>{{ site.isPrimary ? "Yes" : "No" }}</td>
+                            <td>{% if site.createdAt %}{{ site.createdAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>{% if site.updatedAt %}{{ site.updatedAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('vivo_site.admin.site.update', {'id': site.id}) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu open-left">
+                                        <li><a href="{{ path('vivo_site.admin.site.update', {'id': site.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                        <li><a class="confirm" href="{{ path('vivo_site.admin.site.delete', {'id': site.id, 'token': csrf_token(site.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
+        {% endblock ajax_response %}
+    </div>
+{% endblock content %}

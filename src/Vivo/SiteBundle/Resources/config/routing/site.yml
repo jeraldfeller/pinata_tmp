@@ -1,0 +1,28 @@
+vivo_site.site.catch_flush:
+    path: /_flush
+    defaults: { _controller: VivoSiteBundle:Site:catchFlush }
+    methods: [PURGE]
+
+vivo_site.site.flush:
+    path: /_flush
+    defaults: { _controller: VivoSiteBundle:Site:flush }
+    methods: [GET]
+
+vivo_site.site.site_password:
+    path: /access-denied
+    defaults: { _controller: VivoSiteBundle:Site:sitePassword }
+
+vivo_site.site.robots:
+    path: /robots.{_format}
+    defaults: { _controller: VivoSiteBundle:Site:robots }
+    requirements: { _format: txt }
+
+vivo_site.site.sitemap_index:
+    path: /sitemap.{_format}
+    defaults: { _controller: VivoSiteBundle:Site:sitemapIndex }
+    requirements: { _format: xml }
+
+vivo_site.site.sitemap:
+    path: /sitemap/{name}/{page}.{_format}
+    defaults: { _controller: VivoSiteBundle:Site:sitemap }
+    requirements: { _format: xml, page: \d+ }

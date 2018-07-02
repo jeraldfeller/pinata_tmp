@@ -1,0 +1,6 @@
+vivo_admin:
+    email.non_unique: 'An account with this email address already exists.'
+    password:
+        blank:    'Password cannot be blank.'
+        current:  'Enter your current password.'
+        mismatch: 'Your password does not match.'

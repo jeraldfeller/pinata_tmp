@@ -1,0 +1,1 @@
+<a{% for attrname, attrvalue in item.linkAttributes %} {{ attrname }}="{{ attrvalue }}"{% endfor %} data-url="{{ url('app_core.fruit.view',{slug: fruit.primarySlug.slug }) }}">{{ fruit.name }}</a>

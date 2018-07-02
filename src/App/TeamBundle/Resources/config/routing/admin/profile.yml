@@ -1,0 +1,21 @@
+app_team.admin.profile.index:
+    pattern:  /profile
+    defaults: { _controller: AppTeamBundle:Admin/Profile:index }
+
+app_team.admin.profile.sort:
+    pattern:  /profile/sort
+    defaults: { _controller: AppTeamBundle:Admin/Profile:sort }
+
+app_team.admin.profile.create:
+    pattern:  /profile/new
+    defaults: { _controller: AppTeamBundle:Admin/Profile:create }
+
+app_team.admin.profile.update:
+    pattern:  /profile/{id}/edit
+    defaults: { _controller: AppTeamBundle:Admin/Profile:update }
+    requirements: { id: \d+ }
+
+app_team.admin.profile.delete:
+    pattern:  /profile/{id}/delete/{token}
+    defaults: { _controller: AppTeamBundle:Admin/Profile:delete }
+    requirements: { id: \d+ }

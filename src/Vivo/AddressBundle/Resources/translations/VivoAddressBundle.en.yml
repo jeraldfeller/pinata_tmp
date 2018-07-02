@@ -1,0 +1,9 @@
+form:
+    address:
+        countryCode:  'Country *'
+        company:      'Company'
+        addressLine1: 'Address line 1 *'
+        addressLine2: 'Address line 2'
+        postcode:     'Postcode *'
+        suburb:       'Suburb *'
+        state:        'State *'

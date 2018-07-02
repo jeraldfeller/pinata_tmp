@@ -1,0 +1,236 @@
+Vivo Group CMS - End User Licence Agreement (EULA)
+
+Last modified: 28 January 2015
+
+These licence terms are a legally binding agreement between Vivo Group Pty Ltd
+ABN 28 143 802 868 ('we', 'us') and the Licensee(s) specified at the time of
+purchase ('you'). This EULA applies to and governs the Licensee's use of all
+versions, modules, extensions, themes, updates, support and internet based
+services associated with the Vivo Group CMS (the Software).
+
+By using, installing, downloading or making any copy of the Software, you
+accept these terms. You also consent to provide us with certain information as
+set out in these terms. If you do not accept these terms, you must not use the
+Software, and must remove and delete or destroy any copy of the Software in
+your possession.
+
+1. Ownership of the Software
+
+    1.1 Vivo Group Pty Ltd retains ownership of the Software, and reserves all
+        rights in the Software. No proprietary rights are assigned or
+        transferred under this EULA. You may not copy, reproduce, modify,
+        alter, adapt, translate, decompile or reverse engineer the software
+        except as permitted by law or this EULA.
+
+2. Grant of Licence - Testing and Staging Environments
+
+    2.1 We grant the Licensee a royalty-free, non-exclusive licence to use,
+        copy, install and enjoy the Vivo CMS for the purposes of testing any
+        Services provided by Vivo Group, provided that the Licensee may not
+        deploy the Vivo CMS in any publicly accessible production environment.
+
+3. Grant of Licence - Production Environments
+
+    3.1 Upon payment of all applicable fees (including any licence fee and
+        fees for Vivo Group Services such as consulting, website development,
+        graphic design, hosting and third party licence fees related to the
+        Licensed Domain), we grant the Licensee a non-exclusive,
+        non-transferrable, worldwide, perpetual licence to use, copy, install
+        and enjoy the Software subject to the terms of this EULA.
+
+    3.2 This licence extends only to the Licensee specified at the time of
+        purchase. You may not use, copy, install or operate the Software for
+        the benefit of any entity other than the Licensee.
+
+    3.3 This license extends only to the domain(s) specified at the time of
+        purchase, including related sub-domains, provided those sub-domains
+        are operated only for the benefit of the named Licensee (the 'Licensed
+        Domains'). You may not use, copy, install or operate the Software in
+        connection with any domain other than the Licensed Domains.
+
+    3.4 The Licensee may install the Software on as many servers and devices
+        as they wish, whether virtualised or physical, partitioned or not,
+        provided the Software is only used for the benefit of the named
+        Licensee, accessible only through the Licensed Domains.
+
+4. Sub-License Rights
+
+    4.1 The Licensee may sub-licence the rights granted above to its:
+
+        (a) web designers and developers, as necessary to develop and maintain
+            the website accessible at the Licensed Domains; and
+
+        (b) users and customers who access the website through the Licensed
+            Domains.
+
+5. Restrictions on Use
+
+    5.1 Unless otherwise permitted by law or this EULA, you must not:
+
+        (a) work around any technical limitations in the software;
+
+        (b) reverse engineer, decompile or disassemble the software, or
+            disclose the algorithmic nature or describe any part for the
+            source code or inner workings of the Software;
+
+        (c) publish the software for others to copy;
+
+        (d) use the software in any illegal or immoral way, or for any such
+            purpose;
+
+        (e) use, copy, rent, lease or lend the software; or
+
+        (f) create any derivative work or program to mimic the data or
+            functionality of the Software.
+
+6. Third Party Components (Internal)
+
+    6.1 The Software incorporates some third party components, which are
+        subject to applicable third party software licences, incorporated by
+        reference. A list of these third party components is provided with the
+        Software, and available upon request to info@vivogroup.com.au
+
+    6.2 BY AGREEING TO THE TERMS OF THIS EULA, YOU AGREE TO BE BOUND BY THESE
+        APPLICABLE THIRD PARTY SOFTWARE LICENCES.
+
+7. Website Applications and Content
+
+    7.1 We are only responsible for the Software itself. We are not
+        responsible for any third party software, applications, code or
+        content, whether or not it incorporates, interacts or integrates with
+        the Software. You are entirely responsible for the development and
+        operation of your website.
+
+    7.2 We do not give any warranty that the Software is compatible with your
+        particular website configuration, code or content, or any other
+        application hosted in association with the Software, other than as
+        expressly agreed in writing at the time of purchase.
+
+8. Backup Copies
+
+    8.1 The Licensee may create backup copies of the Software for data
+        recovery purposes, or otherwise as permitted by law. Backup copies may
+        only be used to reinstall the Software, or restore your website, and
+        remain subject to the terms of this EULA (including the restriction to
+        the Licensed Domains).
+
+9. Software Updates
+
+    9.1 We may release updates, patches, or new versions of the Software from
+        time to time. The Licensee has no automatic right to updates, but
+        where we choose to provide these to you, they shall be considered part
+        of the Software and shall be governed by the terms of this EULA.
+
+10. Anonymous Reporting
+
+    10.1 The Software transmits anonymous usage information to us. We use this
+         information to monitor and enforce compliance of this EULA,
+         specifically the limitation of this licence to the Licensed Domains.
+         We may also use this information to improve our products and
+         services.
+
+    10.2 BY USING THE SOFTWARE, YOU CONSENT TO THE USE AND DISCLOSURE OF THIS
+         INFORMATION.
+
+11. Limitation of Liability
+
+    11.1 We only accept liability to you as set out in this clause, or as
+         required by consumer or other laws that cannot be excluded by
+         contract.
+
+    11.2 To the fullest extent allowable at law:
+
+        (a) This Software is provided "As Is". All implied conditions or
+            warranties are excluded. Any condition or warranty which would
+            otherwise be implied in this EULA is excluded. We expressly make
+            no warranty as to fitness for any purpose, performance or
+            compatibility;
+
+        (b) Vivo Group will not be liable to you or any third party for any
+            loss, cost (including legal fees), expense or damage (including
+            any indirectly, incidental, consequential, special, exemplary or
+            punitive damages) whether under contract, tort (including
+            negligence) or any other legal theory;
+
+        (c) The total liability of Vivo Group, and our officers, employees,
+            agents and contractors is limited to (at our election), repairing
+            (updating) or replacing the software, resupplying the services, or
+            refunding the price you paid for the software and services; and
+
+        (d) The total liability of Vivo Group, and our officers, employees,
+            agents and contractors in connection with each Licensed Domain
+            will not under any circumstances exceed the licence fees received
+            by Vivo Group for the use of the Software on the Licensed Domain.
+
+12. Australian Consumer Law Notice
+
+    12.1 Our Goods comes with guarantees that cannot be excluded under the
+         Australian Consumer Law. You are entitled to a replacement or refund
+         for a major failure and compensation for any other reasonably
+         foreseeable loss or damage. You are also entitled to have the Goods
+         repaired or replaced if the Goods fails to be of acceptable quality
+         and the failure does not amount to a major failure.
+
+13. Severability
+
+    13.1 If any of these terms are held to be invalid or unenforceable by a
+         court of law, that part will be excluded, and the remaining valid
+         terms will remain in full force. This EULA does not affect your
+         rights in relation to any third party from whom you acquired the
+         Software.
+
+14. Entire Agreement
+
+    14.1 This EULA, and those documents expressly incorporated by reference,
+         contain the entire agreement between the parties and supersedes all
+         previous negotiations or agreements relating to your right to use the
+         Software.
+
+15. Updates to this EULA
+
+    15.1 We may update this EULA from time to time by notice on our website,
+         or by including the updated EULA in a Software update. Such variation
+         will be effective upon posting those notifications and changes on our
+         website, or your installing the Software update, without further
+         notice to you.
+
+16. Waiver
+
+    16.1 Any delay or failure to exercise or enforce our rights under this
+         EULA will not be construed as a waiver of those rights, nor preclude
+         any future exercise of those rights.
+
+17. Legal Fees
+
+    17.1 In the event that we obtain the legal assistance to enforce this EULA
+         for your apparent breach of these terms, all legal fees (on a
+         solicitor and own client basis) incurred in enforcing this EULA may
+         be recovered from you.
+
+18. Dispute Resolution
+
+    18.1 You agree that in case of a dispute or claim, you will first attempt
+         to informally negotiate a settlement or resolution of the dispute by
+         contacting info@vivogroup.com.au and informing us in a comprehensive
+         way of the grounds of your dispute before resorting to any legal
+         action.
+
+19. Jurisdiction
+
+    19.1 The laws of the State of Queensland, Australia apply to this EULA and
+         the parties submit exclusively to the courts of that jurisdiction.
+
+    19.2 This EULA establishes certain legal rights, but you may have other
+         legal rights under the laws of your state or country. This EULA will
+         only change your rights under the laws of your state or country to
+         the extent permitted by those laws.
+
+20. Representatives, Successors and Assigns
+
+    20.1 We may assign or novate our rights and obligations under this EULA at
+         any time by notice on our website. Upon such assignment or novation,
+         our obligations and benefits under this EULA are binding on and shall
+         benefit our respective representatives, successors and assigns.
+
+Please direct any questions, comments or concerns about this EULA to
+info@vivogroup.com.au

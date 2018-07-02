@@ -1,0 +1,16 @@
+Vivo\PageBundle\Model\Asset:
+    type: mappedSuperclass
+    table: vivo_page_asset
+    manyToOne:
+        assetGroup:
+            targetEntity: Vivo\PageBundle\Model\AssetGroupInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: assets
+            fetch: EXTRA_LAZY
+            joinColumns:
+                page_asset_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

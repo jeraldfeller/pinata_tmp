@@ -1,0 +1,105 @@
+Vivo\PageBundle\Model\Page:
+    type: mappedSuperclass
+    table: vivo_page
+    indexes:
+        alias: { columns: [alias] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        pageType:
+            type: string
+            length: 255
+        alias:
+            type: string
+            length: 50
+            nullable: true
+        pageTitle:
+            type: string
+            length: 255
+        disabledAt:
+            type: datetime
+            nullable: true
+        metaTitle:
+            type: string
+            length: 255
+            nullable: true
+        metaDescription:
+            type: string
+            length: 255
+            nullable: true
+        socialTitle:
+            type: string
+            length: 255
+            nullable: true
+        socialDescription:
+            type: string
+            length: 255
+            nullable: true
+        robotsNoIndex:
+            type: boolean
+            nullable: false
+        robotsNoFollow:
+            type: boolean
+            nullable: false
+        excludedFromSitemap:
+            type: boolean
+            nullable: false
+    oneToMany:
+        slugs:
+            targetEntity: Vivo\PageBundle\Model\SlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: page
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        content:
+            targetEntity: Vivo\PageBundle\Model\ContentInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: page
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        assetGroups:
+            targetEntity: Vivo\PageBundle\Model\AssetGroupInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: page
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        menuNodes:
+            targetEntity: Vivo\PageBundle\Model\MenuNodeInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: page
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    manyToOne:
+        primarySlug:
+            targetEntity: Vivo\PageBundle\Model\SlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: null
+            inversedBy: null
+            fetch: EXTRA_LAZY
+            joinColumns:
+                primary_slug_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

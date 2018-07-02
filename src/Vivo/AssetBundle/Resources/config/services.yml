@@ -1,0 +1,121 @@
+services:
+    # Repository
+    vivo_asset.repository.file:
+        class: Vivo\AssetBundle\Repository\FileRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_asset.model.file%"]
+
+    vivo_asset.repository.asset:
+        class: Vivo\AssetBundle\Repository\AssetRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_asset.model.asset%"]
+
+    vivo_asset.repository.ckeditor_asset:
+        class: Vivo\AssetBundle\Repository\AssetRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_asset.model.ckeditor_asset%"]
+
+    # Form Types
+    vivo_asset.form.file:
+        class: Vivo\AssetBundle\Form\Type\FileType
+        arguments: ["@vivo_asset.factory.file", "%vivo_asset.model.file%"]
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_upload:
+        class: Vivo\AssetBundle\Form\Type\AssetUploadType
+        arguments: ["@vivo_asset.repository.file"]
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_file_collection:
+        class: Vivo\AssetBundle\Form\Type\AssetFileCollectionType
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_image_collection:
+        class: Vivo\AssetBundle\Form\Type\AssetImageCollectionType
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_file:
+        class: Vivo\AssetBundle\Form\Type\AssetFileType
+        arguments: ["%vivo_asset.model.file%"]
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_file_basic:
+        class: Vivo\AssetBundle\Form\Type\AssetFileBasicType
+        arguments: ["%vivo_asset.model.file%"]
+        tags:
+            - { name: form.type }
+
+    vivo_asset.form.asset_image:
+        class: Vivo\AssetBundle\Form\Type\AssetImageType
+        arguments: ["%vivo_asset.model.file%"]
+        tags:
+            - { name: form.type }
+
+    # Imagine Filter Loader
+    vivo_asset.imagine.filter_loader:
+        class: Vivo\AssetBundle\Imagine\FilterLoader\PaddingFilterLoader
+        arguments: ["@liip_imagine"]
+        tags:
+            - { name: liip_imagine.filter.loader, loader: padding }
+
+    # Imagine Data Loader
+    vivo_asset.binary.loader.file:
+        class: Vivo\AssetBundle\Binary\Loader\FileLoader
+        public: false
+        arguments:
+            - "@vivo_asset.repository.file"
+            - "@liip_imagine"
+            - "%vivo_asset.create_non_existent_images%"
+        tags:
+            - { name: liip_imagine.binary.loader, loader: vivo_asset_file_data_loader }
+
+    # Twig
+    vivo_asset.twig.extension.asset_preview:
+        class: Vivo\AssetBundle\Twig\AssetPreviewExtension
+        public: false
+        arguments: ["@liip_imagine.cache.manager", "%kernel.root_dir%"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_asset.twig.extension.trim_path:
+        class: Vivo\AssetBundle\Twig\TrimPathExtension
+        public: false
+        arguments: ["@request_stack"]
+        tags:
+            - { name: twig.extension }
+
+    vivo_asset.twig.extension.asset_file_form:
+        class: Vivo\AssetBundle\Twig\AssetFileFormExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    # Listeners
+    vivo_asset.listener.file_storage:
+        class: Vivo\AssetBundle\EventListener\FileStorageEventListener
+        public: false
+        arguments: ["%vivo_asset.upload_directory%"]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postRemove }
+            - { name: doctrine.event_listener, event: postLoad }
+
+    vivo_asset.listener.asset_defaults:
+        class: Vivo\AssetBundle\EventListener\AssetDefaultsEventListener
+        public: false
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    # Factory
+    vivo_asset.factory.file:
+        class: Vivo\AssetBundle\Factory\FileFactory
+        arguments: ["@vivo_asset.repository.file", "@filesystem"]

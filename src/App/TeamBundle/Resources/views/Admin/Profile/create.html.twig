@@ -1,0 +1,16 @@
+{% extends '@AppTeam/Admin/Profile/layout.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">{% block title 'Create Profile' %}</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {% include '@AppTeam/Admin/Profile/_form.html.twig' with {'form': form, 'profile': profile} %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Profile</button>
+        <a href="{{ path('app_team.admin.profile.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends '@VivoPage/Page/view.html.twig' %}
+
+
+{% block main_col_content %}
+    {{ page.contentByAlias('main').content|default('')|raw }}
+    {% if categories|length > 0 %}
+        <div class="faq-container">
+            {% for category in categories %}
+                <div class="faq-category">
+                    <h2>{{ category.title }}</h2>
+                    <div class="faq-list">
+                        {% for faq in category.faqs %}
+                            <div class="faq-faq">
+                                <div class="faq-title">
+                                    <h3>{{ faq.question }} <span>+</span></h3>
+                                </div>
+                                <div class="faq-answer">
+                                    {{ faq.answer|raw }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock main_col_content %}

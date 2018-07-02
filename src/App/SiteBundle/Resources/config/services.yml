@@ -1,0 +1,6 @@
+services:
+    # Form Extensions
+    app_site.form.extension.site:
+        class: App\SiteBundle\Form\Extension\SiteExtension
+        tags:
+            - { name: form.type_extension, extended_type: Vivo\SiteBundle\Form\Type\SiteType }

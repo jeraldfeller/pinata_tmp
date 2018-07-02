@@ -1,0 +1,71 @@
+{% block template_body_text -%}
+    {%- block body_text %}{% endblock body_text -%}
+{%- endblock template_body_text %}
+
+{% block template_body_html %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+        {%- block template_subject -%}
+            {%- block subject -%}{% endblock subject %} | {{ site.shortName|raw }}
+        {%- endblock template_subject -%}
+    </title>
+    {% block body_html_css %}
+        <style type="text/css">
+            a {
+                color: #896D91;
+                text-decoration: none;
+            }
+        </style>
+    {% endblock body_html_css %}
+</head>
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+        <tbody><tr>
+            <td style="padding:20px 11px 40px 11px">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto" bgcolor="#ffffff">
+                    <tbody>
+                    </tbody>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto;background-color:#f1f1f1">
+                    <tbody>
+                    <tr>
+                        <td>{{ site.shortName }}</td></tr>
+                    <tr>
+                        <td>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto;background-color:#f1f1f1;">
+                                <tbody><tr>
+                                    <td width="20px">&nbsp;</td>
+                                    <td align="left" style="padding:0 0 22px 0">
+                                        <div style="font-family:Lucida Grande,Lucida Sans,Lucida Sans Unicode,Arial,Helvetica,Verdana,sans-serif;color:#333333;font-size:12px;line-height:1.25em"><br><br>
+                                            {% block body_html %}{% endblock body_html %}
+                                        </div>
+                                    </td>
+                                    <td width="20px">&nbsp;</td>
+                                </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr><td style="padding-top:40px">&nbsp;</td></tr>
+                    </tbody></table>
+                <table width="490" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto">
+                    <tbody><tr><td style="padding:20px 20px 10px 0">
+                            <div style="font-family:Geneva,Verdana,Arial,Helvetica,sans-serif;font-size:9px;line-height:1.34em;color:#999999">
+                                {% block body_html_footer %}
+                                    <p>&copy; {{ site.name }} {{ "now"|date("Y") }}</p>
+                                    <p>&nbsp;</p>
+                                {% endblock body_html_footer %}
+                            </div>
+
+                        </td></tr>
+                    <tr><td></td></tr>
+                    </tbody></table>
+            </td>
+        </tr>
+        </tbody></table>
+</body>
+</html>
+{% endblock template_body_html %}

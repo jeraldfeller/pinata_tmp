@@ -1,0 +1,21 @@
+Vivo\SiteBundle\Model\Site:
+    properties:
+        name:
+            - NotBlank: ~
+        senderEmail:
+            - NotBlank: ~
+            - Email: { strict: true }
+        notificationEmail:
+            - Email: { strict: true }
+        domains:
+            - Valid: ~
+            - Count:
+                min: 1
+                minMessage: domains.min
+
+Vivo\SiteBundle\Model\Domain:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: host
+    properties:
+        host:
+            - NotBlank: ~

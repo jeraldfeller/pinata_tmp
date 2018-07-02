@@ -1,0 +1,526 @@
+@charset "UTF-8";
+
+/*************
+    Mixins
+**************/
+
+/*****************
+    Layouts
+******************/
+
+/* Used for indenting text out of box ready for background image */
+.rep-style {
+    display: block;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+
+.rep() {
+    &:extend(.rep-style);
+}
+
+.inline-style {
+    display: inline-block;
+    *display: inline; /* ie7 fix */
+    *zoom: 1; /* hasLayout ie7 trigger */
+}
+
+.inline() {
+    &:extend(.inline-style);
+}
+
+/* Sets box-sizing:content-box */
+.content-box-style {
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+
+.content-box() {
+    &:extend(.content-box-style);
+}
+
+/* Sets box-sizing:border-box */
+.border-box-style {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.border-box() {
+    &:extend(.border-box-style);
+}
+
+/***************
+    Fixes/Resets
+*****************/
+
+/* Removes all default styling from list ready for unique layout */
+.clean-list-style {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        margin: 0;
+        padding: 0;
+        background: none;
+        line-height: 120%;
+    }
+}
+
+.clean-list() {
+    &:extend(.clean-list-style all);
+
+}
+
+/* Smooths fonts. Use warily as it is resource intensive, and only supported on webkit */
+.smooth-style {
+    -webkit-font-smoothing: antialiased;
+}
+
+.smooth() {
+    &:extend(.smooth-style);
+}
+
+/* Fixes the flash on elements that occurs due to bxSlider turning on hardware rendering */
+.flash-fix() {
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Generates nth-child where item is at the top */
+
+.zth-child (@i: 5) when (@i > 0) {
+    &:nth-child(@{i}) {
+        z-index: 100 - @i + 1;
+    }
+    .zth-child(@i - 1);
+}
+
+/*
+    Repeats rules for @i
+    To access @i inside arguments, use @i, or @{i}
+ */
+.repeat(@i: 5, @rules) when (@i > 0) {
+    @rules();
+    .repeat((@i - 1), @rules);
+}
+
+/* Mixin to generate random number;
+   int should be 0 or 1, 1 being to make it an integer
+*/
+.makeRandom(@min: 0, @max: @min+1, @int: 0) {
+    .checkInt() {
+        @getNum: `Math.random() * (@{max} - @{min} + @{int})`;
+        @base: unit(`@{int} == 1 ? Math.floor(@{getNum}) : @{getNum}`);
+    }
+    .checkInt();
+    @randNum: @base + @min;
+}
+
+/****************
+    CSS3 Misc
+*****************/
+
+.rounded-base(@arguments) {
+    -webkit-border-radius: @arguments;
+    -moz-border-radius: @arguments;
+    border-radius: @arguments;
+}
+
+.rounded(@radius) {
+    .rounded-base(@radius);
+}
+
+.rounded(@top,@bottom) {
+    .rounded-base(~"@{top} @{top} @{bottom} @{bottom}");
+}
+
+.rounded(@topLeft,@topRight,@bottomLeft,@bottomRight) {
+    .rounded-base(~"@{topLeft} @{topRight} @{bottomRight} @{bottomLeft}");
+}
+
+.opacity (@opacity: 0.5) {
+    -webkit-opacity: @opacity;
+    -moz-opacity: @opacity;
+    opacity: @opacity;
+}
+
+.perspective (@value: 1000) {
+    -webkit-perspective: @value;
+    -moz-perspective: @value;
+    -ms-perspective: @value;
+    perspective: @value;
+}
+
+.filter(@string) {
+    -webkit-filter: @string;
+    filter: @string;
+}
+
+.blur(@value) {
+    .filter(~"blur(@{value})");
+}
+
+.background(@img,@pos:0 0,@repeat:no-repeat,@extras:~"") {
+    @url: "@{img_dir}@{img}";
+    background: url(@url) @repeat @pos @extras;
+}
+
+.svg-bg(@img,@width,@height) {
+    .rep();
+    .background(@img);
+    background-size: unit(@width, px) unit(@height, px);
+    width: unit(@width, px);
+    height: unit(@height, px);
+}
+
+.rgba-colour(@colour,@alpha) {
+    @alphaColour: hsla(hue(@colour), saturation(@colour), lightness(@colour), @alpha);
+    color: @alphaColour;
+}
+
+.pointer-events(@args) {
+    -webkit-touch-callout: @args;
+    -webkit-user-select: @args;
+    -khtml-user-select: @args;
+    -moz-user-select: @args;
+    -ms-user-select: @args;
+    user-select: @args;
+}
+
+.columns(@count: 2, @width: 50%, @gap: 2%) {
+
+    -webkit-column-count: @count;
+       -moz-column-count: @count;
+            column-count: @count;
+
+    -webkit-column-width: @width;
+       -moz-column-width: @width;
+            column-width: @width;
+
+    -webkit-column-gap: @gap;
+       -moz-column-gap: @gap;
+            column-gap: @gap;
+}
+
+/******************
+    Shadows
+********************/
+
+.box-shadow(@string) {
+    -webkit-box-shadow: @string;
+    -moz-box-shadow: @string;
+    box-shadow: @string;
+}
+
+.box-shadow-gen(@distance:0,@blur:0,@rgba:rgba(0,0,0,0.14),@angle:120,@spread:0,@inset:false) {
+    @insetText: "";
+    @angleVal: @angle * (pi()/180);
+    @x: round(@distance * cos(@angleVal));
+    @y: round(@distance * sin(@angleVal));
+    @blurVal: round(@blur);
+    @spreadVal: round(@spread);
+
+    & when (@inset = true) {
+        @insetText: "inset ";
+    }
+
+    .box-shadow(~"@{insetText}@{x}px @{y}px @{blurVal}px @{spreadVal}px @{rgba}");
+}
+
+.shadow(@color,@distance) {
+    .box-shadow(~"0 0 @{distance} @{color}");
+}
+
+.shadow-none() {
+    .box-shadow(~"none");
+}
+
+// Text-shadow
+.longShadow(@color, @size, @spread: 100, @flag: 1, @tmp: '') when (@size > 0) {
+    @percent: round(@flag / @size * 100) * @spread;
+    @shadowColor: fade(@color, @percent);
+    @shadow: ~"@{size}px @{size}px 1px @{shadowColor}";
+    @ends: ~"@{shadow}, @{tmp}";
+    @shadowString: ~"@{ends} 0px 0px 1px #000";
+
+    .longShadowLoop(@string, @index) when (@index < 1) {
+        text-shadow: @string;
+    }
+
+    .longShadowLoop(@shadowString, @size - 1);
+    .longShadow(@color, @size - 1, @spread, @flag + 1, @ends);
+}
+
+// Box-shadow
+.longShadowBox(@color, @size, @spread: 1, @flag: 1, @tmp: '') when (@size > 0) {
+    @percent: round(@flag / @size * 100) * @spread;
+    @shadowColor: fade(@color, @percent);
+    @shadow: ~"@{size}px @{size}px 0 0 @{shadowColor}";
+    @ends: ~"@{shadow}, @{tmp}";
+    @shadowString: ~"@{ends} 0px 0px 0 0 #000";
+
+    .longShadowLoop(@string, @index) when (@index < 1) {
+        -webkit-box-shadow: @string;
+        -moz-box-shadow: @string;
+        box-shadow: @string;
+    }
+
+    .longShadowLoop(@shadowString, @size - 1);
+    .longShadowBox(@color, @size - 1, @spread, @flag + 1, @ends);
+}
+
+/*******************
+    Transforms
+*********************/
+
+.transform(@string) {
+    -webkit-transform: @string;
+    -moz-transform: @string;
+    -ms-transform: @string;
+    -o-transform: @string;
+    transform: @string;
+}
+
+.rotate(@deg) {
+    .transform(rotate(@deg));
+}
+
+.skew(@deg) {
+    .transform(skew(@deg));
+}
+
+.scale (@factor) {
+    .transform(scale(@factor));
+}
+
+.translate(@x:0,@y:0,@z:0) {
+    .transform(~"transform3d(@{x},@{y},@{z})");
+}
+
+.transform-origin(@x:center,@y:center) {
+    -webkit-transform-origin: @x @y;
+    -moz-transform-origin: @x @y;
+    -ms-transform-origin: @x @y;
+    -o-transform-origin: @x @y;
+    transform-origin: @x @y;
+}
+
+.transform-style(@string) {
+    -webkit-transform-style: @string; /* Chrome, Safari, Opera */
+    transform-style: @string;
+}
+
+.backface-visibility(@string) {
+    -webkit-backface-visibility: @string; /* Chrome, Safari, Opera */
+    backface-visibility: @string;
+}
+
+/*****************
+    Transitions
+****************/
+
+.transition-properties(...) {
+    -webkit-transition: @arguments;
+    -moz-transition: @arguments;
+    -o-transition: @arguments;
+    -ms-transition: @arguments;
+    transition: @arguments;
+}
+
+.transition(@what,@time) {
+    .transition-properties(~"@{what} @{time}");
+}
+
+.transition-timing(@string) {
+    -webkit-transition-timing-function: @string;
+    transition-timing-function: @string;
+}
+
+/********************
+    Gradients/Backgrounds
+*********************/
+
+.gradient(@colourA, @colourB) {
+    background: @colourA; /* Old browsers */
+    background: -moz-linear-gradient(top, @colourA 0%, @colourB 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@colourA), color-stop(100%,@colourB)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, @colourA 0%,@colourB 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, @colourA 0%,@colourB 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, @colourA 0%,@colourB 100%); /* IE10+ */
+    background: linear-gradient(to bottom, @colourA 0%,@colourB 100%); /* W3C */
+    filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='@{colourA}', endColorstr='@{colourB}',GradientType=0 )"; /* IE6-9 */
+}
+
+.gradient-left-right(@colourA, @colourB) {
+    background: @colourA; /* Old browsers */
+    background: -moz-linear-gradient(left, @colourA 0%, @colourB 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,@colourA), color-stop(100%,@colourB)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, @colourA 0%,@colourB 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, @colourA 0%,@colourB 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, @colourA 0%,@colourB 100%); /* IE10+ */
+    background: linear-gradient(to right, @colourA 0%,@colourB 100%); /* W3C */
+    filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='@{colourA}', endColorstr='@{colourB}',GradientType=1 )"; /* IE6-9 */
+}
+
+.gradient-midPoint(@firstColour, @secondColour, @thirdColour, @fourthColour) {
+
+    background: @firstColour; /* Old browsers */
+    background: -moz-linear-gradient(top, @firstColour 0%, @secondColour 50%, @thirdColour 51%, @fourthColour 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@firstColour), color-stop(50%,@secondColour), color-stop(51%,@thirdColour), color-stop(100%,@fourthColour)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, @firstColour 0%,@secondColour 50%,@thirdColour 51%,@fourthColour 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, @firstColour 0%,@secondColour 50%,@thirdColour 51%,@fourthColour 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, @firstColour 0%,@secondColour 50%,@thirdColour 51%,@fourthColour 100%); /* IE10+ */
+    background: linear-gradient(to bottom, @firstColour 0%,@secondColour 50%,@thirdColour 51%,@fourthColour 100%); /* W3C */
+}
+
+.gradient-image(@imageUrl, @colourA,@colourB) {
+    background: @colourA; /* Old browsers */
+    background: url(@imageUrl), -moz-linear-gradient(top, @colourA 0%, @colourB 100%); /* FF3.6+ */
+    background: url(@imageUrl), -webkit-gradient(linear, left top, left bottom, color-stop(0%,@colourA), color-stop(100%,@colourB)); /* Chrome,Safari4+ */
+    background: url(@imageUrl), -webkit-linear-gradient(top, @colourA 0%,@colourB 100%); /* Chrome10+,Safari5.1+ */
+    background: url(@imageUrl), -o-linear-gradient(top, @colourA 0%,@colourB 100%); /* Opera 11.10+ */
+    background: url(@imageUrl), -ms-linear-gradient(top, @colourA 0%,@colourB 100%); /* IE10+ */
+    background: url(@imageUrl), linear-gradient(to bottom, @colourA 0%,@colourB 100%); /* W3C */
+    filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='@{@colourA}', endColorstr='@{@colourB}',GradientType=0 )"; /* IE6-9 */
+}
+
+.rgba-bg(@colour, @alpha) {
+    @alphaColour: hsla(hue(@colour), saturation(@colour), lightness(@colour), @alpha);
+    @ieAlphaColour: argb(@alphaColour);
+
+    background-color: @colour; // Fallback for older browsers
+
+    // IE hacks
+    zoom: 1; // hasLayout
+    background-color: transparent \9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=@{ieAlphaColour}, endColorstr=@{ieAlphaColour})"; // IE 8+
+    filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr=@{ieAlphaColour}, endColorstr=@{ieAlphaColour})"; // IE 6 & 7
+
+    background-color: @alphaColour;
+
+}
+
+/*****************
+    Forms/Btns
+ *****************/
+
+.btn-base() {
+    .inline();
+    outline: none;
+    border: none;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.placeholder(@arguments) {
+
+    &::-webkit-input-placeholder {
+        @arguments();
+    }
+    &:-moz-placeholder {
+        @arguments();
+    }
+    &::-moz-placeholder {
+        @arguments();
+    }
+    &:-ms-input-placeholder {
+        @arguments();
+    }
+}
+
+/****************
+    Fonts
+*****************/
+
+.font-mixin(@font-family-fallbacks,@weight,@style) {
+    font-family: @font-family-fallbacks;
+    font-weight: @weight;
+    font-style: @style;
+}
+
+/***************
+    Animations
+****************/
+
+.keyframes (@name, @fromRules, @toRules) {
+    @-webkit-keyframes ~"@{name}" {
+        0% {
+            @fromRules();
+        }
+        100% {
+            @toRules();
+        }
+    }
+    @keyframes ~"@{name}" {
+        0% {
+            @fromRules();
+        }
+        100% {
+            @toRules();
+        }
+    }
+}
+
+.animation-play-state(@state) {
+    -webkit-animation-play-state: @state;
+    -moz-animation-play-state: @state;
+    -ms-animation-play-state: @state;
+    -o-animation-play-state: @state;
+    animation-play-state: @state;
+}
+
+.animation(@args) {
+    -webkit-animation: @args; /* Safari 4+ */
+    -moz-animation: @args; /* Fx 5+ */
+    -o-animation: @args; /* Opera 12+ */
+    animation: @args; /* IE 10+ */
+}
+
+.anim-delay(@delay) {
+    animation-delay: @delay;
+    -webkit-animation-delay: @delay; /* Safari and Chrome */
+}
+
+.animation-iteration-count(@args) {
+    -webkit-animation-iteration-count: @args;
+    -moz-animation-iteration-count: @args;
+    -o-animation-iteration-count: @args;
+    -ms-animation-iteration-count: @args;
+    animation-iteration-count: @args;
+}
+
+/******************
+    For
+*****************/
+
+// ............................................................
+// .for
+
+.for(@i, @n) {
+    .-each(@i)
+}
+
+.for(@n) when (isnumber(@n)) {
+    .for(1, @n)
+}
+
+.for(@i, @n) when not (@i = @n) {
+    .for((@i + (@n - @i) / abs(@n - @i)), @n);
+}
+
+// ............................................................
+// .for-each
+
+.for(@array) when (default()) {
+    .for-impl_(length(@array))
+}
+
+.for-impl_(@i) when (@i > 1) {
+    .for-impl_((@i - 1))
+}
+
+.for-impl_(@i) when (@i > 0) {
+    .-each(extract(@array, @i))
+}

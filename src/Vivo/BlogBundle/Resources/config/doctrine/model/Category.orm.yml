@@ -1,0 +1,77 @@
+Vivo\BlogBundle\Model\Category:
+    type: mappedSuperclass
+    table: vivo_blog_category
+    indexes:
+        title: { columns: [title] }
+        rank:  { columns: [rank] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        title:
+            type: string
+            length: 255
+        rank:
+            type: smallint
+        metaTitle:
+            type: string
+            length: 255
+            nullable: true
+        metaDescription:
+            type: string
+            length: 255
+            nullable: true
+        socialTitle:
+            type: string
+            length: 255
+            nullable: true
+        socialDescription:
+            type: string
+            length: 255
+            nullable: true
+        robotsNoIndex:
+            type: boolean
+            nullable: false
+        robotsNoFollow:
+            type: boolean
+            nullable: false
+        excludedFromSitemap:
+            type: boolean
+            nullable: false
+    oneToMany:
+        slugs:
+            targetEntity: Vivo\BlogBundle\Model\CategorySlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: category
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    manyToOne:
+        primarySlug:
+            targetEntity: Vivo\BlogBundle\Model\CategorySlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: null
+            inversedBy: null
+            fetch: EXTRA_LAZY
+            joinColumns:
+                primary_slug_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    manyToMany:
+        posts:
+            targetEntity: Vivo\BlogBundle\Model\PostInterface
+            cascade: {  }
+            mappedBy: categories
+            inversedBy: null
+            fetch: EXTRA_LAZY
+            joinTable: {  }
+            orderBy: null
+    lifecycleCallbacks: {  }

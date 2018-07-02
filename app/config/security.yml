@@ -1,0 +1,51 @@
+security:
+    encoders:
+        Vivo\AdminBundle\Model\User: sha512
+    providers:
+        admin_provider:
+            id: vivo_admin.security.user_provider
+    firewalls:
+        dev:
+            pattern:  ^/((_(profiler|wdt|error)|css|images|js|javascript|media/cache)/)|(_flush$)
+            security: false
+        admin_area:
+            pattern: ^/admin
+            anonymous: ~
+            provider: admin_provider
+            form_login:
+                check_path:          vivo_admin.security.check
+                login_path:          vivo_admin.security.login
+                csrf_provider:       security.csrf.token_manager
+                use_forward:         true
+                remember_me:         true
+                default_target_path: admin_homepage
+            logout:
+                path:   vivo_admin.security.logout
+                target: admin_homepage
+            remember_me:
+                key:      "%secret%"
+                lifetime: 1209600 # 2 weeks
+
+    access_control:
+        # Admin Access Control
+        - { path: ^/admin/security/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/site/switch/(\d+)/(\w+), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/page, roles: ROLE_PAGE_MANAGEMENT }
+        - { path: ^/admin/menu, roles: ROLE_NAVIGATION_MANAGEMENT }
+        - { path: ^/admin/blog, roles: ROLE_BLOG_MANAGEMENT }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https, host: pinata\.com.au$ }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: http, host: localhost$ }
+
+    role_hierarchy:
+        ROLE_CONTENT_MANAGEMENT: [ROLE_PAGE_MANAGEMENT, ROLE_BLOG_MANAGEMENT, ROLE_TEAM_MANAGEMENT, ROLE_TEAM_MANAGEMENT, ROLE_FARM_MANAGEMENT, ROLE_FRUIT_MANAGEMENT, ROLE_HISTORY_MANAGEMENT]
+        ROLE_DEVELOPER:          [ROLE_NAVIGATION_MANAGEMENT]
+
+vivo_admin:
+    roles:
+        ROLE_USER_MANAGEMENT:       'User management'
+        ROLE_USER_GROUP_MANAGEMENT: 'User group management'
+        ROLE_SITE_MANAGEMENT:       'Site management'
+        ROLE_CONTENT_MANAGEMENT:    'Content management'
+        ROLE_DEVELOPER:             'Developer'

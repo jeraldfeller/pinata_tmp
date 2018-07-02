@@ -1,0 +1,23 @@
+vivo_site.admin.site.index:
+    path: /site
+    defaults: { _controller: VivoSiteBundle:Admin/Site:index }
+
+vivo_site.admin.site.switch:
+    path: /site/switch/{id}/{token}
+    defaults: { _controller: VivoSiteBundle:Admin/Site:switch, token: null }
+
+vivo_site.admin.site.create:
+    path: /site/new
+    defaults: { _controller: VivoSiteBundle:Admin/Site:create }
+
+vivo_site.admin.site.update:
+    path: /site/{id}/edit
+    defaults: { _controller: VivoSiteBundle:Admin/Site:update }
+
+vivo_site.admin.site.edit:
+    path: /site/edit
+    defaults: { _controller: VivoSiteBundle:Admin/Site:update }
+
+vivo_site.admin.site.delete:
+    path: /site/{id}/delete/{token}
+    defaults: { _controller: VivoSiteBundle:Admin/Site:delete }

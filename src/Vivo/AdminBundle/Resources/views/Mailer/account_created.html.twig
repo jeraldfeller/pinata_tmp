@@ -1,0 +1,28 @@
+{% extends '@VivoSite/Mailer/layout.html.twig' %}
+
+{% block subject -%}
+    {%- autoescape false -%}Account Created{%- endautoescape -%}
+{%- endblock %}
+
+{% block body_text -%}
+    {%- autoescape false %}
+An account has been created for you at {{ site.shortName }}.
+
+Email: {{ user.email }}
+Password: {{ plain_password }}
+
+Login URL: {{ url('vivo_admin.security.login') }}
+
+    {%- endautoescape -%}
+{%- endblock %}
+
+{% block body_html -%}
+    <p>An account has been created for you at <strong>{{ site.shortName }}</strong>.</p>
+    <p>
+        <strong>Email:</strong> {{ user.email }}<br/>
+        <strong>Password:</strong> {{ plain_password }}
+    </p>
+    <p>
+        <strong>Login URL:</strong> <a href="{{ url('vivo_admin.security.login') }}">{{ url('vivo_admin.security.login') }}</a>
+    </p>
+{%- endblock %}

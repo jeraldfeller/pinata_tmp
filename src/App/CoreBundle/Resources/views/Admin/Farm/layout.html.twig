@@ -1,0 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+{{ parent() }}
+<li><a href="{{ path((farm_index_route is defined ? farm_index_route : 'app_core.admin.farm.index')) }}">Farms</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}

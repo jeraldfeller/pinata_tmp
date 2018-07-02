@@ -1,0 +1,78 @@
+{% block vivo_util_colour_widget %}
+    {{ form_widget(form) }}
+    <link rel="stylesheet" href="{{ asset('bundles/vivoutil/jquery/plugins/minicolors/jquery.minicolors.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/vivoutil/jquery/plugins/minicolors/jquery.minicolors.min.js') }}"></script>
+    {% autoescape false %}
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                {%- set hasOption = false -%}
+                jQuery('input#{{ id }}').minicolors({
+                    {%- if animationSpeed is not null -%}
+                        {{ hasOption ? ',' : '' }}animationSpeed: {{ animationSpeed }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if animationEasing is not null -%}
+                        {{ hasOption ? ',' : '' }}animationEasing: '{{ animationEasing }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if change is not null -%}
+                        {{ hasOption ? ',' : '' }}change: {{ change }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if changeDelay is not null -%}
+                        {{ hasOption ? ',' : '' }}changeDelay: {{ changeDelay }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if control is not null -%}
+                        {{ hasOption ? ',' : '' }}control: '{{ control }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if dataUris is not null -%}
+                        {{ hasOption ? ',' : '' }}dataUris: {{ dataUris }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if defaultValue is not null -%}
+                        {{ hasOption ? ',' : '' }}defaultValue: '{{ defaultValue }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if hide is not null -%}
+                        {{ hasOption ? ',' : '' }}hide: {{ hide }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if hideSpeed is not null -%}
+                        {{ hasOption ? ',' : '' }}hideSpeed: {{ hideSpeed }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if inline is not null -%}
+                        {{ hasOption ? ',' : '' }}inline: {{ inline }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if letterCase is not null -%}
+                        {{ hasOption ? ',' : '' }}letterCase: '{{ letterCase }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if opacity is not null -%}
+                        {{ hasOption ? ',' : '' }}opacity: {{ opacity }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if position is not null -%}
+                        {{ hasOption ? ',' : '' }}position: '{{ position }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if show is not null -%}
+                        {{ hasOption ? ',' : '' }}show: {{ show }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if showSpeed is not null -%}
+                        {{ hasOption ? ',' : '' }}showSpeed: {{ showSpeed }}
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                    {%- if theme is not null -%}
+                        {{ hasOption ? ',' : '' }}theme: '{{ theme }}'
+                        {%- set hasOption = true -%}
+                    {%- endif -%}
+                });
+            });
+        </script>
+    {% endautoescape %}
+{% endblock vivo_util_colour_widget %}

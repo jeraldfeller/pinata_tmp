@@ -1,0 +1,11 @@
+<fieldset>
+    <p>{{ form_errors(form) }}</p>
+
+    {{ form_row(form.name) }}
+    {% if form.alias is defined %}
+        {{ form_row(form.alias) }}
+    {% endif %}
+    {{ form_row(form.roles) }}
+    {{ form_row(form.selfManaged) }}
+    {{ form_rest(form) }}
+</fieldset>

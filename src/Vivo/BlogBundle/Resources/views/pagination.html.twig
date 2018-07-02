@@ -1,0 +1,48 @@
+{% if totalCount > 0 %}
+    <p class="pagination-results-count">
+        Showing {{ currentItemCount|number_format }} of {{ totalCount|number_format }} result{{ totalCount == 1 ? '' : 's' }}  over {{ pageCount|number_format }} page{{ pageCount == 1 ? '' : 's' }}
+    </p>
+{% endif %}
+
+{% if pageCount > 1 %}
+    <div class="pagination pagination-centered">
+        <ul>
+            {#
+            {% if first is defined and current != first %}
+                <span class="first">
+                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}">&lt;&lt;</a>
+            </span>
+            {% endif %}
+            #}
+
+            {% if previous is defined %}
+                <li><a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" rel="prev">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#" rel="nofollow">&laquo;</a></li>
+            {% endif %}
+
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <li><a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a></li>
+                {% endif %}
+
+            {% endfor %}
+
+            {% if next is defined %}
+                <li><a href="{{ path(route, query|merge({(pageParameterName): next})) }}" rel="next">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#" rel="nofollow">&raquo;</a></li>
+            {% endif %}
+
+            {#
+            {% if last is defined and current != last %}
+                <span class="last">
+                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}">&gt;&gt;</a>
+            </span>
+            {% endif %}
+            #}
+        </ul>
+    </div>
+{% endif %}

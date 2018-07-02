@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body_class %}home{% endblock body_class %}
+
+{% block content_body %}
+    {% if page.assetGroupByAlias('main') is not empty and page.assetGroupByAlias('main').assets is not empty %}
+        <ul class="bxslider hero-slider loading">
+        {% for asset in page.assetGroupByAlias('main').activeAssets %}
+            {% if asset.status %}
+            <li><div class="hero-image" style="background-image:url('{{ asset.imagePreviewPath|imagine_filter('1920x725p') }}');"></div></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ render_esi(controller('AppCoreBundle:Fruit:homepageCards')) }}
+
+    <div class="block padded tear-top tear-bottom tertiary-colour">
+        <div class="wrapper">
+
+            <div class="homepage-main-content">
+                {{ page.contentByAlias('main').content|default('')|raw }}
+                <div class="tri-icon-block">
+                    <ul>
+                        <li>
+                            <i class="pin-australia"></i>
+                            <span>100% Australian <br />Grown</span>
+                        </li>
+                        <li>
+                            <i class="pin-truck"></i>
+                            <span>Supplying Shops <br />Nationwide</span>
+                        </li>
+                        <li>
+                            <i class="pin-1963"></i>
+                            <span>Family Owned <br />&amp; Operated</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% include '@VivoPage/Page/homepage_slideshow.html.twig' %}
+
+    {{ render_esi(controller('AppBlogBundle:Post:chatter')) }}
+
+    <div class="block padded-top tear-top">
+        <div class="wrapper">
+            <div class="home-story">
+                <div class="lr-block">
+                    <div class="left">
+                        <div class="cell-inner">
+                            {{ page.contentByAlias('story').content|default('')|raw }}
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="cell-inner">
+                            <div class="story">
+                                <a href="{{ path('app_team.profile.index') }}">
+                                    <i class="pin-hearts"></i>
+                                    <h3>The people at the heart of Piñata</h3>
+                                </a>
+                            </div>
+                            <div class="story">
+                                <a href="{{ path('app_core.farm.index') }}">
+                                    <i class="pin-marker-line"></i>
+                                    <h3>Explore our farms around Australia</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content_body %}

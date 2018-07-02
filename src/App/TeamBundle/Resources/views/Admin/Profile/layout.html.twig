@@ -1,0 +1,6 @@
+{% extends 'admin.html.twig' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('app_team.admin.profile.index') }}">Team Profiles</a> <span class="divider">/</span></li>
+{% endblock breadcrumb_crumbs %}

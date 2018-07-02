@@ -1,0 +1,23 @@
+Vivo\SlugBundle\Model\Slug:
+    type: entity
+    table: vivo_slug
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        fieldName: discr
+        type: string
+    discriminatorMap:
+        vivo_slug: Vivo\SlugBundle\Model\Slug
+    indexes:
+        slug: { columns: [slug] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        slug:
+            type: string
+            length: 255
+            unique: false
+    lifecycleCallbacks: {  }

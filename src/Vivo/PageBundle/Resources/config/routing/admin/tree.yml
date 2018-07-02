@@ -1,0 +1,13 @@
+vivo_page.admin.tree.index:
+    path: /page
+    defaults: { _controller: VivoPageBundle:Admin/Tree:index }
+    methods: [GET]
+
+vivo_page.admin.tree.update:
+    path: /page
+    defaults: { _controller: VivoPageBundle:Admin/Tree:update }
+    methods: [POST]
+
+vivo_page.admin.tree.delete_node:
+    path: /page/tree/{id}/delete/{token}
+    defaults: { _controller: VivoPageBundle:Admin/Tree:deleteNode }

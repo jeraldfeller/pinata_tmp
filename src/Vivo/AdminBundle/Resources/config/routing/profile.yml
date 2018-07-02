@@ -1,0 +1,7 @@
+vivo_admin.profile.edit:
+    path: /account/profile
+    defaults: { _controller: VivoAdminBundle:Profile:edit }
+
+vivo_admin.profile.password_expired:
+    path: /account/expired
+    defaults: { _controller: VivoAdminBundle:Profile:passwordExpired }

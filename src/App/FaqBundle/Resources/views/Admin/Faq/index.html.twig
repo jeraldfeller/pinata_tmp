@@ -1,0 +1,73 @@
+{% extends '@AppFaq/Admin/layout.html.twig' %}
+
+{% block title 'FAQs' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">List FAQs</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group">
+            <a href="{{ path('app_faq.admin.faq.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create FAQ</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('app_faq.admin.faq.rank') }}" class="btn"><i class="icon-list"></i> Sort Categories &amp; FAQs</a>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        {{ form(searchForm, {'action': path(app.request.get('_route'), app.request.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="{{ searchForm.vars.id ~ '_results' }}">
+        {% block ajax_response %}
+            {% if pagination|length < 1 %}
+                <div class="alert alert-notice">
+                    There are currently no faqs available.
+                </div>
+            {% else %}
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ knp_pagination_sortable(pagination, 'Id', 'faq.id')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Category', 'category.title')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Question', 'faq.question')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Created', 'faq.createdAt')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Updated', 'faq.updatedAt')|raw }}</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for faq in pagination %}
+                        <tr>
+                            <td>{{ faq.id }}</td>
+                            <td>{{ faq.category.title }}</td>
+                            <td>{{ faq.question }}</td>
+                            <td>{% if faq.createdAt %}{{ faq.createdAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>{% if faq.updatedAt %}{{ faq.updatedAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_faq.admin.faq.update', {'id': faq.id}) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu open-left">
+                                        <li><a href="{{ path('app_faq.admin.faq.update', {'id': faq.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                        <li><a class="confirm" href="{{ path('app_faq.admin.faq.delete', {'id': faq.id, 'token': csrf_token(faq.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
+        {% endblock ajax_response %}
+    </div>
+{% endblock content %}

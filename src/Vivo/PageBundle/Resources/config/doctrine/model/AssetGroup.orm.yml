@@ -1,0 +1,39 @@
+Vivo\PageBundle\Model\AssetGroup:
+    type: mappedSuperclass
+    table: vivo_page_asset_group
+    indexes:
+        alias: { columns: [alias] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        alias:
+            type: string
+            length: 50
+    oneToMany:
+        assets:
+            targetEntity: Vivo\PageBundle\Model\AssetInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: assetGroup
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    manyToOne:
+        page:
+            targetEntity: Vivo\PageBundle\Model\PageInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: assetGroups
+            fetch: EXTRA_LAZY
+            joinColumns:
+                page_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

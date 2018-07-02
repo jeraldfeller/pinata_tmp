@@ -1,0 +1,15 @@
+vivo_blog.admin.post.index:
+    path: /post
+    defaults: { _controller: VivoBlogBundle:Admin/Post:index }
+
+vivo_blog.admin.post.create:
+    path: /post/new
+    defaults: { _controller: VivoBlogBundle:Admin/Post:create }
+
+vivo_blog.admin.post.update:
+    path: /post/{id}/edit
+    defaults: { _controller: VivoBlogBundle:Admin/Post:update }
+
+vivo_blog.admin.post.delete:
+    path: /post/{id}/delete/{token}
+    defaults: { _controller: VivoBlogBundle:Admin/Post:delete }

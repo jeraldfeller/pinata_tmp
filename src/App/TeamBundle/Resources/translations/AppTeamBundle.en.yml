@@ -1,0 +1,18 @@
+admin:
+    form:
+        profile:
+            name: 'Name *'
+            position: 'Position *'
+            description: 'Description '
+            disabledAt:
+                label: 'Disabled?'
+                help: 'Tick to disable profile.'
+    flash:
+        profile:
+            create.success: 'Profile successfully created.'
+            update.success: 'Profile successfully updated.'
+            delete.success: 'Profile successfully deleted.'
+            sort:
+                success: 'Profile order successfully updated.'
+                invalid: 'Data could not be validated. A new location may have been added before saving.'
+                none:    'There were no changes to the order.'

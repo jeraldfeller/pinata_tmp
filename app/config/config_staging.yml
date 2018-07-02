@@ -1,0 +1,10 @@
+imports:
+    - { resource: config_prod.yml }
+
+# Swiftmailer Configuration
+swiftmailer:
+    mailers:
+        default:
+            spool:              { type: memory }
+            delivery_address:   "%mail_delivery_address%"
+            delivery_whitelist: "%mail_delivery_whitelist%"

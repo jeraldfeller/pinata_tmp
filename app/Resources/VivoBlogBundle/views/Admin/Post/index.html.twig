@@ -1,0 +1,87 @@
+{% extends '@VivoBlog/Admin/layout.html.twig' %}
+
+{% block title 'Chatter Posts' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">List Posts</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group">
+            <a href="{{ path('vivo_blog.admin.post.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create Post</a>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        {{ form(searchForm, {'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1})) )}) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="{{ searchForm.vars.id ~ '_results' }}">
+        {% block ajax_response %}
+            {% if pagination|length < 1 %}
+                <div class="alert alert-notice">
+                    There are currently no blog posts available.
+                </div>
+            {% else %}
+                <div class="alert alert-notice">
+                    Chatter posts are ordered by <strong>Publication Date</strong>, in reverse chronological order.
+                </div>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ knp_pagination_sortable(pagination, 'Blog Id', 'post.id')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Publication Date', 'post.publicationDate')|raw }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Title', 'post.title')|raw }}</th>
+                        {% if include_author_field %}
+                            <th>{{ knp_pagination_sortable(pagination, 'Author', 'post.author')|raw }}</th>
+                        {% endif %}
+                        <th>{{ knp_pagination_sortable(pagination, 'Created', 'post.createdAt')|raw }}</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in pagination %}
+                        <tr>
+                            <td>{{ post.id }}</td>
+                            <td>
+                                {% if not post.published %}
+                                    <i class="icon-ban-circle"></i>
+                                {% endif %}
+                                {% if post.publicationDate %}{{ post.publicationDate|date('d-M-Y h:ia') }}{% endif %}
+                            </td>
+                            <td>
+                                {% if post.disabled %}
+                                    <i class="icon-ban-circle"></i>
+                                {% endif %}
+                                <a href="{{ path('vivo_blog.post.view', { 'slug' : post.primarySlug.slug, 'year' : post.publicationDate|date("Y"), 'month' : post.publicationDate|date("m"), 'day' : post.publicationDate|date("d") }) }}" target="_blank">{{ post.title }}</a>
+                            </td>
+                            {% if include_author_field %}
+                                <td>{{ post.author }}</td>
+                            {% endif %}
+                            <td>{% if post.createdAt %}{{ post.createdAt|date('d-M-Y h:i:sa') }}{% endif %}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('vivo_blog.admin.post.update', {'id': post.id}) }}" class="btn"><i class="icon-pencil"></i> Edit</a>
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu open-left">
+                                        <li><a href="{{ path('vivo_blog.admin.post.update', {'id': post.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                        <li><a class="confirm" href="{{ path('vivo_blog.admin.post.delete', {'id': post.id, 'token': csrf_token(post.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
+        {% endblock ajax_response %}
+    </div>
+{% endblock content %}

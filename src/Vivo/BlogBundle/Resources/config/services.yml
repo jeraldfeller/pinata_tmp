@@ -1,0 +1,88 @@
+services:
+    # PageTypes
+    vivo_blog.page_type.blog:
+        class: "%vivo_blog.page_type.blog.class%"
+        public: false
+        arguments: ["%vivo_blog.page_type.blog.blocks.content%", "%vivo_blog.page_type.blog.blocks.asset_group%"]
+        tags:
+            - { name: vivo_page.page_type, alias: blog }
+
+    # Repositories
+    vivo_blog.repository.category:
+        class: Vivo\BlogBundle\Repository\CategoryRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_blog.model.category%"]
+
+    vivo_blog.repository.post:
+        class: Vivo\BlogBundle\Repository\PostRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_blog.model.post%"]
+
+    # Form Types
+    vivo_blog.form.post:
+        class: Vivo\BlogBundle\Form\Type\PostType
+        arguments:
+            - "%vivo_blog.model.post%"
+            - "%vivo_blog.model.post_slug%"
+            - "%vivo_blog.include_author_field%"
+        tags:
+            - { name: form.type }
+
+    vivo_blog.form.post_search:
+        class: Vivo\BlogBundle\Form\Type\PostSearchType
+        tags:
+            - { name: form.type }
+
+    vivo_blog.form.category:
+        class: Vivo\BlogBundle\Form\Type\CategoryType
+        arguments: ["%vivo_blog.model.category%", "%vivo_blog.model.category_slug%"]
+        tags:
+            - { name: form.type }
+
+    vivo_blog.form.category_search:
+        class: Vivo\BlogBundle\Form\Type\CategorySearchType
+        tags:
+            - { name: form.type }
+
+    vivo_blog.form.choice.category:
+        class: Vivo\BlogBundle\Form\Choice\CategoryChoice
+        arguments: ["%vivo_blog.model.category%"]
+        tags:
+            - { name: form.type }
+
+    vivo_blog.search.model.post:
+        class: Vivo\BlogBundle\Form\Model\PostSearch
+        arguments: ["%vivo_blog.include_author_field%"]
+
+    vivo_blog.search.model.category:
+        class: Vivo\BlogBundle\Form\Model\CategorySearch
+
+    # Seo
+    vivo_blog.seo.sitemap.category:
+        class: Vivo\BlogBundle\Seo\CategorySitemap
+        arguments:
+            - "@vivo_blog.repository.category"
+            - "@vivo_page.repository.page"
+            - "@knp_paginator"
+            - "@router"
+        tags:
+            - { name: vivo_site.seo.sitemap }
+
+    vivo_blog.seo.sitemap.post:
+        class: Vivo\BlogBundle\Seo\PostSitemap
+        arguments:
+            - "@vivo_blog.repository.post"
+            - "@vivo_page.repository.page"
+            - "@knp_paginator"
+            - "@router"
+        tags:
+            - { name: vivo_site.seo.sitemap }
+
+    # Event Listeners
+    vivo_blog.listener.seo:
+        class: Vivo\BlogBundle\EventListener\SeoListener
+        arguments:
+            - "@event_dispatcher"
+            - "@vivo_site.seo.page"
+        tags:
+            - { name: kernel.event_listener, event: vivo_blog.seo.prepare, method: prepareSeo }

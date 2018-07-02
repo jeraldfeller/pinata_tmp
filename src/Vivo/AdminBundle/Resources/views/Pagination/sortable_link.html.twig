@@ -1,0 +1,3 @@
+{%- spaceless -%}
+    <a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }}{%- if sorted %} <i class="icon-chevron-{{ "asc" == direction ? "down" : "up" }}"></i>{% endif %}</a>
+{%- endspaceless -%}

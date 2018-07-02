@@ -1,0 +1,119 @@
+{% block vivo_asset_asset_file_buttons %}
+    <div class="btn-toolbar pull-right">
+        <div class="btn-group">
+            <a href="#{{ id }}-asset-form" class="btn btn-small edit">Edit Details</a>
+        </div>
+        <div class="btn-group">
+            <input type="button" class="btn btn-small remove" value="Remove" />
+        </div>
+    </div>
+    <div class="clearfix"></div>
+{% endblock vivo_asset_asset_file_buttons %}
+
+{% block vivo_asset_asset_file_preview %}
+    <div class="preview">
+        <div class="labels">
+            {% if form.vars.value.active is defined and form.vars.data.active is same as(false) %}
+                <a class="label label-warning edit" href="#{{ id }}-asset-form">Disabled</a>
+            {% endif %}
+            {% if not form.vars.valid %}
+                <a class="label label-important edit" href="#{{ id }}-asset-form">Error</a>
+            {% endif %}
+        </div>
+        {% if form.vars.value.id is defined %}
+            {% if form.vars.value.file is empty %}
+                <div style="width:270px;height:185px;"></div>
+            {% elseif form.vars.value.file.image %}
+                <a href="{{ form.vars.value.imagePreviewPath|imagine_filter('asset') }}" title="{{ form.vars.value.title ~ ' - <a href="' ~ path(form.vars.value.routeName('download'), form.vars.value.routeParameters('download')) ~ '" target="_blank">Download Original</a>' }}" class="drag-handle fancy-image">
+                    <img src="{{ form.vars.value.imagePreviewPath|imagine_filter('asset_collection_thumb') }}" alt="{{ form.vars.value.title }}" title="{{ form.vars.value.title }}" />
+                </a>
+            {% else %}
+                <a href="{{ path(form.vars.value.routeName('download'), form.vars.value.routeParameters('download')) }}" title="{{ form.vars.value.title }}" class="drag-handle">
+                    <img src="{{ form.vars.value|vivo_asset_preview('asset_collection_thumb', 'asset_collection_icon') }}" alt="{{ form.vars.value.title }}" title="{{ form.vars.value.title }}" />
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock vivo_asset_asset_file_preview %}
+
+{% block vivo_asset_asset_file_caption %}
+    <div class="caption">
+        {% if form.title is defined %}
+            <div class="detail-row">
+                <label>Title:</label>
+                {% set text = form.vars.data.title|default('-') %}
+                <span title="{{ text }}" class="copy-{{ form.title.vars.id }}" data-placeholder="-">{{ text }}</span>
+            </div>
+        {% endif %}
+
+        <div class="detail-row">
+            <label>Added:</label>
+            <span>{{ form.vars.data.createdAt|default("now")|date("jS M Y h:ia") }}</span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+{% endblock vivo_asset_asset_file_caption %}
+
+{% block vivo_asset_asset_file_form %}
+    {{ form_errors(form) }}
+    {{ form_errors(form.file) }}
+    {{ form_errors(form.rank) }}
+
+    {{ form_row(form.title, {'attr': {'class': 'title'}}) }}
+
+    {% if form.filename is defined %}
+        {{ form_row(form.filename, {'attr': {'class': 'filename'}}) }}
+    {% endif %}
+
+    {{ form_row(form.alt, {'attr': {'class': 'title'}}) }}
+
+    {% if form.link is defined %}
+        {{ form_row(form.link) }}
+    {% endif %}
+
+    {% if form.linkTarget is defined %}
+        {{ form_row(form.linkTarget) }}
+    {% endif %}
+
+    {% if form.activeAt is defined %}
+        {{ form_row(form.activeAt) }}
+    {% endif %}
+
+    {% if form.expiresAt is defined %}
+        {{ form_row(form.expiresAt) }}
+    {% endif %}
+
+    {{ form_rest(form) }}
+{% endblock vivo_asset_asset_file_form %}
+
+{% block vivo_asset_asset_file_widget %}
+    <li id="{{ id }}-asset-container" class="span3 asset">
+        {{ form_row(form.file, {'attr': {'class': 'fileIdSigned'}}) }}
+        {{ form_row(form.rank, {'attr': {'class': 'rank' }}) }}
+        <div class="thumbnail">
+            <div class="{% if form.vars.valid %}active {% endif %}item view-item">
+                {{ vivo_asset_asset_file_preview(form) }}
+                {{ vivo_asset_asset_file_caption(form) }}
+                {{ vivo_asset_asset_file_buttons(form) }}
+            </div>
+            <div id="{{ id }}-asset-form" data-asset-container="{{ id }}-asset-container" class="asset-form vivo-asset-asset-file-fancy form-horizontal">
+                <h4>Edit Details</h4>
+                <div class="caption">
+                    {{ vivo_asset_asset_file_form(form) }}
+                </div>
+                <div class="btn-toolbar pull-right">
+                    <div class="btn-group">
+                        <input type="button" class="btn btn-small btn-success save" value="Save"/>
+                    </div>
+                    <div class="btn-group">
+                        <input type="button" class="btn btn-small cancel" value="Cancel"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endblock vivo_asset_asset_file_widget %}
+
+{% block vivo_asset_asset_file_row %}
+    {{ form_widget(form) }}
+{% endblock vivo_asset_asset_file_row %}

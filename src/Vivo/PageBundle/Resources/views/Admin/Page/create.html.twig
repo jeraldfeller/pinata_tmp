@@ -1,0 +1,18 @@
+{% extends '@VivoPage/Admin/layout.html.twig' %}
+
+{% block title 'Create Page' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">Create Page</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@VivoPage/Admin/Page/_form.html.twig' with {'form': form, 'page': page} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Page</button>
+            <a href="{{ path('vivo_page.admin.tree.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

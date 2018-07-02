@@ -1,0 +1,20 @@
+{% block vivo_page_menu_node_type_widget %}
+    {{ form_row(form) }}
+{% endblock vivo_page_menu_node_type_widget %}
+
+{% block vivo_page_menu_node_type_row %}
+    <tr class="collection-row">
+        <td>
+            <div class="control-group{% if form.parent.vars.errors|length > 0 %} error{% endif %}">
+                {{ form_row(form.parent, {'label': false}) }}
+            </div>
+        </td>
+        <td>
+            {{ form_row(form.title, {'label': false, attr: {'data-placeholder-clone': '#vivo_page_page_type_page_pageTitle'}}) }}
+        </td>
+        <td class="center">
+            {{ form_row(form.remove, {'label': false}) }}
+            {{ form_rest(form) }}
+        </td>
+    </tr>
+{% endblock vivo_page_menu_node_type_row %}

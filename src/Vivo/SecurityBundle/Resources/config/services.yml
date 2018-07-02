@@ -1,0 +1,29 @@
+services:
+    # Repositories
+    vivo_security.repository.authentication_log:
+        class: Vivo\SecurityBundle\Repository\AuthenticationLogRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["%vivo_security.model.authentication_log%"]
+
+    # Event Listeners
+    vivo_security.listener.authentication:
+        class: Vivo\SecurityBundle\EventListener\AuthenticationListener
+        arguments:
+            - "@vivo_security.util.firewall_manager"
+            - "@request_stack"
+            - "@vivo_security.repository.authentication_log"
+            - "@doctrine.orm.default_entity_manager"
+            - "@security.user_checker"
+            - "@vivo_util.util.geoip"
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+
+    # Util
+    vivo_security.util.firewall_manager:
+        class: Vivo\SecurityBundle\Util\FirewallManager
+        public: false
+        arguments:
+            - [] # Map will be replaced via FirewallManagerCompilerPass
+            - "%vivo_security.default%"
+            - "%vivo_security.firewalls%"

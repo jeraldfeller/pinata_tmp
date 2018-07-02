@@ -1,0 +1,54 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+    session:
+        name: "%database_name%"
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: redis
+#        result_cache_driver: redis
+#        query_cache_driver: redis
+
+monolog:
+    handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
+        console:
+            type:   console
+            bubble: false
+        # uncomment to get logging in your browser
+        # you may have to allow bigger header sizes in your Web server configuration
+        #firephp:
+        #    type:   firephp
+        #    level:  info
+        #chromephp:
+        #    type:   chromephp
+        #    level:  info
+
+#assetic:
+#    use_controller: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    spool:
+        type: memory
+    delivery_address: "%mail_delivery_address%"
+
+vivo_site:
+    fallback_to_primary_site: true
+    site_password: { enabled: false }
+
+vivo_asset:
+    create_non_existent_images: true

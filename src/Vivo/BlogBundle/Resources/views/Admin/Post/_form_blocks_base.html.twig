@@ -1,0 +1,129 @@
+{# Avoid overriding this template. Override _form_blocks.html.twig instead #}
+
+{% block fieldset_details %}
+    <fieldset>
+        {% block fieldset_details_errors %}
+            <p>{{ form_errors(form) }}</p>
+        {% endblock fieldset_details_errors %}
+
+        {% block form_disabled_at_row %}
+            {% if form.disabledAt is defined %}
+                {{ form_row(form.disabledAt) }}
+            {% endif %}
+        {% endblock form_disabled_at_row %}
+
+        {% block form_publication_date_row %}
+            {% if form.publicationDate is defined %}
+                {{ form_row(form.publicationDate) }}
+            {% endif %}
+        {% endblock form_publication_date_row %}
+
+        {% block form_title_row %}
+            {% if form.title is defined %}
+                {{ form_row(form.title) }}
+            {% endif %}
+        {% endblock form_title_row %}
+
+        {% block form_excerpt_row %}
+            {% if form.excerpt is defined %}
+                {{ form_row(form.excerpt) }}
+            {% endif %}
+        {% endblock form_excerpt_row %}
+
+        {% block form_body_row %}
+            {% if form.body is defined %}
+                {{ form_row(form.body) }}
+            {% endif %}
+        {% endblock form_body_row %}
+
+        {% block form_categories_row %}
+            {% if form.categories is defined %}
+                {{ form_row(form.categories) }}
+            {% endif %}
+        {% endblock form_categories_row %}
+
+        {% block form_author_row %}
+            {% if form.author is defined %}
+                {{ form_row(form.author) }}
+            {% endif %}
+        {% endblock form_author_row %}
+    </fieldset>
+{% endblock fieldset_details %}
+
+{% block fieldset_seo %}
+    {% if form.primarySlug is defined or form.metaTitle is defined or form.metaDescription is defined %}
+        <fieldset>
+            <legend>SEO</legend>
+
+            {% block form_primary_slug_row %}
+                {% if form.primarySlug is defined %}
+                    {{ form_row(form.primarySlug) }}
+                {% endif %}
+            {% endblock form_primary_slug_row %}
+
+            {% block form_meta_title_row %}
+                {% if form.metaTitle is defined %}
+                    {{ form_row(form.metaTitle) }}
+                {% endif %}
+            {% endblock form_meta_title_row %}
+
+            {% block form_meta_description_row %}
+                {% if form.metaDescription is defined %}
+                    {{ form_row(form.metaDescription) }}
+                {% endif %}
+            {% endblock form_meta_description_row %}
+        </fieldset>
+    {% endif %}
+{% endblock fieldset_seo %}
+
+{% block fieldset_advanced %}
+    <fieldset>
+        {% if form.robotsNoIndex is defined or form.robotsNoFollow is defined or form.socialTitle is defined or form.socialDescription is defined or form.excludedFromSitemap is defined %}
+            <div class="accordion accordion-in-form indent">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#advancedMeta">
+                            Advanced Options
+                        </a>
+                    </div>
+                    <div id="advancedMeta" class="accordion-body collapse
+                    {%-
+                    if
+                    (form.socialTitle is defined and not form.socialTitle.vars.valid) or
+                    (form.socialDescription is defined and not form.socialDescription.vars.valid) or
+                    (form.robotsNoIndex is defined and not form.robotsNoIndex.vars.valid) or
+                    (form.robotsNoFollow is defined and not form.robotsNoFollow.vars.valid) or
+                    (form.excludedFromSitemap is defined and not form.excludedFromSitemap.vars.valid)
+                    -%} in{% else %} collapse{% endif %}">
+                        <div class="accordion-inner">
+                            {% if form.socialTitle is defined or form.socialDescription is defined %}
+                                <legend>Social Media</legend>
+                                {% if form.socialTitle is defined %}
+                                    {{ form_row(form.socialTitle) }}
+                                {% endif %}
+                                {% if form.socialDescription is defined %}
+                                    {{ form_row(form.socialDescription) }}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if form.robotsNoIndex is defined or form.robotsNoFollow is defined or form.excludedFromSitemap is defined %}
+                                <legend>Robots</legend>
+                                <div class="checkbox-group">
+                                    {% if form.robotsNoIndex is defined %}
+                                        {{ form_row(form.robotsNoIndex) }}
+                                    {% endif %}
+                                    {% if form.robotsNoFollow is defined %}
+                                        {{ form_row(form.robotsNoFollow) }}
+                                    {% endif %}
+                                    {% if form.excludedFromSitemap is defined %}
+                                        {{ form_row(form.excludedFromSitemap) }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </fieldset>
+{% endblock fieldset_advanced %}

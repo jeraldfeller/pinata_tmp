@@ -1,0 +1,65 @@
+'Invalid credentials.': 'Invalid email/password combination.'
+
+form:
+    group:
+        name:  'Name *'
+        alias: 'Alias'
+        roles: 'Permissions'
+        selfManaged:
+            label: 'Self managed'
+            help:  'Is ticked, users in this group can see each other'
+    user:
+        group:      'Access Level *'
+        email:      'Email *'
+        firstName: 'First name *'
+        lastName:  'Last name *'
+        password:
+            update:  'Update password'
+            new:     'New password *'
+            confirm: 'Confirm password *'
+            initial: 'Initial password *'
+        disabledAt:
+            label: 'Disabled'
+            help:  'Tick to disable user from logging in'
+    profile:
+        password:
+            change:   'Change password'
+            current:  'Current password *'
+            new:      'New password *'
+            confirm:  'Confirm password *'
+    passwordExpired:
+        password:
+            current:  'Current password *'
+            new:      'New password *'
+            confirm:  'Confirm password *'
+    reset:
+        invalidUser: 'Could not find an account matching that email.'
+        disabled:    'User account is disabled.'
+        password:
+            new:      'New password *'
+            confirm:  'Confirm password *'
+flash:
+    group:
+        create.success: 'Group successfully created.'
+        update.success: 'Group successfully updated.'
+        delete:
+            success:   'Group successfully deleted.'
+            notEmpty: 'Group must be empty to delete.'
+        rank:
+            success: 'Ranks successfully updated.'
+            invalid: 'Data could not be validated. A new group may have been added before saving.'
+            none:    'There were no changes to the ranks.'
+
+    user:
+        create.success: 'User successfully created.'
+        update.success: 'User successfully updated.'
+        delete.success: 'User successfully deleted.'
+
+    profile:
+        update.success:         'Profile successfully updated.'
+        passwordExpiry.updated: 'Password successfully updated.'
+
+    reset:
+        expired: 'URL has expired. Please try again.'
+        invalid: 'Invalid URL. Please try again.'
+        updated: 'Password successfully updated.'

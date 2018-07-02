@@ -1,0 +1,41 @@
+{% extends '@VivoBlog/layout.html.twig' %}
+
+{% block vivo_blog_main_content %}
+    {% if category|default(null) %}
+        <div class="hero-unit">
+            <h1>{{ category.title }}</h1>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+    {% if posts|length > 0 %}
+        {% for post in posts %}
+            <div class="row-fluid">
+                <h2>{{ post.title }}</h2>
+                <h3>{{ post.publicationDate|date("l jS F Y h:ia") }}</h3>
+                {% if post.excerpt %}
+                    <p>{{ post.excerpt }}</p>
+                {% else %}
+                    <p>{{ post.body|striptags|slice(0, 200) }}...</p>
+                {% endif %}
+                {% if category|default(null) %}
+                    <p><a class="btn" href="{{ path('vivo_blog.category.view', { 'category_slug' : category.slug, 'post_slug' : post.slug }) }}">View details &raquo;</a></p>
+                {% else %}
+                    <p><a class="btn" href="{{ path('vivo_blog.post.view', { 'year' : post.publicationDate|date("Y"), 'month' : post.publicationDate|date("m"), 'day' : post.publicationDate|date("d"), 'slug' : post.slug }) }}">View details &raquo;</a></p>
+                {% endif %}
+            </div><!--/row-->
+            <hr/>
+        {% endfor %}
+        <div class="navigation">
+            {{ knp_pagination_render(posts, '@VivoBlog/pagination.html.twig') }}
+        </div>
+    {% else %}
+        <div class="alert alert-notice">
+            {% if category is defined %}
+                There are currently no posts available in this category.
+            {% else %}
+                There are currently no posts available. Please check back soon.
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock vivo_blog_main_content %}

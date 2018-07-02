@@ -1,0 +1,19 @@
+{% use '@VivoPage/Admin/Page/_form_blocks.html.twig' %}
+
+{% form_theme form '@VivoPage/Admin/Page/_form_theme.html.twig' %}
+
+{% block fieldset_details parent() %}
+
+{% block fieldset_menu_nodes parent() %}
+
+{% block content_groups parent() %}
+
+{% block asset_groups parent() %}
+
+{% block fieldset_seo parent() %}
+
+{% block fieldset_advanced parent() %}
+
+{{ form_widget(form.softPost, {'attr': {'class': 'soft_post', 'formnovalidate': 'formnovalidate'}}) }}
+
+{{ form_rest(form) }}

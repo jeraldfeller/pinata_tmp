@@ -1,0 +1,27 @@
+app_core.admin.farm.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/farm.yml"
+    prefix:   /admin
+
+app_core.admin.fruit.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/fruit.yml"
+    prefix:   /admin
+
+app_core.admin.farm_location.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/farm_location.yml"
+    prefix:   /admin
+
+app_core.admin.timeline.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/timeline.yml"
+    prefix:   /admin
+
+app_core.admin.promo_block.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/promo_block.yml"
+    prefix:   /admin
+
+app_core.admin.promo_group.yml:
+    resource: "@AppCoreBundle/Resources/config/routing/admin/promo_group.yml"
+    prefix:   /admin
+
+app_core.download.file:
+  path:     /download/file/{id}/{name}
+  defaults: { _controller: AppCoreBundle:Media:downloadFile }

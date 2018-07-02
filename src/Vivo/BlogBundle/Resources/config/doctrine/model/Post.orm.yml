@@ -1,0 +1,116 @@
+Vivo\BlogBundle\Model\Post:
+    type: mappedSuperclass
+    table: vivo_blog_post
+    indexes:
+        publication_date: { columns: [publication_date] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        publicationDate:
+            type: datetime
+            column: publication_date
+        title:
+            type: string
+            length: 255
+        excerpt:
+            type: text
+            nullable: true
+        body:
+            type: text
+        author:
+            type: string
+            length: 100
+        disabledAt:
+            type: datetime
+            nullable: true
+        metaTitle:
+            type: string
+            length: 255
+            nullable: true
+        metaDescription:
+            type: string
+            length: 255
+            nullable: true
+        socialTitle:
+            type: string
+            length: 255
+            nullable: true
+        socialDescription:
+            type: string
+            length: 255
+            nullable: true
+        robotsNoIndex:
+            type: boolean
+            nullable: false
+        robotsNoFollow:
+            type: boolean
+            nullable: false
+        excludedFromSitemap:
+            type: boolean
+            nullable: false
+    manyToOne:
+        owner:
+            targetEntity: Vivo\AdminBundle\Model\UserInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            fetch: EXTRA_LAZY
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+        primarySlug:
+            targetEntity: Vivo\BlogBundle\Model\PostSlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                primary_slug_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    oneToMany:
+        slugs:
+            targetEntity: Vivo\BlogBundle\Model\PostSlugInterface
+            cascade:
+                - remove
+                - persist
+            mappedBy: post
+            fetch: EXTRA_LAZY
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    manyToMany:
+        categories:
+            targetEntity: Vivo\BlogBundle\Model\CategoryInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: posts
+            fetch: EXTRA_LAZY
+            joinTable:
+                name: vivo_blog_post_category
+                schema: null
+                joinColumns:
+                    -
+                        name: post_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: category_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

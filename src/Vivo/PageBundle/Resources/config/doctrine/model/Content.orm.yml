@@ -1,0 +1,31 @@
+Vivo\PageBundle\Model\Content:
+    type: mappedSuperclass
+    table: vivo_page_content
+    indexes:
+        alias: { columns: [alias] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        alias:
+            type: string
+            length: 50
+        content:
+            type: text
+            nullable: true
+    manyToOne:
+        page:
+            targetEntity: Vivo\PageBundle\Model\PageInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: content
+            fetch: EXTRA_LAZY
+            joinColumns:
+                page_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

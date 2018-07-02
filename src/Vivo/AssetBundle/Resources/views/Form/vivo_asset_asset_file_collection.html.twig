@@ -1,0 +1,84 @@
+{% block vivo_asset_asset_file_collection_js %}
+    {% autoescape 'js' %}
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                jQuery('#file-collection-{{ id }}').vivoFileCollection({
+                    upload_path: '{{ path(upload_route, upload_params) }}',
+                    upload_expiry: {{ upload_expiry }},
+                    asset_class: '{{ asset_class }}',
+                    csrf_token: '{{ csrf_token(path(upload_route, upload_params) ~ upload_expiry ~ asset_class) }}',
+                    multiple: {{ multiple ? 'true' : 'false' }}
+                });
+            });
+        </script>
+    {% endautoescape %}
+{% endblock vivo_asset_asset_file_collection_js %}
+
+{% block vivo_asset_asset_file_collection_toolbar %}
+    <div class="uploader btn-toolbar"{% if not multiple and form.vars.value|length > 0 %} style="display: none;"{% endif %}>
+        <input type="file" name="file" accept="{{ mime_types|join(',') }}"{% if multiple %} multiple="true"{% endif %} id="{{ id }}_file" data-button-text="{{ button_text }}" data-class-button="{{ button_class }}" data-class-icon="{{ button_icon }}" />
+        {#
+            <a href="#" class="btn"><i class="icon-folder-open"></i> Browse Library</a>
+        #}
+    </div>
+{% endblock vivo_asset_asset_file_collection_toolbar %}
+
+{% block vivo_asset_asset_file_collection_widget %}
+    {% include note_include_path with {'note': note, 'form': form} %}
+    <div {{ block('widget_container_attributes') }}>
+        {{ vivo_asset_asset_file_collection_toolbar(form) }}
+
+        {{ form_errors(form) }}
+
+        <div class="progress-bars">
+            <div class="progress-container clone-me">
+                <div class="upload-text">Uploading <span class="filename">&nbsp;</span></div>
+                <div class="progress progress-striped active">
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="errors">
+            <div class="alert alert-error clone-me">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <span class="message">&nbsp;</span>
+            </div>
+        </div>
+
+        {% if not form.vars.valid %}
+            {% set assetErrorCount = 0 %}
+            {% for asset in form %}
+                {% if not asset.vars.valid %}
+                    {% set assetErrorCount = assetErrorCount + 1 %}
+                {% endif %}
+            {% endfor %}
+            {% if assetErrorCount > 0 %}
+                <p class="text-error">There are errors with {{ assetErrorCount|number_format(0) }} file{{ assetErrorCount == 1 ? '' : 's' }}. Click "Edit Details" to view the errors.</p>
+            {% endif %}
+        {% endif %}
+        <div class="asset-container">
+            <ul class="assets thumbnails">
+                {% for f in form %}
+                    {{ form_widget(form) }}
+                {% endfor %}
+            </ul>
+            {% if multiple %}
+                <div class="empty well"{% if form|length > 0 %} style="display:none;"{% endif %}>
+                    <p class="text-info">{{ empty_text }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {{ vivo_asset_asset_file_collection_js(form) }}
+{% endblock vivo_asset_asset_file_collection_widget %}
+
+{% block vivo_asset_asset_file_collection_row %}
+    <div id="file-collection-{{ id }}" class="file-collection{% if not multiple %} single{% endif %}" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+        {% if multiple %}
+            {{ form_widget(form) }}
+        {% else %}
+            {{ form_row(form) }}
+        {% endif %}
+    </div>
+{% endblock vivo_asset_asset_file_collection_row %}

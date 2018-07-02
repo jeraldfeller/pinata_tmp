@@ -1,0 +1,38 @@
+{% block vivo_util_datetime_widget %}
+    <div id="datetimepicker_{{ id }}" class="input-append date">
+        {% set type = type|default('text') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <span class="add-on">
+            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+        </span>
+    </div>
+    <link rel="stylesheet" href="{{ asset('bundles/vivoutil/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/vivoutil/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    {% autoescape 'js' %}
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                var initialize = function() {
+                    jQuery('#datetimepicker_{{ id }}').datetimepicker({
+                        {% if view_mode is not null %}
+                        viewMode    : {{ view_mode }},
+                        {% endif %}
+                        pickDate    : {{ pick_date ? 'true' : 'false' }},
+                        pickTime    : {{ pick_time ? 'true' : 'false' }},
+                        pickSeconds : {{ pick_seconds ? 'true' : 'false' }},
+                        format      : '{{ js_format|escape('js') }}'
+                    });
+                };
+
+                initialize();
+
+                jQuery('#datetimepicker_{{ id }}').change(function() {
+                    if ($(this).val().length < 1) {
+                        var picker = $(this).data('datetimepicker');
+                        picker.destroy();
+                        initialize();
+                    }
+                });
+            });
+        </script>
+    {% endautoescape %}
+{% endblock vivo_util_datetime_widget %}

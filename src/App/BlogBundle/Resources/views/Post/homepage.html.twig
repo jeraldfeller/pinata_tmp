@@ -1,0 +1,76 @@
+{# Homepage Chatter Block #}
+
+<div class="block primary-colour padded tear-top">
+    <div class="wrapper">
+        <div class="home-chatter">
+
+            <div class="title-block">
+                <div class="lr-block">
+                    <div class="left">
+                        <h2>Piñata Chatter</h2>
+                    </div>
+                    <div class="right">
+                        {% include 'Elements/common/social.html.twig' %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-items">
+
+                {% if posts|length > 0 %}
+                    {% for post in posts %}
+
+                        <div class="item{{ loop.first ? ' first' }}">
+                            <a href="{{ category|default(null) ? path('vivo_blog.category.view', { 'category_slug' : category.primarySlug.slug, 'post_slug' : post.primarySlug.slug }) : path('vivo_blog.post.view', { 'year' : post.publicationDate|date("Y"), 'month' : post.publicationDate|date("m"), 'day' : post.publicationDate|date("d"), 'slug' : post.primarySlug.slug })}}">
+                                <div class="image">
+                                    {% if post.videoIcon %}<i class="chatter-play pin-play-circled"></i>{% endif %}
+                                    {% if post.image is not empty %}
+                                        {% set postImage = post.image %}
+                                        {% if postImage.imagePreviewPath is not null %}
+                                            {% set postImageSrc = postImage.imagePreviewPath|imagine_filter('615x338p') %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% set postImageSrc = 'http://placehold.it/615x338' %}
+                                    {% endif %}
+                                    <div class="image-cover" style="background-image:url('{{ postImageSrc }}');"></div>
+                                </div>
+                                <div class="detail{{ loop.first ? ' tear-left' : ' tear-top' }}">
+                                    {{ loop.first ? '<div class="detail-inner">' }}
+                                    {% if post.categories|length > 0 %}
+                                        <h3>
+                                            {% for category in post.categories %}
+                                                {{ category.title }}
+                                            {% endfor %}
+                                        </h3>
+                                    {% endif %}
+                                    <h2>{{ post.title }}</h2>
+
+                                    {% if loop.first %}
+                                        <div class="snippet">
+                                            {% if post.excerpt %}
+                                                <p>{{ post.excerpt }}</p>
+                                            {% else %}
+                                                <p>{{ post.body|striptags|slice(0, 200) }}...</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    {{ loop.first ? '</div>' }}
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-notice">
+                        There are currently no posts available. Please check back soon.
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div class="homepage-main-content">
+                <h3><a class="btn btn-secondary" href="{{ path('vivo_blog.post.index') }}">Read more chat</a></h3>
+            </div>
+        </div>
+    </div>
+</div>
+

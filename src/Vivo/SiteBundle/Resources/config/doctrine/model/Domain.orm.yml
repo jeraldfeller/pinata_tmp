@@ -1,0 +1,33 @@
+Vivo\SiteBundle\Model\Domain:
+    type: mappedSuperclass
+    table: vivo_site_domain
+    indexes:
+        host: { columns: [host] }
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        host:
+            type: string
+            length: 255
+            unique: true
+        secure:
+            type: boolean
+        hasWwwSubdomain:
+            type: boolean
+    manyToOne:
+        site:
+            targetEntity: Vivo\SiteBundle\Model\SiteInterface
+            cascade: {  }
+            mappedBy: null
+            inversedBy: domains
+            fetch: EXTRA_LAZY
+            joinColumns:
+                site_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

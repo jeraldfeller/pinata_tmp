@@ -1,0 +1,28 @@
+{% block vivo_tree_tree_choice_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            {% spaceless %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' ' ~ (multiple ? 'checkbox' : 'radio'))}) %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' ' ~ (widget_type ? widget_type : ''))}) %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' ' ~ (inline is defined and inline ? 'inline' : ''))|trim}) %}
+                <div {{ block('widget_container_attributes') }}>
+                    <div style="padding-top: 5px;">
+                        {% for child in form %}
+                            <div class="vivo-tree-choice" style="margin-left: {{ form.vars.choice_data[child.vars.value].level * 20 }}px;" data-open="true" data-level="{{form.vars.choice_data[child.vars.value].level}}">
+                                {{ form_widget(child, {'attr': {'class': attr.widget_class|default('')}}) }}
+                                <div class="vivo-tree-choice-label">
+                                    {% set label_attr = label_attr|merge({'for': child.vars.id}) %}
+                                    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %} style="display:inline;">
+                                        {{ choice_translation_domain is same as(false) ? child.vars.label : child.vars.label|trans({}, translation_domain) }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endspaceless %}
+        {% else %}
+            {{ block('choice_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock vivo_tree_tree_choice_widget %}

@@ -1,0 +1,32 @@
+{% extends '@VivoAdmin/layout.html.twig' %}
+
+{% block title 'My Profile' %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('admin_homepage') }}">Home</a> <span class="divider">/</span></li>
+        <li class="active">My Profile</li>
+    </ul>
+{% endblock breadcrumb %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    <p>{{ form_errors(form) }}</p>
+    <fieldset>
+        {{ form_row(form.user.firstName) }}
+        {{ form_row(form.user.lastName) }}
+
+        {{ form_row(form.changePassword, {'attr': {'class': 'vivo_admin_change_password'}}) }}
+        <div class="vivo_admin_change_password"{% if form.vars.value.changePassword is not same as(true) %} style="display:none;"{% endif %}>
+            {{ form_row(form.currentPassword) }}
+            {{ form_row(form.newPassword) }}
+        </div>
+
+        {{ form_rest(form.user) }}
+        {{ form_rest(form) }}
+    </fieldset>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Profile</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}

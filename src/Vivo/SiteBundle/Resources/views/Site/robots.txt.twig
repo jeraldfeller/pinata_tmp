@@ -1,0 +1,10 @@
+{% if app.site.live %}
+User-agent: *
+Allow: /
+{% if fragment_path is not empty %}
+Disallow: {{ fragment_path }}*?*
+{% endif  %}
+{% else %}
+User-agent: *
+Disallow: /
+{% endif %}

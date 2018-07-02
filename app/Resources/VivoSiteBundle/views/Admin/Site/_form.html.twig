@@ -1,0 +1,112 @@
+<fieldset>
+    <legend>Branding</legend>
+    {{ form_row(form.siteLogo) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.contactEmail) }}
+    {{ form_row(form.address) }}
+    {{ form_row(form.fax) }}
+    {{ form_row(form.postOfficeBox) }}
+
+    {{ form_row(form.facebookURL) }}
+    {{ form_row(form.youtubeURL) }}
+    {{ form_row(form.instagramURL) }}
+
+</fieldset>
+<fieldset>
+    <legend>BerryWorld</legend>
+    {{ form_row(form.berryWorldEmail) }}
+    {{ form_row(form.berryWorldWebsite) }}
+
+</fieldset>
+
+<fieldset>
+    <legend>Site Admin</legend>
+    {{ form_errors(form) }}
+
+    {% if form.status is defined %}
+        {{ form_row(form.status) }}
+    {% endif %}
+
+    {% if form.primary is defined %}
+        {{ form_row(form.primary) }}
+    {% endif %}
+
+    {% if form.name is defined %}
+        {{ form_row(form.name) }}
+    {% endif %}
+
+    {% if form.theme is defined %}
+        {{ form_row(form.theme) }}
+    {% endif %}
+
+    {% if form.shortName is defined %}
+        {{ form_row(form.shortName) }}
+    {% endif %}
+
+    {% if form.mailer is defined %}
+        {{ form_row(form.mailer) }}
+    {% endif %}
+
+    {% if form.senderName is defined %}
+        {{ form_row(form.senderName) }}
+    {% endif %}
+
+    {% if form.senderEmail is defined %}
+        {{ form_row(form.senderEmail) }}
+    {% endif %}
+
+    {% if form.notificationEmail is defined %}
+        {{ form_row(form.notificationEmail) }}
+    {% endif %}
+</fieldset>
+
+{% if form.domains is defined %}
+    <fieldset class="collection-container" data-prototype="{{ form_widget(form.domains.vars.prototype)|e }}">
+        <legend>Domains</legend>
+        <table class="table collection"{% if form.domains|length < 1 %} style="display:none;"{% endif %}>
+            <thead>
+            <tr>
+                <th>{{ 'admin.form.domain.primary'|trans({}, 'VivoSiteBundle') }}</th>
+                <th>{{ 'admin.form.domain.host'|trans({}, 'VivoSiteBundle') }}</th>
+                <th>{{ 'admin.form.domain.wwwSubdomain'|trans({}, 'VivoSiteBundle') }}</th>
+                <th>{{ 'admin.form.domain.secure'|trans({}, 'VivoSiteBundle') }}</th>
+                <th>{{ 'admin.form.domain.remove'|trans({}, 'VivoSiteBundle') }}</th>
+            </tr>
+            </thead>
+            <tbody class="collection-body">
+            {% for domain in form.domains %}
+                {{ form_widget(domain) }}
+            {% else %}
+                {{ form_widget(form.domains) }}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="controls collection-empty"{% if form.domains|length > 0 %} style="display:none;"{% endif %}>
+            <p class="text-info">There are currently no domains associated with this site.</p>
+        </div>
+        <div class="control-group">
+            <div class="controls controls-row">
+                <a href="#" class="btn collection-add">Add additional domain</a>
+            </div>
+        </div>
+    </fieldset>
+{% endif %}
+
+{% if form.googleAnalyticsId is defined or form.googleAdvertiserSupport is defined or form.googleSiteVerificationCode is defined or form.googleApiServerKey is defined or form.googleApiBrowserKey is defined %}
+    <fieldset>
+        <legend>Google Settings</legend>
+        {{ form_row(form.googleAnalyticsId) }}
+        {{ form_row(form.googleAdvertiserSupport) }}
+        {{ form_row(form.googleSiteVerificationCode) }}
+
+        {% if form.googleApiServerKey is defined %}
+            {{ form_row(form.googleApiServerKey) }}
+        {% endif %}
+
+        {% if form.googleApiBrowserKey is defined %}
+            {{ form_row(form.googleApiBrowserKey) }}
+        {% endif %}
+    </fieldset>
+{% endif %}
+
+{{ form_rest(form) }}

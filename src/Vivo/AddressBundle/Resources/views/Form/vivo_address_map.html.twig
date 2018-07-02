@@ -1,0 +1,54 @@
+{% block vivo_address_map_row %}
+    {% stylesheets '@VivoAddressBundle/Resources/public/plugin/map/address-mapper.less' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <script src="//maps.googleapis.com/maps/api/js?key={{ app.site.googleApiBrowserKey }}&extension=.js"></script>
+    {% javascripts '@VivoAddressBundle/Resources/public/plugin/map/address-mapper.jquery.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#map').vivoAddressMapper({
+                {% if app.site.googleApiBrowserKey is not empty -%}
+                    googleApiBrowserKey: '{{ app.site.googleApiBrowserKey }}',
+                {% endif -%}
+                zoomElement      : $('#{{ form.latLng.zoom.vars.id }}'),
+                latitudeElement  : $('#{{ form.latLng.latitude.vars.id }}'),
+                longitudeElement : $('#{{ form.latLng.longitude.vars.id }}'),
+                addressElements: {
+                    countryCode  : $('#{{ form.locality.countryCode.vars.id }}'),
+                    addressLine1 : $('#{{ form.addressLine1.vars.id }}'),
+                    addressLine2 : $('#{{ form.addressLine2.vars.id }}'),
+                    postcode     : $('#{{ form.locality.postcode.vars.id }}'),
+                    suburb       : $('#{{ form.locality.suburb.vars.id }}'),
+                    state        : $('#{{ form.locality.state.vars.id }}')
+                }
+            });
+        });
+    </script>
+
+    <div id="map" class="vivo-address-map-container">
+        <div class="address-elements pull-left">
+            {{ block('vivo_address_row') }}
+            {{ form_widget(form.latLng) }}
+            {{ form_rest(form) }}
+        </div>
+        <div class="pull-left">
+            <div class="map-message">
+                {% if not form.latLng.vars.valid or not form.latLng.zoom.vars.valid or not form.latLng.latitude.vars.valid or not form.latLng.longitude.vars.valid %}
+                    <div class="alert alert-danger">
+                        {{ form_errors(form.latLng) }}
+                        {{ form_errors(form.latLng.zoom) }}
+                        {{ form_errors(form.latLng.latitude) }}
+                        {{ form_errors(form.latLng.longitude) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="map-canvas"></div>
+            <div class="map-actions">
+                <a class="btn btn-warning pull-left update-map"><i class="icon-map-marker icon-white"></i> Reset marker</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+{% endblock vivo_address_map_row %}

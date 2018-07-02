@@ -1,0 +1,19 @@
+{% extends '@VivoBlog/Admin/layout.html.twig' %}
+
+{% block title 'Create Category' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li><a href="{{ path('vivo_blog.admin.category.index') }}">Categories</a> <span class="divider">/</span></li>
+    <li class="active">Create Category</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@VivoBlog/Admin/Category/_form.html.twig' with {'form': form, 'category': category} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Create Category</button>
+            <a href="{{ path('vivo_blog.admin.category.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

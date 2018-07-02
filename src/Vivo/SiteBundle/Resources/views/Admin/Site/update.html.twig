@@ -1,0 +1,25 @@
+{% extends '@VivoSite/Admin/layout.html.twig' %}
+
+{% block title 'Edit Site' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    {% if app.request.attributes.get('_route') == 'vivo_site.admin.site.edit' %}
+        <li><a href="{{ path('vivo_site.admin.site.edit') }}">{{ site.shortName }}</a> <span class="divider">/</span></li>
+    {% else %}
+        <li><a href="{{ path('vivo_site.admin.site.update', {'id': site.id}) }}">{{ site.shortName }}</a> <span class="divider">/</span></li>
+    {% endif %}
+    <li class="active">Edit Site</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {% include '@VivoSite/Admin/Site/_form.html.twig' with {'form': form, 'site': site} %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Site</button>
+            {% if app.request.attributes.get('_route') != 'vivo_site.admin.site.edit' %}
+                <a href="{{ path('vivo_site.admin.site.index') }}" class="btn"><i class="icon-refresh"></i> Cancel</a>
+            {% endif %}
+        </div>
+    {{ form_end(form) }}
+{% endblock content %}

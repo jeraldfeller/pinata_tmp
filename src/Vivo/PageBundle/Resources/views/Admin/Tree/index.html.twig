@@ -1,0 +1,225 @@
+{% extends '@VivoPage/Admin/layout.html.twig' %}
+
+{% block title 'Pages' %}
+
+{% block breadcrumb_crumbs %}
+    {{ parent() }}
+    <li class="active">Tree</li>
+{% endblock breadcrumb_crumbs %}
+
+{% block content %}
+    <form action="{{ path('vivo_page.admin.tree.update') }}" method="post">
+        <input type="hidden" name="tree" id="vivo_page_tree_data" value="" />
+        <div class="btn-toolbar pull-left">
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Navigation</button>
+            </div>
+        </div>
+        <div class="btn-toolbar pull-right">
+            <div class="btn-group">
+                <a href="{{ path('vivo_page.admin.page.create') }}" class="btn btn-primary"><i class="icon-plus icon-white"></i> Create Page</a>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('vivo_page.admin.page.index') }}" class="btn"><i class="icon-list"></i> View as List</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        {% if menu_nodes|length > 0 or orphan_pages|length > 0 %}
+            <div class="nested-tree space-root" id="vivo_page_tree">
+                <ol class="tree-group root">
+                    {{ _self.print_children(menu_nodes) }}
+
+                    {% if orphan_pages|length > 0 %}
+                        <li class="item orphan" data-max-levels="2" id="vivo_page_tree_0">
+                            <div class="item-container">Orphan Pages</div>
+
+                            <ol class="tree-group">
+                                {% for page in orphan_pages %}
+                                    <li class="item is-orphan" id="vivo_page_tree_0/page/{{ page.id }}">
+                                        <div class="item-container">
+                                            {% if page.disabled %}
+                                                <i class="icon-ban-circle"></i>
+                                            {% endif %}
+                                            {% if page.pageTypeInstance.routeName %}
+                                                <a href="{{ path(page.pageTypeInstance.routeName) }}" target="_blank">{{ page.pageTitle }}</a> ({{ page.pagetypeInstance.name }})
+                                            {% else %}
+                                                {{ page.pageTitle }} ({{ page.pagetypeInstance.name }})
+                                            {% endif %}
+
+                                            {% if is_granted('ROLE_PAGE_MANAGEMENT') %}
+                                                <ul class="nav nav-pills">
+                                                    <li class="dropdown">
+                                                        <button class="btn btn-mini btn-link dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu open-left">
+                                                            <li><a href="{{ path('vivo_page.admin.page.update', {'id': page.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                                            {% if not page.pageTypeInstance.isAlwaysEnabled %}
+                                                                <li><a class="confirm" href="{{ path('vivo_page.admin.page.delete', {'id': page.id, 'token': csrf_token(page.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete</a></li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </li>
+                    {% endif %}
+                </ol>
+            </div>
+
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Save Navigation</button>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <script type="text/javascript">
+                function resetMaxLevels(items) {
+                    items.each(function() {
+                        var parent = $(this).parents('li.item:first');
+                        var currentLevel = 1;
+
+                        var maxLevels = $(this).data('max-levels');
+                        if (typeof maxLevels !== 'undefined' && maxLevels !== false) {
+                            maxLevels = parseInt(maxLevels);
+                        } else {
+                            maxLevels = 0;
+                        }
+
+                        if (1 == parent.size()) {
+                            var parentLevel = parent.data('current-level');
+                            if (typeof parentLevel !== 'undefined' && parentLevel !== false) {
+                                currentLevel = parseInt(parentLevel) + 1;
+                            }
+
+                            if (0 == maxLevels) {
+                                var parentMaxLevel = parent.data('max-levels-calculated');
+                                if (typeof parentMaxLevel !== 'undefined' && parentMaxLevel !== false) {
+                                    maxLevels = parseInt(parentMaxLevel);
+                                }
+
+                                if (maxLevels > 1) {
+                                    maxLevels--;
+                                }
+                            }
+                        }
+
+                        $(this).data('current-level', currentLevel);
+                        $(this).data('max-levels-calculated', maxLevels);
+
+                        resetMaxLevels($(this).find('> ol > li.item'));
+                    });
+                }
+
+                jQuery('#vivo_page_tree > ol').each(function() {
+                    var treeContainer = jQuery(this);
+                    var initialData;
+
+                    jQuery(this).nestedSortable({
+                        forcePlaceholderSize: true,
+                        handle: 'div.item-container',
+                        helper:	'clone',
+                        items: 'li.item',
+                        opacity: .6,
+                        placeholder: 'placeholder',
+                        tabSize: 25,
+                        tolerance: 'pointer',
+                        toleranceElement: '.item-container',
+                        maxLevels: 0,
+                        isTree: true,
+                        protectRoot: true,
+                        create: function(event, ui) {
+                            resetMaxLevels($('.nested-tree ol.tree-group.root > li.item'));
+                        },
+                        isAllowed: function(item, parent) {
+                            if (parent) {
+                                if (0 !== parent.data('max-levels-calculated') && parent.data('max-levels-calculated') <= 1) {
+                                    return false;
+                                }
+
+                                if (!item.hasClass('is-orphan') && parent.hasClass('orphan')) {
+                                    return false;
+                                }
+                            }
+
+                            return true;
+                        },
+                        update: function (event, ui) {
+                            var data = treeContainer.nestedSortable('serialize');
+
+                            if (data == initialData) {
+                                jQuery('#vivo_page_tree_data').val('');
+                            } else {
+                                jQuery('#vivo_page_tree_data').val(data);
+                            }
+
+                            resetMaxLevels($('.nested-tree ol.tree-group.root > li.item'));
+                        },
+                        start: function(event, ui){
+                            ui.item.find('.nav').hide();
+                            ui.placeholder.height(ui.item.height());
+                        },
+                        stop: function (event, ui) {
+                            ui.item.find('.nav').show();
+                        }
+                    });
+
+                    initialData = treeContainer.nestedSortable('serialize');
+                });
+            </script>
+        {% else %}
+            <div class="alert alert-notice">
+                There are currently no pages available for sorting.
+            </div>
+        {% endif %}
+    </form>
+{% endblock content %}
+
+{% macro print_children(children) %}
+    {% if children|length > 0 %}
+        {% for child in children %}
+            <li class="item"{% if child.maxDepth is not same as(null) %} data-max-levels="{{ child.maxDepth + 1 }}"{% endif %} id="vivo_page_tree_{{ child.id }}">
+                <div class="item-container">
+                    {% if child.disabled %}
+                        <i class="icon-ban-circle"></i>
+                    {% endif %}
+                    {% if child.page %}
+                        {% if child.routeName %}
+                            <a href="{{ path(child.routeName) }}" target="_blank">{{ child.title }}</a> ({{ child.page.pagetypeInstance.name }})
+                        {% else %}
+                            {{ child.title }} ({{ child.page.pagetypeInstance.name }})
+                        {% endif %}
+                    {% else %}
+                        {{ child.title }}
+                    {% endif %}
+
+                    {% if child.page and is_granted('ROLE_PAGE_MANAGEMENT') %}
+                        <ul class="nav nav-pills">
+                            <li class="dropdown">
+                                <button class="btn btn-mini btn-link dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu open-left">
+                                    <li><a href="{{ path('vivo_page.admin.page.update', {'id': child.page.id}) }}"><i class="icon-pencil"></i> Edit</a></li>
+                                    <li><a class="confirm" href="{{ path('vivo_page.admin.tree.delete_node', {'id': child.id, 'token': csrf_token(child.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete Menu Item</a></li>
+                                    {% if not child.page.pageTypeInstance.isAlwaysEnabled %}
+                                        <li><a class="confirm" href="{{ path('vivo_page.admin.page.delete', {'id': child.page.id, 'token': csrf_token(child.page.csrfIntention('delete'))}) }}"><i class="icon-trash"></i> Delete Page</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+                {% if child.children|length > 0 %}
+                    <ol class="tree-group">
+                        {{ _self.print_children(child.children) }}
+                    </ol>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
