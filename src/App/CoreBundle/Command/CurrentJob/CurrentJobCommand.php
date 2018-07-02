@@ -25,29 +25,34 @@ class CurrentJobCommand extends  ContainerAwareCommand
             // the "--help" option
             ->setHelp('')
 
-            //   ->addArgument('action', InputArgument::REQUIRED, 'What type of action do you want to execute?')
+            ->addArgument('action', InputArgument::REQUIRED, 'two arguments needed, separated by comma. email, root_dir')
         ;
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(['test']);
-        $dateMonday = date('Y-m-d', strtotime('monday last week'));
-        $dateSunday = date('Y-m-d', strtotime('sunday last week'));
+        $arguments = explode(',', $input->getArgument('action'));
+        $emailAddress = $arguments[0];
+        $root = $arguments[1];
+        $dateMonday = date('Y-m-d', strtotime('monday this week'));
+        $dateSunday = date('Y-m-d', strtotime('sunday this week'));
         $fileName = 'pinata_applicants_'.$dateMonday.'-'.$dateSunday.'csv';
-        $fileDir = 'tmp/pinata_applicants_2018-07-02-2018-07-08.csv';
+        $fileDir = $root.'/tmp/'.$fileName;
 
         $email = new PHPMailer();
        // $email->isSMTP(false);
-        $email->From      = 'jeraldfeller@gmail.com';
+        $email->From      = 'pinata@webmaster.com';
         $email->Subject   = 'Job Applicants';
         $email->Body      =  'for ' . $dateMonday . ' to ' . $dateSunday;
-        $email->AddAddress( 'jeraldfeller@gmail.com' );
+        $email->AddAddress( $emailAddress );
         $file_to_attach = $fileDir;
-        $email->AddAttachment( $file_to_attach , 'pinata_applicants_2018-07-02-2018-07-08.csv' );
+        $email->AddAttachment( $file_to_attach , $fileName );
         $return = $email->Send();
 
-        var_dump($return);
-
+        if($return){
+            $output->writeln(['File successfully sent']);
+        }else{
+            $output->writeln(['File failed to sent']);
+        }
     }
 
 }
